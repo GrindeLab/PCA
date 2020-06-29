@@ -1,0 +1,197 @@
+\documentclass[12pt]{article}
+
+% double-spacing
+%\usepackage{setspace}
+%\doublespacing
+
+% line numbers
+%\usepackage{lineno}
+%\linenumbers
+
+% 1 inch margins
+\usepackage[margin=1in]{geometry}
+
+\begin{document}
+
+\section{Title}
+
+% no more than 3 lines
+% each line <= 54 characters (including spaces)
+% convey conceptual significance of paper to broad readership
+Adjusting for principal components can induce spurious\\
+associations in genome-wide association studies 
+
+\section{Authors and Affiliations}
+
+Kelsey E. Grinde$^{1}$*, % should I also list UW?
+Brian L. Browning$^{2}$, 
+Sharon R. Browning$^{3}$
+
+\begin{enumerate}
+\item Department of Mathematics, Statistics, and Computer Science, Macalester College, Saint Paul, MN, 55105, USA
+\item Department of Medicine, Division of Medical Genetics, University of Washington, Seattle, WA, 98195, USA
+\item Department of Biostatistics, University of Washington, Seattle, WA, 98195, USA
+\end{enumerate}
+
+\section{Correspondence}
+
+kgrinde@macalester.edu
+
+\section{Abstract}
+
+% single paragraph
+% <= 250 words
+% convey conceptual advance and significance of work to broad readership
+% brief background of question, description of results, brief summary of significance of findings
+% do not cite any references
+
+%% (from ASHG submission)
+%% currently 271 words
+Principal component analysis (PCA) is widely used to control for population structure in genome-wide association studies (GWAS). Although it has been shown that the top principal components (PCs) typically reflect population structure, deciding exactly how many PCs must be included as covariates in GWAS regression models can be challenging. Often researchers will err on the side of including more PCs than may be actually necessary in order to ensure that population structure is fully captured. However, we show that adjusting for extraneous PCs can induce spurious associations as a result of the phenomenon known as collider bias. Through both analytic results and application to whole genome sequence data for 1,888 and 2,676 unrelated African American individuals from the Jackson Heart Study (JHS) and Chronic Obstructive Pulmonary Disease Genetic Epidemiology Study (COPDGene), respectively, we show that spurious associations can arise when regression models adjust for PCs that capture local genomic features—such as regions of the genome with atypical linkage disequilibrium (LD) patterns—rather than genome-wide ancestry. In JHS and COPDGene, we show that careful LD pruning prior to running PCA, using stricter thresholds and wider windows than is often suggested in the literature, can resolve these issues, whereas excluding lists of high LD regions identified in previous studies does not. We also show that issues of collider bias can be avoided entirely in these data, and the rate of spurious associations appropriately controlled, when we simply adjust for either the first PC or a model-based estimate of admixture proportions. Our work demonstrates that great care must be taken when using principal components to control for population structure in genome-wide association studies. 
+
+\section{Introduction}
+
+% no subheadings
+% present background info necessary to provide biological context for results
+
+\section{Material and Methods}
+
+% provide sufficient detail so readers can understand how experiments were performed and procedures can be repeated
+% describe any statistical methods employed in study
+
+\section{Results}
+
+\section{Discussion}
+
+% explain significance of results and place them in broader context
+% may contain subheadings
+
+\section{Appendices}
+
+% can put detailed results of statistical analyses here
+% may contain subheadings
+
+\section{Supplemental Data}
+
+% briefly list what types of data are included in supplemental data (a separate PDF document)
+% e.g., "Supplemental Data include four figures and two tables"
+
+\section{Declaration of Interests}
+
+%We ask that you and all authors disclose any personal financial interests (examples include stocks or shares in companies with interests related to the submitted work or consulting fees from companies that could have interests related to the work), professional affiliations, advisory positions, board memberships, or patent holdings that are related to the subject matter of the contribution. As a guideline, you need to declare an interest for (1) any affiliation associated with a payment or financial benefit exceeding $10,000 p.a. or 5% ownership of a company or (2) research funding by a company with related interests. You do not need to disclose diversified mutual funds, 401ks, or investment trusts.
+%https://www.cell.com/declaration-of-interests
+The authors declare no competing interests.
+
+\section{Acknowledgments}
+
+%contributions from nonauthors
+%list funding sources
+%add any necessary data-related acknowledgments
+
+K.E.G. was supported by the National Science Foundation Graduate Research Fellowship Program under grant no. DGE-1256082. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
+
+\section{Web Resources}
+
+%list and provide URL for any web-based resources (e.g., datbase, online computer programs, etc.)
+%For all computer programs, please provide a URL for the website at which the computer program described in the manuscript will be made publicly available.
+
+\section{Data and Code Availability}
+
+%statement describing the availability of new datasets and/or code associated with the paper.
+%includes any conditions for access of datasets and/or code not publicly available.
+%also include any accession numbers, DOIs or unique identifiers, or web links to deposited datasets
+
+%%examples
+%The [datasets/code] generated during this study are available at [name of repository] [accession code/web link].
+%The published article includes all [datasets/code] generated or analyzed during this study.
+%This study did not generate/analyze [datasets/code].
+%There are restrictions to the availability of [dataset/code] due to [reason for restrictions].
+%Original/source data for [figures/datatype] in the paper is available [e.g., Mendeley Data DOI].
+%The [datasets/code] supporting the current study have not been deposited in a public repository because [reason data are not public] but are available from the corresponding author on request.
+
+\section{References}
+
+%include only articles that are published.
+%"et al." should be used only after 10 authors.
+%Please use the following styles for references:
+
+%%Article in a periodical
+%1. Leach, N.T., Sun, Y.,Michaud, S., Zheng, Y., Ligon, K.L., Ligon, A.H., Sander, T., Korf, B.R., Lu, W., Harris, D.J., et al. (2007). Disruption of diacylglycerol kinase delta (DGKD) associated with seizures in humans and mice. Am. J. Hum. Genet. 80, 792–799.
+
+%%Article in a book
+%2. King, S.M. (2003). Dynein motors: Structure, mechanochemistry and regulation. In Molecular Motors, M. Schliwa, ed. (Wiley-VCH Verlag GmbH), pp. 45–78.
+
+%%Entire book
+%3. Cowan, W.M., Jessell, T.M., and Zipursky, S.L. (1997). Molecular and Cellular Approaches to Neural Development (Oxford University Press).
+
+%%Online reference
+%4. Rothwarf, D.M., and Karin, M. (1999). The NF-kB pathway: a paradigm in information transfer from membrane to nucleus. Science’s STKE, http://www.stke.org/cgi/content/full/OC_sigtrans;1999/5/rel.
+
+%%Computer program
+%5. Hubbard, S.J. and Thornton, J.M. (1993). NACCESS computer program (Department of Biochemistry and Molecular Biology, University College London).
+% Software may also be cited in text; for an in-text citation, include the name of the manufacturer in parentheses.
+
+%%Dissertation/Thesis
+%6. Smith, J.P. (1985). DNA sequences. PhD thesis (Massachusetts Institute of Technology).
+
+%The current AJHG reference format for Endnote users can be downloaded from http://www.endnote.com/support/enstyles.asp
+%The current AJHG reference format for RefMan users can be downloaded from http://www.refman.com/support/rmstyles.asp
+
+%%In-Text Citations
+%Unpublished data, abstracts, and personal communications may be cited within the text only. Submitted articles that have not yet been accepted should be cited as data not shown, unpublished data, or a personal communication.
+%Unpublished data may refer only to work from an author of the manuscript being submitted.
+%A personal communication should be documented by a letter of permission (this may be in the form of an e-mail communication, letter, or other appropriate form of permission).
+%Please use the following style for such citations:
+
+%%Unpublished data 
+%(M.A., unpublished data)
+
+%%Abstract
+%(M. Adams et al., 1997, Soc. Neurosci., abstract)
+
+%%Personal communication
+%(M. Adams, personal communication) 
+
+\section{Figure Titles and Legends}
+
+% brief title describing entire figure without citing specific panels
+% subsequent description of each panel
+
+% numbered consecutively with whole numbers (e.g., Figure 1, Figure 2, etc. rather than Figure 1a, Figure 1b, etc.)
+
+% figures may not exceed one page
+
+% figure titles may not contain parenthetical information, reference citations, or footnotes
+
+% all reference citations within a figure must also be included in the figure legend
+
+%For any figures presenting pooled data, the measures should be defined in the figure legends (for example, data are represented as the mean ± SEM).
+
+%%https://www.cell.com/figureguidelines
+
+
+\section{Tables}
+
+%Include tables in the submitted manuscript after the figure titles and legends. Tables should not be saved as figures, i.e., as .jpg or .tif files. All tables intended for print should be incorporated into the end of the manuscript Word file. Tables should not be uploaded individually.
+
+%When creating a table, please use the Microsoft Word table function, and please do not place an Excel table into a Word document. Tables not created with the Microsoft Word table function will be sent back for revision. Do not submit a table in PDF format.
+
+%Word tables should not be tab or space delineatedand and should not include colored text or shading, but embedded graphics with color are OK.
+
+%Do not use paragraph returns to separate data within a cell.
+
+%Tables should include a title, and footnotes and/or legends should be concise. 
+
+%Table titles may not contain parenthetical information, reference citations, or footnote citations.
+
+%Use superscripted lowercase letters (beginning with “a”) for footnotes in tables. Do not use numbers or symbols.
+
+%Tables must be numbered as Table 1, Table 2, Table 3, etc., rather than as Table 1a, Table 1b, Table 1c, etc.
+
+%If italic font is used within a table to indicate some feature of the data, an explanation of its meaning must be given in the table legend. Bold text may not be used in tables.
+
+%If a referenced paper or study is mentioned within a table, it must be included in the References list and must be followed by its appropriate citation number (e.g., “Author et al.1”) within the table.
+
+%All abbreviations within a table must be defined in the table legend or footnotes.
+
+\end{document}
