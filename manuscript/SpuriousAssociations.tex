@@ -4,14 +4,27 @@
 \usepackage{setspace}
 \doublespacing
 
-% line numbers
-\usepackage{lineno}
-\linenumbers
+%% line numbers
+%% (turn on before submission)
+%\usepackage{lineno}
+%\linenumbers
 
 % 1 inch margins
 \usepackage[margin=1in]{geometry}
 
+% text color
+\usepackage{xcolor}
+
 \begin{document}
+
+\section{Target Journal}
+
+\textit{American Journal of Human Genetics}
+
+%% other ideas:
+% Nature Genetics
+% PLoS Genetics
+% Genetic Epidemiology
 
 \section{Title}
 
@@ -26,6 +39,8 @@ associations in genome-wide association studies
 Kelsey E. Grinde$^{1}$*, % should I also list UW?
 Brian L. Browning$^{2}$, 
 Sharon R. Browning$^{3}$
+
+%% add Lisa, Alex, Tim if we use WHI data
 
 \begin{enumerate}
 \item Department of Mathematics, Statistics, and Computer Science, Macalester College, Saint Paul, MN, 55105, USA
@@ -54,22 +69,103 @@ Principal component analysis (PCA) is widely used to control for population stru
 % no subheadings
 % present background info necessary to provide biological context for results
 
+GWAS in Admixed Populations
+
+\noindent Adjusting for Population Structure
+
+\noindent Choosing PCs
+
+\noindent Outline rest of paper
+
 \section{Material and Methods}
 
 % provide sufficient detail so readers can understand how experiments were performed and procedures can be repeated
 % describe any statistical methods employed in study
 
+\subsection{GWAS Regression Framework}
+
+Introduce notation, describe general set of methods used for running GWAS and adjusting for population structure
+
+\subsection{Adjusting for Population Structure}
+
+Introduce notation, describe methods used for inferring and adjusting for global ancestry proportions, describe methods used for computing and adjusting for principal components
+
+{\color{red} Do we need a new (more specific) term other than \textit{Population Structure}?}
+
+\subsubsection{Global Ancestry Proportions}
+
+\subsubsection{Principal Component Analysis}
+
+\subsection{Simulations}
+
+Describe simulation study verifying theoretical work: simulating genotypes, simulating traits, evaluation
+
+\subsection{Application to 1000 Genomes (?) Sequence Data}
+
+Describe data: sequencing methods, populations used, simulating traits, evaluation
+
+
 \section{Results}
+
+\subsection{Need to Adjust}
+
+Simulation and mathematical results
+
+\subsection{Inferring Population Structure}
+
+Highly correlated with each other
+
+Some PCs are highly correlated with genotypes in small regions
+
+{\color{red} This could also go after we show spurious assoc results: here's the problem > here's where we think the problem is coming from}
+
+\subsection{FWER}
+
+Do they have similar FWER? (Manhattan plots for one or two traits, overall summary of rejection rates)
+
+{\color{red} Is it appropriate to use the same significance threshold for both?}
+
+\subsection{Spurious Associations}
+
+Simulation (Manhattan plots for one or two traits, overall summary of rejection rates) and mathematical results demonstrating spurious associations when adjusting for certain types of PCs
+
+\subsection{Power}
+
+Do they have similar power?
+
 
 \section{Discussion}
 
 % explain significance of results and place them in broader context
 % may contain subheadings
 
+Global ancestry = confounder
+\begin{itemize}
+\item Summarize conditions under which global ancestry is a confounder 
+\item Relate to current understanding in literature
+\end{itemize}
+
+\noindent Be careful with PCs!
+\begin{itemize}
+\item Summarize conditions under which PCs can be problematic
+\item Relate to current understanding in literature
+\end{itemize}
+
+% GWAS vs admixture mapping
+
+% sequence vs genotype data
+
+% how does this apply to mixed models?
+
+
 \section{Appendices}
 
 % can put detailed results of statistical analyses here
 % may contain subheadings
+
+\subsection{Regions Removed Prior to PCA}
+
+\subsection{Mathematical Derivations}
 
 \section{Supplemental Data}
 
