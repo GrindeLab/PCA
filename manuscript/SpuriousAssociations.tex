@@ -15,26 +15,34 @@
 % text color
 \usepackage{xcolor}
 
+% bibliography
+\usepackage[super]{natbib} % superscripts
+\renewcommand{\refname}{} % empty title
+\setcitestyle{citesep={,}} % comma separated
+
+% highlight text that needs editing in red
+\newcommand{\edit}[1]{{\color{red}{#1}}}
+
 \begin{document}
 
-\section{Target Journal}
+\section*{Target Journal}
 
 \textit{American Journal of Human Genetics}
 
-%% other ideas:
-% Nature Genetics
-% PLoS Genetics
-% Genetic Epidemiology
+\noindent\edit{Other ideas: \textit{PLoS Genetics}, \textit{Genetic Epidemiology}}  %, \textit{Nature Genetics}
 
-\section{Title}
+
+
+\section*{Title}
 
 % no more than 3 lines
 % each line <= 54 characters (including spaces)
 % convey conceptual significance of paper to broad readership
-Adjusting for principal components can induce spurious %\\
-associations in genome-wide association studies 
 
-\section{Authors and Affiliations}
+Adjusting for principal components can induce spurious 
+associations in genome-wide association studies in admixed populations
+
+\section*{Authors and Affiliations}
 
 Kelsey E. Grinde$^{1}$*, % should I also list UW?
 Brian L. Browning$^{2}$, 
@@ -48,11 +56,13 @@ Sharon R. Browning$^{3}$
 \item Department of Biostatistics, University of Washington, Seattle, WA, 98195, USA
 \end{enumerate}
 
-\section{Correspondence}
+\section*{Correspondence}
 
 kgrinde@macalester.edu
 
-\section{Abstract}
+
+\newpage
+\section*{Abstract}
 
 % single paragraph
 % <= 250 words
@@ -64,12 +74,20 @@ kgrinde@macalester.edu
 %% currently 271 words
 Principal component analysis (PCA) is widely used to control for population structure in genome-wide association studies (GWAS). Although it has been shown that the top principal components (PCs) typically reflect population structure, deciding exactly how many PCs must be included as covariates in GWAS regression models can be challenging. Often researchers will err on the side of including more PCs than may be actually necessary in order to ensure that population structure is fully captured. However, we show that adjusting for extraneous PCs can induce spurious associations as a result of the phenomenon known as collider bias. Through both analytic results and application to whole genome sequence data for 1,888 and 2,676 unrelated African American individuals from the Jackson Heart Study (JHS) and Chronic Obstructive Pulmonary Disease Genetic Epidemiology Study (COPDGene), respectively, we show that spurious associations can arise when regression models adjust for PCs that capture local genomic features—such as regions of the genome with atypical linkage disequilibrium (LD) patterns—rather than genome-wide ancestry. In JHS and COPDGene, we show that careful LD pruning prior to running PCA, using stricter thresholds and wider windows than is often suggested in the literature, can resolve these issues, whereas excluding lists of high LD regions identified in previous studies does not. We also show that issues of collider bias can be avoided entirely in these data, and the rate of spurious associations appropriately controlled, when we simply adjust for either the first PC or a model-based estimate of admixture proportions. Our work demonstrates that great care must be taken when using principal components to control for population structure in genome-wide association studies. 
 
+
+\newpage
 \section{Introduction}
 
 % no subheadings
 % present background info necessary to provide biological context for results
 
-GWAS in Admixed Populations
+%% GWAS in Admixed Populations}
+Historically, admixed populations such as African Americans and Hispanics/Latinos have been vastly underrepresented in genome-wide association studies (GWAS) \cite{need2009, bustamante2011, popejoy2016, morales2018, sirugo2019, martin2019}. 
+Although this underrepresentation has many causes, some authors have cited the statistical challenges posed by ancestrally heterogeneous populations as a possible contributing factor \citep{need2009, bustamante2011, popejoy2016}. 
+Ancestral heterogeneity is an example of population structure, which is known to pose challenges for genetic association studies:
+In particular, it can lead to spurious associations in GWAS unless appropriately addressd \citep{}.
+
+
 
 \noindent Adjusting for Population Structure
 
@@ -90,7 +108,7 @@ Introduce notation, describe general set of methods used for running GWAS and ad
 
 Introduce notation, describe methods used for inferring and adjusting for global ancestry proportions, describe methods used for computing and adjusting for principal components
 
-{\color{red} Do we need a new (more specific) term other than \textit{Population Structure}?}
+\noindent\edit{Do we need a new (more specific) term other than \textit{Population Structure}?}
 
 \subsubsection{Global Ancestry Proportions}
 
@@ -117,13 +135,13 @@ Highly correlated with each other
 
 Some PCs are highly correlated with genotypes in small regions
 
-{\color{red} This could also go after we show spurious assoc results: here's the problem > here's where we think the problem is coming from}
+\noindent\edit{This could also go after we show spurious assoc results: here's the problem $>$ here's where we think the problem is coming from}
 
 \subsection{FWER}
 
 Do they have similar FWER? (Manhattan plots for one or two traits, overall summary of rejection rates)
 
-{\color{red} Is it appropriate to use the same significance threshold for both?}
+\noindent\edit{Is it appropriate to use the same significance threshold for both?}
 
 \subsection{Spurious Associations}
 
@@ -157,7 +175,7 @@ Global ancestry = confounder
 
 % how does this apply to mixed models?
 
-
+\newpage
 \section{Appendices}
 
 % can put detailed results of statistical analyses here
@@ -167,18 +185,22 @@ Global ancestry = confounder
 
 \subsection{Mathematical Derivations}
 
-\section{Supplemental Data}
+
+\newpage
+\section*{Supplemental Data}
 
 % briefly list what types of data are included in supplemental data (a separate PDF document)
 % e.g., "Supplemental Data include four figures and two tables"
 
-\section{Declaration of Interests}
+Supplemental Data include \edit{??} figures and \edit{??} tables.
+
+\section*{Declaration of Interests}
 
 %We ask that you and all authors disclose any personal financial interests (examples include stocks or shares in companies with interests related to the submitted work or consulting fees from companies that could have interests related to the work), professional affiliations, advisory positions, board memberships, or patent holdings that are related to the subject matter of the contribution. As a guideline, you need to declare an interest for (1) any affiliation associated with a payment or financial benefit exceeding $10,000 p.a. or 5% ownership of a company or (2) research funding by a company with related interests. You do not need to disclose diversified mutual funds, 401ks, or investment trusts.
 %https://www.cell.com/declaration-of-interests
 The authors declare no competing interests.
 
-\section{Acknowledgments}
+\section*{Acknowledgments}
 
 %contributions from nonauthors
 %list funding sources
@@ -186,12 +208,12 @@ The authors declare no competing interests.
 
 K.E.G. was supported by the National Science Foundation Graduate Research Fellowship Program under grant no. DGE-1256082. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
 
-\section{Web Resources}
+\section*{Web Resources}
 
 %list and provide URL for any web-based resources (e.g., datbase, online computer programs, etc.)
 %For all computer programs, please provide a URL for the website at which the computer program described in the manuscript will be made publicly available.
 
-\section{Data and Code Availability}
+\section*{Data and Code Availability}
 
 %statement describing the availability of new datasets and/or code associated with the paper.
 %includes any conditions for access of datasets and/or code not publicly available.
@@ -205,7 +227,8 @@ K.E.G. was supported by the National Science Foundation Graduate Research Fellow
 %Original/source data for [figures/datatype] in the paper is available [e.g., Mendeley Data DOI].
 %The [datasets/code] supporting the current study have not been deposited in a public repository because [reason data are not public] but are available from the corresponding author on request.
 
-\section{References}
+\newpage
+\section*{References}
 
 %include only articles that are published.
 %"et al." should be used only after 10 authors.
@@ -248,7 +271,12 @@ K.E.G. was supported by the National Science Foundation Graduate Research Fellow
 %%Personal communication
 %(M. Adams, personal communication) 
 
-\section{Figure Titles and Legends}
+\bibliographystyle{ajhg}
+\bibliography{spurious}
+
+
+\newpage
+\section*{Figure Titles and Legends}
 
 % brief title describing entire figure without citing specific panels
 % subsequent description of each panel
@@ -266,7 +294,7 @@ K.E.G. was supported by the National Science Foundation Graduate Research Fellow
 %%https://www.cell.com/figureguidelines
 
 
-\section{Tables}
+\section*{Tables}
 
 %Include tables in the submitted manuscript after the figure titles and legends. Tables should not be saved as figures, i.e., as .jpg or .tif files. All tables intended for print should be incorporated into the end of the manuscript Word file. Tables should not be uploaded individually.
 

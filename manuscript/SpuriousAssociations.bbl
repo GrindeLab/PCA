@@ -1,0 +1,46 @@
+\begin{thebibliography}{6}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Need and Goldstein(2009)]{need2009}
+Need, A.~C. and Goldstein, D.~B. (2009{\rm{}}).
+\newblock Next generation disparities in human genomics: concerns and remedies.
+\newblock Trends in Genetics  \emph{25}, 489--494.
+
+\bibitem[Bustamante et~al.(2011)Bustamante, Francisco, and
+  Burchard]{bustamante2011}
+Bustamante, C.~D., Francisco, M., and Burchard, E.~G. (2011{\rm{}}).
+\newblock Genomics for the world.
+\newblock Nature  \emph{475}, 163--165.
+
+\bibitem[Popejoy and Fullerton(2016)]{popejoy2016}
+Popejoy, A.~B. and Fullerton, S.~M. (2016{\rm{}}).
+\newblock Genomics is failing on diversity.
+\newblock Nature News  \emph{538}, 161.
+
+\bibitem[Morales et~al.(2018)Morales, Welter, Bowler, Cerezo, Harris, McMahon,
+  Hall, Junkins, Milano, Hastings, et~al.]{morales2018}
+Morales, J., Welter, D., Bowler, E.~H., Cerezo, M., Harris, L.~W., McMahon,
+  A.~C., Hall, P., Junkins, H.~A., Milano, A., Hastings, E. \emph{et~al.}
+  (2018{\rm{}}).
+\newblock A standardized framework for representation of ancestry data in
+  genomics studies, with application to the {NHGRI-EBI GWAS C}atalog.
+\newblock Genome Biology  \emph{19}, 21.
+
+\bibitem[Sirugo et~al.(2019)Sirugo, Williams, and Tishkoff]{sirugo2019}
+Sirugo, G., Williams, S.~M., and Tishkoff, S.~A. (2019{\rm{}}).
+\newblock The missing diversity in human genetic studies.
+\newblock Cell  \emph{177}, 26--31.
+
+\bibitem[Martin et~al.(2019)Martin, Kanai, Kamatani, Okada, Neale, and
+  Daly]{martin2019}
+Martin, A.~R., Kanai, M., Kamatani, Y., Okada, Y., Neale, B.~M., and Daly,
+  M.~J. (2019{\rm{}}).
+\newblock Clinical use of current polygenic risk scores may exacerbate health
+  disparities.
+\newblock Nature Genetics  \emph{51}, 584--591.
+
+\end{thebibliography}
