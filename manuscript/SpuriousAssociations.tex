@@ -85,70 +85,148 @@ Although this underrepresentation has many causes, some authors have cited the s
 Ancestral heterogeneity is an example of population structure, which is known to pose challenges for genetic association studies:
 In particular, it can lead to spurious associations in GWAS unless appropriately addressd \citep{}.
 
-
-
-\noindent Adjusting for Population Structure
-
-\noindent Choosing PCs
-
-\noindent Outline rest of paper
+\begin{itemize}
+\item define population structure \edit{(use *ancestral heterogeneity* instead??)} and cite papers showing it exists in admixed populations
+\item why we need to adjust 
+\item discuss methods for adjusting for population structure, with particular focus on PCA; mention challenges in choosing $P$ and deciding how to pre-process
+\item outline rest of paper
+\end{itemize}
 
 \section{Material and Methods}
 
 % provide sufficient detail so readers can understand how experiments were performed and procedures can be repeated
 % describe any statistical methods employed in study
 
-\subsection{GWAS Regression Framework}
+\subsection{Regression models for genome-wide association studies}
 
-Introduce notation, describe general set of methods used for running GWAS and adjusting for population structure
+\begin{itemize}
+\item introduce notation (trait, genotype, covariates)
+\item describe regression framework used for running GWAS (linear regression model, but mention that logistic can be used for binary traits)
+\end{itemize}
 
-\subsection{Adjusting for Population Structure}
+\subsection{Inferring and adjusting for ancestral heterogeneity}
 
-Introduce notation, describe methods used for inferring and adjusting for global ancestry proportions, describe methods used for computing and adjusting for principal components
+remind that we're focusing on fixed effect adjustment
 
-\noindent\edit{Do we need a new (more specific) term other than \textit{Population Structure}?}
+\subsubsection{Model-based global ancestry inference}
 
-\subsubsection{Global Ancestry Proportions}
+\begin{itemize}
+\item introduce notation
+\item direct (e.g., ADMIXTURE) vs indirect (e.g., average local ancestry)
+\item adding to regression model
+\end{itemize}
 
-\subsubsection{Principal Component Analysis}
+\subsubsection{Principal component analysis}
 
-\subsection{Simulations}
+\begin{itemize}
+\item define
+\item cite existing programs
+\item cite papers that show top PC(s) capture genetic ancestry
+\item choosing $P$
+\item adding to regression model
+\end{itemize}
 
-Describe simulation study verifying theoretical work: simulating genotypes, simulating traits, evaluation
+\subsubsection{Variant- and sample-level filtering}
 
-\subsection{Application to 1000 Genomes (?) Sequence Data}
+recommended filtering before model-based GAI and/or PCA:
 
-Describe data: sequencing methods, populations used, simulating traits, evaluation
+\begin{itemize}
+\item MAF (Jenn Kirk)
+\item relatives (Matt Conomos)
+\item high missing rates (SNPs and people)
+\item high LD regions (refer to appendix, GitHub page with lists for different builds)
+\item LD pruning
+\end{itemize}
+
+
+
+\subsection{Simulation study using TOPMed whole genome sequence data}
+
+brief intro
+
+
+\subsubsection{TOPMed whole genome sequence data}
+
+\begin{itemize}
+\item describe sequencing methods
+\item which samples we used
+\item dbGap accession
+\item QC
+\item removing relatives
+\item phasing?
+\end{itemize}
+
+
+\subsubsection{Genetic ancestry inference}
+
+\begin{itemize}
+\item ADMIXTURE
+\item PCA
+\item what filtering was performed, and how many variants left after filtering
+\end{itemize}
+
+
+\subsubsection{Evaluating population structure adjustment approaches}
+
+\begin{itemize}
+\item simulating traits (effect sizes, choice of causal SNPs)
+\item running GWAS
+\item defining spurious associations
+\end{itemize}
 
 
 
 \section{Results}
 
-\subsection{Need to Adjust}
+\subsection{Ancestral heterogeneity in TOPMed African American samples}
 
-Simulation and mathematical results
+\begin{itemize}
+\item quickly summarize ancestral heterogeneity (barplots of ADMIXTURE proportions)
+\end{itemize}
 
-\subsection{Inferring Population Structure}
 
-Highly correlated with each other
+\subsection{Confirming the importance of adjusting for population structure}
 
-Some PCs are highly correlated with genotypes in small regions
+\begin{itemize}
+\item show an example manhattan plot with no adjustment
+\item compare average number of spurious associations
+\item tie in theoretical results
+\end{itemize}
 
-\noindent\edit{This could also go after we show spurious assoc results: here's the problem $>$ here's where we think the problem is coming from}
+\subsection{Comparing different approaches for adjusting for population structure}
 
-\subsection{FWER}
+Part 1: how does FWER compare?
 
-Do they have similar FWER? (Manhattan plots for one or two traits, overall summary of rejection rates)
+\begin{itemize}
+\item manhattan plots for one or two simulated traits
+\item overall summary of rejection rates
+\item is it appropriate to use same significance threshold for all?
+\end{itemize}
 
-\noindent\edit{Is it appropriate to use the same significance threshold for both?}
+\noindent Part 2: how does rate of spurious associations compare? (and alpha-adjusted spurious assoc?)
 
-\subsection{Spurious Associations}
+\begin{itemize}
+\item manhattan plots for one or two traits
+\item overall summary of rejection rates
+\end{itemize}
 
-Simulation (Manhattan plots for one or two traits, overall summary of rejection rates) and mathematical results demonstrating spurious associations when adjusting for certain types of PCs
+\noindent Part 3: why is this happening?
 
-\subsection{Power}
+\begin{itemize}
+\item are admixture proportions and PCs capturing similar information?
+	\begin{itemize}
+	\item correlation between PCs and admixture proportions (PC1 highly correlated with admix prop)
+	\item correlation between PCs and genotypes (without pruning, later PCs highly correlated with genotypes in small regions)
+	\end{itemize}
+\item mathematical results
+\end{itemize}
 
-Do they have similar power?
+
+%\subsection{Power}
+%
+% skip this for now
+%
+% Do they have similar power?
 
 
 \section{Discussion}
@@ -166,6 +244,7 @@ Global ancestry = confounder
 \begin{itemize}
 \item Summarize conditions under which PCs can be problematic
 \item Relate to current understanding in literature
+\item Suggested diagnostics
 \end{itemize}
 
 % GWAS vs admixture mapping
@@ -218,6 +297,8 @@ K.E.G. was supported by the National Science Foundation Graduate Research Fellow
 
 %list and provide URL for any web-based resources (e.g., datbase, online computer programs, etc.)
 %For all computer programs, please provide a URL for the website at which the computer program described in the manuscript will be made publicly available.
+
+GitHub repo: lists of regions to exclude, code for LD pruning, excluding, and plotting loadings
 
 
 \section*{Data and Code Availability}
