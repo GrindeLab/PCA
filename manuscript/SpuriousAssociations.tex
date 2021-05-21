@@ -15,6 +15,12 @@
 % text color
 \usepackage{xcolor}
 
+% bold symbols
+\usepackage{bm}
+
+% matrices
+\usepackage{amsmath}
+
 % bibliography
 \usepackage[super]{natbib} % superscripts
 \renewcommand{\refname}{} % empty title
@@ -52,7 +58,7 @@ Sharon R. Browning$^{3}$
 
 \begin{enumerate}
 \item Department of Mathematics, Statistics, and Computer Science, Macalester College, Saint Paul, MN, 55105, USA
-\item Department of Medicine, Division of Medical Genetics, University of Washington, Seattle, WA, 98195, USA
+\item Division of Medical Genetics, Department of Medicine, University of Washington, Seattle, WA, 98195, USA
 \item Department of Biostatistics, University of Washington, Seattle, WA, 98195, USA
 \item[*] kgrinde@macalester.edu
 \end{enumerate}
@@ -67,9 +73,9 @@ Sharon R. Browning$^{3}$
 % brief background of question, description of results, brief summary of significance of findings
 % do not cite any references
 
-%% (from ASHG submission)
-%% currently 271 words
-Principal component analysis (PCA) is widely used to control for population structure in genome-wide association studies (GWAS). Although it has been shown that the top principal components (PCs) typically reflect population structure, deciding exactly how many PCs must be included as covariates in GWAS regression models can be challenging. Often researchers will err on the side of including more PCs than may be actually necessary in order to ensure that population structure is fully captured. However, we show that adjusting for extraneous PCs can induce spurious associations as a result of the phenomenon known as collider bias. Through both analytic results and application to whole genome sequence data for 1,888 and 2,676 unrelated African American individuals from the Jackson Heart Study (JHS) and Chronic Obstructive Pulmonary Disease Genetic Epidemiology Study (COPDGene), respectively, we show that spurious associations can arise when regression models adjust for PCs that capture local genomic features—such as regions of the genome with atypical linkage disequilibrium (LD) patterns—rather than genome-wide ancestry. In JHS and COPDGene, we show that careful LD pruning prior to running PCA, using stricter thresholds and wider windows than is often suggested in the literature, can resolve these issues, whereas excluding lists of high LD regions identified in previous studies does not. We also show that issues of collider bias can be avoided entirely in these data, and the rate of spurious associations appropriately controlled, when we simply adjust for either the first PC or a model-based estimate of admixture proportions. Our work demonstrates that great care must be taken when using principal components to control for population structure in genome-wide association studies. 
+%% (from IGES submission)
+%% currently 249 words
+Principal component analysis (PCA) is widely used to control for population structure in genome-wide association studies (GWAS). It has been shown that the top principal components (PCs) typically reflect population structure, but deciding exactly how many PCs to include in GWAS regression models can be challenging. Often researchers will err on the side of including more PCs than may be actually necessary in order to ensure that population structure is fully captured. However, through both analytic results and application to TOPMed whole genome sequence data for 1,888 and 2,676 unrelated African American individuals from the Jackson Heart Study (JHS) and Chronic Obstructive Pulmonary Disease Genetic Epidemiology Study (COPDGene), respectively, we show that adjusting for extraneous PCs can actually induce spurious associations. In particular, spurious associations arise when PCs capture local genomic features, such as regions of the genome with atypical linkage disequilibrium (LD) patterns, rather than genome-wide ancestry. In JHS and COPDGene, we show that careful LD pruning prior to running PCA, using stricter thresholds and wider windows than is often suggested in the literature, can resolve these issues, whereas excluding lists of high LD regions identified in previous studies does not. We also show that the rate of spurious associations can be appropriately controlled in these data when we simply adjust for either the first PC or a model-based estimate of admixture proportions. Our work demonstrates that great care must be taken when using principal components to control for population structure in genome-wide association studies in admixed populations.
 
 
 \newpage
@@ -80,17 +86,46 @@ Principal component analysis (PCA) is widely used to control for population stru
 % present background info necessary to provide biological context for results
 
 %% GWAS in Admixed Populations}
-Historically, admixed populations such as African Americans and Hispanics/Latinos have been vastly underrepresented in genome-wide association studies (GWAS) \cite{need2009, bustamante2011, popejoy2016, morales2018, sirugo2019, martin2019}. 
+Admixed populations such as African Americans and Hispanics/Latinos have historically been vastly underrepresented in genome-wide association studies (GWAS) \cite{need2009, bustamante2011, popejoy2016, morales2018, sirugo2019, martin2019}. 
 Although this underrepresentation has many causes, some authors have cited the statistical challenges posed by ancestrally heterogeneous populations as a possible contributing factor \citep{need2009, bustamante2011, popejoy2016}. 
-Ancestral heterogeneity is an example of population structure, which is known to pose challenges for genetic association studies:
-In particular, it can lead to spurious associations in GWAS unless appropriately addressd \citep{}.
+\edit{define global ancestry}
+% need to adjust
+Considerable variability of inferred global ancestry, or \textit{ancestral heterogeneity}, has been observed in many studies of African American and Hispanic/Latino populations \citep{parra1998, tishkoff2009, bryc2010aa, bryc2010hl, conomos2016}.
+It has been widely documented that heterogeneous global ancestry, along with other types of population structure, can lead to spurious associations in genome-wide association studies \citep{GenomicControl, eigenstrat, marchini2004, price2010}. 
+These spurious associations arise due to the fact that global ancestry can confound the association between genotypes and a phenotype of interest, particularly when genetic variants are more frequent in some ancestral populations than in others  and global ancestry has an effect on the trait through, for example, environmental differences across ancestral groups. 
 
-\begin{itemize}
-\item define population structure \edit{(use *ancestral heterogeneity* instead??)} and cite papers showing it exists in admixed populations
-\item why we need to adjust 
-\item discuss methods for adjusting for population structure, with particular focus on PCA; mention challenges in choosing $P$ and deciding how to pre-process
-\item outline rest of paper
-\end{itemize}
+% summary of methods for adjusting
+A number of methods for detecting and controlling for ancestral heterogeneity in genetic association studies have been proposed. 
+Early approaches included restricting analyses to subsets of ancestrally homogeneous individuals \citep{lander1994}, performing a genome-wide correction for test statistic inflation due to ancestral heterogeneity via \textit{genomic control} \citep{GenomicControl}, and using family-based designs \citep{tdt}. 
+More recently, approaches based on mixed models have been proposed \citep{yu2006, kang2010, yang2014}. 
+These mixed model approaches use random effects to control for both close (e.g., due to family-based sampling) and distant (e.g., due to shared ancestry) relatedness across individuals.
+However, when studies do not include closely related individuals, a simpler approach is to include inferred global ancestry as a fixed effect in marginal regression models \citep{eigenstrat, pritchard2000}. 
+This fixed effects adjustment for global ancestry is currently used extensively throughout the literature, with global ancestry inferred using either model-based ancestry inference methods (e.g., \texttt{ADMIXTURE} \citep{admixture}) or unsupervised dimension reduction techniques (e.g., principal component analysis (PCA) \citep{eigenstrat}).
+
+% summarize model-based approaches
+Model-based approaches for global ancestry inference model the probability of observed genotypes given unobserved ancestry and allele frequencies in each ancestral population \citep{structure, tang2005, admixture, finestructure}. 
+Most often, these approaches are used to estimate \textit{admixture proportions} $\hat{\boldsymbol\pi}_i = \begin{pmatrix} \hat\pi_{i1} & \dots & \pi_{iK}  \end{pmatrix}^\top$ for individuals $i = 1, \dots, n$, where $\hat\pi_{ik}$ is the estimated proportion of genetic material inherited by individual $i$ from ancestral population $k$. 
+Once estimated, $\hat{\boldsymbol\pi}$ can then easily be included as a covariate in GWAS models to adjust for ancestral heterogeneity.
+One of the challenges of using these model-based approaches to infer global ancestry is that the number of ancestral populations, $K$, usually needs to be pre-specified. 
+In addition, some of these model-based approaches are \textit{supervised}, requiring reference panel data from each ancestral population of interest to estimate allele frequencies.
+Furthermore, ancestry inference is typically conducted at a continental level (e.g., African versus European, rather than South European versus North European), so finer levels of population structure could be missed; recent efforts have considered global ancestry inference on a sub-continental scale \citep{finestructure, durand2014}.
+
+% summarize PCA, mention challenges in choosing $P$ and deciding how to pre-process
+Principal component analysis (PCA), on the other hand, is a widely-implemented unsupervised approach for inferring global ancestry that does not require reference panel data or pre-specification of the number of ancestral populations of interest and is capable of capturing sub-continental structure \citep{novembre2008}. 
+To infer global ancestry using PCA, we preform an eigenvalue decomposition of the genetic relationship matrix (GRM) $\hat{\boldsymbol\Psi} = \frac{1}{m} \mathbf{S} \mathbf{S}^\top$, where $\mathbf{S}$ is the $n \times m$ matrix of standardized gentoypes for $n$ individuals at $m$ single nucleotide variants (SNVs).
+The top eigenvectors, or \textit{principal components} (PCs) of $\hat{\boldsymbol\Psi}$ tend to reflect global ancestry \citep{patterson2006, mcvean2009}, so adjusting for PCs can be an effective approach for controlling for ancestral heterogeneity in genetic association studies \citep{eigenstrat}. 
+In practice, however, determining the number of PCs needed to capture global ancestry can be difficult. 
+Furthermore, it has been shown that PCs can sometimes capture features other than global ancestry, such as relatedness across samples \citep{patterson2006, conomos2015}, data quality issues \citep{eigenstrat, weale2010}, and/or small regions of the genome with unusual patterns of linkage disequilibrium (LD) \citep{tian2008, price2008}. 
+To address this last issue, some authors have suggested running PCA on a reduced subset of SNVs, after first removing regions of the genome that are known to have high or long-range LD \citep{price2008} and/or performing LD pruning \citep{anderson2010, abdellaoui2013}. 
+However, these suggestions are not universally implemented, and the downstream implications of adjusting for PCs that capture features other than global ancestry are not fully understood.
+
+% outline rest of paper
+In this paper, we investigate the impact of ancestral heterogeneity on genome-wide association studies in admixed populations.
+Through both simulation studies and analytic results, we provide new insight into when genetic association studies must adjust for global ancestry.
+In addition, we compare two approaches for adjusting for global ancestry, using model-based estimates of admixture proportions or principal components, and show that using PCs can actually induce spurious associations in GWAS.
+To conclude, we provide suggestions regarding best practice for appropriately controlling for ancestral heterogeneity in genetic association studies in admixed populations.
+
+
 
 \section{Material and Methods}
 
@@ -142,7 +177,10 @@ recommended filtering before model-based GAI and/or PCA:
 
 \subsection{Simulation study using TOPMed whole genome sequence data}
 
-brief intro
+\begin{itemize}
+\item \edit{Need to decide if we're using TOPMed or WHI data}
+\item brief intro
+\end{itemize}
 
 
 \subsubsection{TOPMed whole genome sequence data}
