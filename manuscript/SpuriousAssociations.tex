@@ -28,6 +28,7 @@
 
 % highlight text that needs editing in red
 \newcommand{\edit}[1]{{\color{red}{#1}}}
+\newcommand{\add}[1]{{\color{red}{[... #1 ...]}}}
 
 \begin{document}
 
@@ -88,7 +89,7 @@ Principal component analysis (PCA) is widely used to control for population stru
 %% GWAS in Admixed Populations}
 Admixed populations such as African Americans and Hispanics/Latinos have historically been vastly underrepresented in genome-wide association studies (GWAS) \cite{need2009, bustamante2011, popejoy2016, morales2018, sirugo2019, martin2019}. 
 Although this underrepresentation has many causes, some authors have cited the statistical challenges posed by ancestrally heterogeneous populations as a possible contributing factor \citep{need2009, bustamante2011, popejoy2016}. 
-\edit{define global ancestry}
+\add{define global ancestry}
 % need to adjust
 Considerable variability of inferred global ancestry, or \textit{ancestral heterogeneity}, has been observed in many studies of African American and Hispanic/Latino populations \citep{parra1998, tishkoff2009, bryc2010aa, bryc2010hl, conomos2016}.
 It has been widely documented that heterogeneous global ancestry, along with other types of population structure, can lead to spurious associations in genome-wide association studies \citep{GenomicControl, eigenstrat, marchini2004, price2010}. 
@@ -191,7 +192,6 @@ recommended filtering before model-based GAI and/or PCA:
 \item dbGap accession
 \item QC
 \item removing relatives
-\item phasing?
 \end{itemize}
 
 
@@ -282,6 +282,7 @@ Global ancestry = confounder
 \begin{itemize}
 \item Summarize conditions under which PCs can be problematic
 \item Relate to current understanding in literature
+\item Relate to concept of collider bias
 \item Suggested diagnostics
 \end{itemize}
 
@@ -300,7 +301,17 @@ Global ancestry = confounder
 
 \subsection{Regions Removed Prior to PCA}
 
+\begin{itemize}
+\item a list of all "high-LD" regions removed prior to running PCA
+\end{itemize}
+
 \subsection{Mathematical Derivations}
+
+\begin{itemize}
+\item theoretical results
+\item proofs
+\item simulations validating theory
+\end{itemize}
 
 
 \newpage
@@ -309,7 +320,7 @@ Global ancestry = confounder
 % briefly list what types of data are included in supplemental data (a separate PDF document)
 % e.g., "Supplemental Data include four figures and two tables"
 
-Supplemental Data include \edit{??} figures and \edit{??} tables.
+Supplemental Data include \add{??} figures and \add{??} tables.
 
 
 
@@ -336,7 +347,7 @@ K.E.G. was supported by the National Science Foundation Graduate Research Fellow
 %list and provide URL for any web-based resources (e.g., datbase, online computer programs, etc.)
 %For all computer programs, please provide a URL for the website at which the computer program described in the manuscript will be made publicly available.
 
-GitHub repo: lists of regions to exclude, code for LD pruning, excluding, and plotting loadings
+\edit{GitHub Repository: lists of regions to exclude, code for LD pruning, excluding, and plotting loadings}
 
 
 \section*{Data and Code Availability}
