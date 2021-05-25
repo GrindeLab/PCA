@@ -113,7 +113,7 @@ Furthermore, ancestry inference is typically conducted at a continental level (e
 
 % summarize PCA, mention challenges in choosing $P$ and deciding how to pre-process
 Principal component analysis (PCA), on the other hand, is a widely-implemented unsupervised approach for inferring global ancestry that does not require reference panel data or pre-specification of the number of ancestral populations of interest and is capable of capturing sub-continental structure \citep{novembre2008}. 
-To infer global ancestry using PCA, we preform an eigenvalue decomposition of the genetic relationship matrix (GRM) $\hat{\boldsymbol\Psi} = \frac{1}{m} \mathbf{S} \mathbf{S}^\top$, where $\mathbf{S}$ is the $n \times m$ matrix of standardized gentoypes for $n$ individuals at $m$ single nucleotide variants (SNVs).
+To infer global ancestry using PCA, we preform an eigenvalue decomposition of the genetic relationship matrix (GRM) $\hat{\boldsymbol\Psi} = \frac{1}{m} \mathbf{X} \mathbf{X}^\top$, where $\mathbf{X}$ is the $n \times m$ matrix of standardized gentoypes for $n$ individuals at $m$ single nucleotide variants (SNVs).
 The top eigenvectors, or \textit{principal components} (PCs) of $\hat{\boldsymbol\Psi}$ tend to reflect global ancestry \citep{patterson2006, mcvean2009}, so adjusting for PCs can be an effective approach for controlling for ancestral heterogeneity in genetic association studies \citep{eigenstrat}. 
 In practice, however, determining the number of PCs needed to capture global ancestry can be difficult. 
 Furthermore, it has been shown that PCs can sometimes capture features other than global ancestry, such as relatedness across samples \citep{patterson2006, conomos2015}, data quality issues \citep{eigenstrat, weale2010}, and/or small regions of the genome with unusual patterns of linkage disequilibrium (LD) \citep{tian2008, price2008}. 
@@ -135,36 +135,38 @@ To conclude, we provide suggestions regarding best practice for appropriately co
 
 \subsection{Regression models for genome-wide association studies}
 
-\begin{itemize}
-\item introduce notation (trait, genotype, covariates)
-\item describe regression framework used for running GWAS (linear regression model, but mention that logistic can be used for binary traits)
-\end{itemize}
+To perform genome-wide association studies in samples of unrelated admixed individuals, we use marginal regression models, regressing the trait of interest on the genotype at each position across the genome. 
+At a given position $j$, we quantify genotype $g_{ij}$ as the number of copies (0, 1, or 2) of some pre-specified allele (e.g., the minor allele) carried by individual $i$ at that position. 
+Considering a quantitative trait $y_i$, we fit one linear regression model at each position ($j = 1, \dots, m$): $$E[y_i \mid g_{ij}, \mathbf{z}_i] = \beta_0 + \beta_j g_{ij} + \boldsymbol{\beta}_z \mathbf{z}_i,$$ where $\mathbf{z}_i$ is a vector of additional covariates (e.g., potential confounding variables) that we want to include in the model.
+\add{mention that logistic can be used for binary traits?}
+We test for an association between the trait and genotype at each position by testing the null hypothesis $H_0: \beta_j = 0$. 
+
 
 \subsection{Inferring and adjusting for ancestral heterogeneity}
 
-remind that we're focusing on fixed effect adjustment
+To adjust for ancestral heterogeneity in genome-wide association studies in admixed populations, we include inferred global ancestry as a potential confounder in our regression models. We infer global ancestry using one of two techniques: model-based global ancestry inference of principal component analysis.
+
+\edit{Note: some of the following is a bit redundant with the Introduction section; will likely want to trim here or in Intro}
 
 \subsubsection{Model-based global ancestry inference}
 
-\begin{itemize}
-\item introduce notation
-\item direct (e.g., ADMIXTURE) vs indirect (e.g., average local ancestry)
-\item adding to regression model
-\end{itemize}
+Various model-based approaches exist for estimating global ancestry proportions, also known as \textit{admixture proportions}, in admixed populations.
+We represent global ancestry proportions via the vector $\boldsymbol{\pi}_i = \begin{pmatrix} \pi_{i1} & \dots & \pi_{iK} \end{pmatrix}^\top$, where $\pi_{ik}$ denotes the genome-wide proportion of genetic material inherited by individual $i$ from ancestral population $k$ and $\sum_{k=1}^K \pi_{ik} = 1$. 
+Note that the total number of ancestral populations, $K$, typically must be pre-specified, and the definition of global ancestry is typically restricted to the autosomes.
+Admixture proportions can be estimated directly using a program such as \texttt{ADMIXTURE} \citep{admixture}, or by calculating the genome-wide average local ancestry (i.e., $\hat\pi_{ik} = \frac{1}{2m} \sum_{j=1}^m a_{ijk}$), where local ancestry $a_{ijk}$---the number of alleles (0, 1, or 2) inherited by individual $i$ from ancestral population $k$ at position $j$---was first inferred using a program such as \texttt{RFMix} \citep{rfmix}.
+To adjust for ancestral heterogeneity, we include $K-1$ of these estimated admixture proportions as covariates in our GWAS regression models: $$E[y_i \mid g_{ij}, \hat{\boldsymbol\pi}_i] = \beta_0 + \beta_j g_{ij} + \beta_{\pi, 1} \hat\pi_{i,1} + \dots + \beta_{\pi, K-1} \hat\pi_{i, K-1}.$$
 
 \subsubsection{Principal component analysis}
 
-\begin{itemize}
-\item define
-\item cite existing programs
-\item cite papers that show top PC(s) capture genetic ancestry
-\item choosing $P$
-\item adding to regression model
-\end{itemize}
+Principal component analysis (PCA) is an unsupervised dimension-reduction technique that is widely used for inferring population structure in genetic studies, with a number of software programs available for running PCA on genotype or sequence data (e.g., \texttt{EIGENSTRAT} \citep{eigenstrat}, \texttt{SNPRelate} \citep{snprelate}, \texttt{PC-Air} \citep{conomos2015}).
+To run PCA, we perform a singular value decomposition of the matrix of standardized genotypes (i.e., $\mathbf{X} = \mathbf{UDV}^\top$) or, equivalently, an eigenvalue decomposition of the genetic relationship matrix (i.e., $\mathbf{XX}^\top = \mathbf{UD}^2\mathbf{U}^\top$). 
+The top principal components ($\mathbf{u}_1, \mathbf{u}_2, \dots$) typically capture global ancestry \citep{patterson2006, mcvean2009}. 
+To adjust for ancestral heterogeneity, we choose some number of principal components, $P$, needed to capture global ancestry (typically $1 \le P << n$) and include those PCs as covariates in our GWAS regression models: $$E[y_i \mid g_{ij}, \hat{\boldsymbol\pi}_i] = \beta_0 + \beta_j g_{ij} + \beta_{u 1} u_{i1} + \dots + \beta_{u P} u_{i P}.$$
+A number of techniques have been proposed for selecting the number of PCs, $P$, including formal significance tests based on Tracy-Widom theory \citep{patterson2006, eigenstrat}, examining the proportion of variance explained by each PC \citep{reed2015}, comparing PCs to self-reported ancestry \citep{conomos2016}, and/or keeping PCs that are significantly associated with the trait \citep{reiner2012, daya2019}. 
 
 \subsubsection{Variant- and sample-level filtering}
 
-recommended filtering before model-based GAI and/or PCA:
+Depending on the chosen technique and software, it is often recommended that filtering be performed at the variant and/or sample level prior to inferring global ancestry.
 
 \begin{itemize}
 \item MAF (Jenn Kirk)
@@ -174,6 +176,7 @@ recommended filtering before model-based GAI and/or PCA:
 \item LD pruning
 \end{itemize}
 
+\add{Comment on both PCA and model-based approaches (e.g., ADMIXTURE, RFMix, other ancestry inference software)}
 
 
 \subsection{Simulation study using TOPMed whole genome sequence data}
