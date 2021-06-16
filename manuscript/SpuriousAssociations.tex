@@ -178,6 +178,11 @@ Depending on the chosen technique and software, it is often recommended that fil
 
 \add{Comment on both PCA and model-based approaches (e.g., ADMIXTURE, RFMix, other ancestry inference software)}
 
+JHS (dbgap accession phs000964) filters:
+
+\begin{itemize}
+\item TBD
+\end{itemize}
 
 \subsection{Simulation study using TOPMed whole genome sequence data}
 
@@ -198,20 +203,81 @@ Depending on the chosen technique and software, it is often recommended that fil
 \end{itemize}
 
 
+QC for JHS: 
+
+\begin{itemize}
+\item filtering
+	\begin{itemize}
+	\item bi-allelic SNPs
+	\item minor allele count at least 1
+	\item pass variant filters (in VCFs that were downloaded from dbgap): overlaps with SNP, overlaps with indel, overlaps with VNTR, failed SVM fliter, high (3/5\% or more) mendelian or duplicate genotype discordance, excess heterozygosity with HWE p-value < 1e-6
+	\end{itemize}
+\item merge the two subsets (cg1 and cg3)
+\item convert from VCF to GDS
+\item remove close relatives
+	\begin{itemize}
+	\item run king (LD r threshold: 0.32, LD window size: 10, MAF threshold: 0.01, exclude PCA corr: TRUE, build: hg19)
+	\item run PC-AiR 
+	\item run PCRelate 
+	\item run PC-AiR again
+	\item run PCRelate again
+	\end{itemize}
+\item find African Americans
+	\begin{itemize}
+	\item run stricter LD pruning (MAF  = 0.01, window size = 0.5, rsq = 0.01, regions = TRUE, build 37)
+		\begin{itemize}
+		\item List of regions stored here: \verb"/projects/browning/brwnlab/kelsey/spurious_assoc/highLD_regions/"
+		\end{itemize}
+	\item convert GDS to BED
+	\item run ADMIXTURE (K = 2 and K = 3)
+	\item plot proportions
+	\item exclude 40 people inferred to be 100\% European; left with 1888
+	\end{itemize}
+\end{itemize}
+
 \subsubsection{Genetic ancestry inference}
 
 \begin{itemize}
 \item ADMIXTURE
-\item PCA
+	\begin{itemize}
+	\item JHS: ran with both K = 2 and K = 3
+	\end{itemize}
+\item PCA using SNPRelate
 \item what filtering was performed, and how many variants left after filtering
+	\begin{itemize}
+	\item JHS, ADMIXTURE: see above
+	\item JHS, PCA: exclude regions (TRUE/FALSE), r-squared (1, 0.1, 0.2, 0.05), window size (0, 0.5, 10), and MAF (0, 0.01) 
+		\begin{itemize}
+		\item no filtering: FALSE-1-0-0
+		\item MAF filtering: FALSE-1-0-0.01
+		\item exclude but no prune: TRUE-1-0-0.01
+		\item prune but no exclude: FALSE-0.1-0.5-0.01 and FALSE-0.1-10-0.01 and FALSE-0.2-0.5-0.01 and FALSE-0.05-0.5-0.01
+		\item prune and exclude: TRUE-0.1-0.5-0.01 and TRUE-0.1-10-0.01 and TRUE-0.2-0.5-0.01 and TRUE-0.05-0.5-0.01
+		\end{itemize}
+	\end{itemize}
 \end{itemize}
 
 
 \subsubsection{Evaluating population structure adjustment approaches}
 
 \begin{itemize}
+\item plot PCs vs global ancestry proportions
+\item plot SNP loadings 
+\end{itemize}
+
+
+\begin{itemize}
 \item simulating traits (effect sizes, choice of causal SNPs)
+	\begin{itemize}
+	\item find loading peaks from "naive" approach
+	\item simulate trait that is beta * x + rnorm(0, 1), where beta = 1 or 2 and x = genotype at one of the peaks
+	\end{itemize}
 \item running GWAS
+	\begin{itemize}
+	\item for each of 188*2 simulated phenotypes
+	\item for each set of PCs
+	\item including 1, 4, or 10 PCs
+	\end{itemize}
 \item defining spurious associations
 \end{itemize}
 
