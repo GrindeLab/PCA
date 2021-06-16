@@ -104,7 +104,7 @@ This fixed effects adjustment for global ancestry is currently used extensively 
 
 % summarize model-based approaches
 Model-based approaches for global ancestry inference model the probability of observed genotypes given unobserved ancestry and allele frequencies in each ancestral population \citep{structure, tang2005, admixture, finestructure}. 
-Most often, these approaches are used to estimate global ancestry proportions, also known as \textit{admixture proportions}: the estimated proportion of genetic material inherited by each individual from each ancestral population. 
+Most often, these approaches are used to estimate global ancestry proportions, also known as \textit{admixture proportions}, the estimated proportion of genetic material inherited by each individual from each ancestral population. 
 Once estimated, these global ancestry proportions can then easily be included as covariates in GWAS models to adjust for ancestral heterogeneity.
 One of the challenges of using these model-based approaches to infer global ancestry is that the total number of ancestral populations usually needs to be pre-specified. 
 In addition, many of these model-based approaches are \textit{supervised}, requiring reference panel data from each ancestral population of interest to estimate allele frequencies.
@@ -138,14 +138,14 @@ To perform genome-wide association studies in samples of unrelated admixed indiv
 At a given position $j$, we quantify genotype $g_{ij}$ as the number of copies (0, 1, or 2) of some pre-specified allele (e.g., the minor allele) carried by individual $i$ at that position. 
 Considering a quantitative trait $y_i$, we fit one linear regression model at each position ($j = 1, \dots, m$): $$E[y_i \mid g_{ij}, \mathbf{z}_i] = \beta_0 + \beta_j g_{ij} + \boldsymbol{\beta}_z \mathbf{z}_i,$$ where $\mathbf{z}_i$ is a vector of additional covariates (e.g., potential confounding variables) that we want to include in the model.
 This linear regression model can be replaced with a logistic regression model in the case of a binary trait (e.g., disease status).
-In either case, we test for an association between the trait and genotype at each position by testing the null hypothesis $H_0: \beta_j = 0$. 
+In either case, we test for an association between the trait and genotype by testing the null hypothesis $H_0: \beta_j = 0$ at each position $j = 1, \dots, m$.
 
 
 \subsection{Inferring and adjusting for ancestral heterogeneity}
 
 To adjust for ancestral heterogeneity in genome-wide association studies in admixed populations, we include inferred global ancestry as a potential confounder in our regression models. We infer global ancestry using one of two techniques: model-based global ancestry inference of principal component analysis.
 
-\edit{Note: some of the following may be redundant with the Introduction section; consider trimming?}
+%\edit{Note: some of the following may be redundant with the Introduction section; consider trimming?}
 
 \subsubsection{Model-based global ancestry inference}
 
@@ -178,11 +178,6 @@ Depending on the chosen technique and software, it is often recommended that fil
 
 \add{Comment on both PCA and model-based approaches (e.g., ADMIXTURE, RFMix, other ancestry inference software)}
 
-JHS (dbgap accession phs000964) filters:
-
-\begin{itemize}
-\item TBD
-\end{itemize}
 
 \subsection{Simulation study using TOPMed whole genome sequence data}
 
@@ -203,14 +198,14 @@ JHS (dbgap accession phs000964) filters:
 \end{itemize}
 
 
-QC for JHS: 
+\textbf{QC for JHS} (dbgap accession phs000964):
 
 \begin{itemize}
 \item filtering
 	\begin{itemize}
 	\item bi-allelic SNPs
 	\item minor allele count at least 1
-	\item pass variant filters (in VCFs that were downloaded from dbgap): overlaps with SNP, overlaps with indel, overlaps with VNTR, failed SVM fliter, high (3/5\% or more) mendelian or duplicate genotype discordance, excess heterozygosity with HWE p-value < 1e-6
+	\item pass variant filters (in VCFs that were downloaded from dbgap): overlaps with SNP, overlaps with indel, overlaps with VNTR, failed SVM filter, high (3/5\% or more) mendelian or duplicate genotype discordance, excess heterozygosity with HWE p-value < 1e-6
 	\end{itemize}
 \item merge the two subsets (cg1 and cg3)
 \item convert from VCF to GDS
@@ -235,12 +230,62 @@ QC for JHS:
 	\end{itemize}
 \end{itemize}
 
+\textbf{QC for COPDGene} (phs000951):
+
+\begin{itemize}
+\item filtering
+	\begin{itemize}
+	\item bi-allelic SNPs
+	\item minor allele count at least 1
+	\item pass filtering (from GDS annotation info, I inferred this to include: variant located in centromeric region, variant failed SVM filter, mendelian or duplicate genotype discordance is high (3/5\% or more), excess heterozygosity in chrX in males, excess heterozygosity with HWE p-value < 1e-6)
+	\end{itemize}
+\item convert from VCF to GDS
+\item remove close relatives
+	\begin{itemize}
+	\item run king (LD r threshod = 0.32, LD window size = 10, MAF threshodl = 0.01, exclude PCA corr = TRUE, build = hg38); regions =         see table below
+	\item run PCAiR
+	\item run PCRelate
+	\item run PCAiR again
+	\end{itemize}
+\item find African Americans
+	\begin{itemize}
+	\item run stricter LD pruning (exclude PCA corr regions = TRUE, build = hg38, LD R threshold = 0.1, LD window size = 10, MAF threshold = 0.01); regions = \verb"/projects/browning/brwnlab/kelsey/spurious_assoc/highLD_regions/"
+	\item convert from GDS to PLINK
+	\item run ADMIXTURE with K = 2 and K = 3
+	\item plot proportions and use cut-off of 30\% to identify (and then remove) Europeans : Parker et al. 2014 "Admixture mapping identifies a quantitative trait locus associated with..." \verb"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4190160/" (reduced from 8406 to 2676)
+	\end{itemize}
+\end{itemize}
+
+\begin{table}
+\begin{tabular}{ccccc}
+name & chrom & start.base  & end.base  & comment \\
+2q21    &  2  &  129883530 & 140283530       &  LCT \\
+HLA      &    6 &   24092021  & 38892022 & includes MHC \\
+8p23  &        8   &  6612592 &  13455629 &   inversion \\
+17q21.31 &    17  &  40546474 & 44644684   &  inversion \\
+\end{tabular}
+\caption{TOPMed hg19 high corr regions}
+\end{table}
+
+\begin{table}
+\begin{tabular}{ccccc}
+name & chrom & start.base  & end.base  & comment \\
+2q21    &  2  &  129125957 & 139525961       &  LCT \\
+HLA      &    6 &   24091793  & 38924246 & includes MHC \\
+8p23  &        8   &  6755071 &  13598120 &   inversion \\
+17q21.31 &    17  &  42394456 & 46567318   &  inversion \\
+\end{tabular}
+\caption{TOPMed hg38 high corr regions}
+\end{table}
+
 \subsubsection{Genetic ancestry inference}
 
 \begin{itemize}
 \item ADMIXTURE
 	\begin{itemize}
 	\item JHS: ran with both K = 2 and K = 3
+	\item COPDGene: ran with both K = 2 and K = 3
+	\item unsupervised for both
 	\end{itemize}
 \item PCA using SNPRelate
 \item what filtering was performed, and how many variants left after filtering
@@ -254,6 +299,16 @@ QC for JHS:
 		\item prune but no exclude: FALSE-0.1-0.5-0.01 and FALSE-0.1-10-0.01 and FALSE-0.2-0.5-0.01 and FALSE-0.05-0.5-0.01
 		\item prune and exclude: TRUE-0.1-0.5-0.01 and TRUE-0.1-10-0.01 and TRUE-0.2-0.5-0.01 and TRUE-0.05-0.5-0.01
 		\end{itemize}
+	\item COPD, ADMIXTURE: see above
+	\item COPD, PCA: exclude regions (TRUE/FALSE), r-squared (1, 0.1, 0.2, 0.05), window size (0, 0.5, 10), MAF (0, 0.01)
+		\begin{itemize}
+		\item no filtering: FALSE-1-0-0
+		\item MAF filtering: FALSE-1-0-0.01
+		\item exclude but no prune: TRUE-1-0-0.01
+		\item prune but no exclude: FALSE-0.1-0.5-0.01, FALSE-0.1-10-0.01, FALSE-0.2-0.5-0.01, FALSE-0.05-0.5-0.01
+		\item prune and exclude: TRUE-0.1-0.5-0.01, TRUE-0.1-10-0.01, TRUE-0.05-0.5-0.01, TRUE-0.2-0.5-0.01
+		\end{itemize}	
+	\item COPD, also ran SNPRelate on Europeans with different levels of filtering (FALSE-0.1-0.5-0.01, FALSE-0.2-0.5-0.01, FALSE-1-0-0.01, FALSE-1-0-0, TRUE-0.1-0.5-0.01, TRUE-0.2-0.5-0.01, TRUE-1-0-0.01)
 	\end{itemize}
 \end{itemize}
 
