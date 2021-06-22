@@ -88,7 +88,7 @@ Principal component analysis (PCA) is widely used to control for population stru
 
 %% GWAS in Admixed Populations}
 Admixed populations such as African Americans and Hispanics/Latinos have historically been vastly underrepresented in genome-wide association studies (GWAS) \cite{need2009, bustamante2011, popejoy2016, morales2018, sirugo2019, martin2019}. 
-Although this underrepresentation has many causes, some authors have cited the statistical challenges posed by ancestrally heterogeneous populations as a possible contributing factor \citep{need2009, bustamante2011, popejoy2016}. 
+Although this underrepresentation has many causes, some authors have cited the statistical challenges posed by ancestrally heterogeneous populations, such as admixed populations, as a possible contributing factor \citep{need2009, bustamante2011, popejoy2016}. 
 % need to adjust
 Considerable variability of inferred \textit{global ancestry}---the genome-wide proportion of genetic material inherited from each ancestral population---has been observed in many studies of African American and Hispanic/Latino populations \citep{parra1998, tishkoff2009, bryc2010aa, bryc2010hl, conomos2016}.
 It has been widely documented that heterogeneous global ancestry, along with other types of population structure, can lead to spurious associations in genome-wide association studies \citep{GenomicControl, eigenstrat, marchini2004, price2010}. 
@@ -192,18 +192,33 @@ We implement a simulation study using whole genome sequence data from the Trans-
 
 \subsubsection{TOPMed whole genome sequence data}
 
+TOPMed is \add{describe TOPMed}.
+Whole genome sequence data for contributing TOPMed studies is available on dbGaP. 
+We focus on two such studies, the Jackson Heart Study (JHS) (accession number: phs000964) and the Chronic Obstructive Pulmonary Disease Genetic Epidemiology Study (COPDGene) (accession number: phs000951).
+
+\edit{
 \begin{itemize}
+\item describe TOPMed 
 \item describe sequencing methods
-\item which samples we used
-\item dbGap accession
+\item how many samples in each study
 \end{itemize}
+}
 
 \subsubsection{Quality control}
 
-\begin{itemize}
-\item QC
-\item removing relatives
-\end{itemize}
+% variant-level filters
+We process the sequence data for quality control, keeping only those variants that are bi-allelic, have a minor allele count of at least one, and pass standard variant filters (Mendelian or duplicate genotype discordance $< 3/5\%$, Hardy-Weinberg Equilibrium p-value $> 1 \times 10^{-6}$, etc.).
+\add{Add filter for missing rates!}
+After all exclusions, we are left with \edit{???} and \edit{???} variants in JHS and COPDGene, respectively.
+
+% sample-level filters
+After variant-level filtering, we then use the iterative procedure suggested by Conomos et al. \citep{conomos2016} and implemented in the \edit{TOPMed analysis pipeline} to identify a subset of \edit{??} mutually unrelated individuals. 
+\add{more details about iterative procedure; e.g., sing a kinship threshold of \edit{0.044 $\leftarrow$ double-check} (i.e., excluding first, second, and third degree relatives)} 
+Next, we run an unsupervised \texttt{ADMIXTURE} analysis with $K = 2$ and $K = 3$ and plot inferred global ancestry proportions to identify admixed (African American) and non-admixed (European) individuals.
+\add{more details about thresholds used}
+After sample-level filtering,  \edit{???} and \edit{???} individuals remain in JHS and COPDGene, respectively.
+
+
 
 
 \textbf{QC for JHS} (dbgap accession phs000964):
