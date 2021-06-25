@@ -21,6 +21,9 @@
 % matrices
 \usepackage{amsmath}
 
+% images
+\usepackage{graphicx}
+
 % bibliography
 \usepackage[super]{natbib} % superscripts
 \renewcommand{\refname}{} % empty title
@@ -82,42 +85,79 @@ Principal component analysis (PCA) is widely used to control for population stru
 \newpage
 \section{Introduction}
 
-% succint
+% succinct
 % no subheadings
 % present background info necessary to provide biological context for results
 
-%% GWAS in Admixed Populations}
-Admixed populations such as African Americans and Hispanics/Latinos have historically been vastly underrepresented in genome-wide association studies (GWAS) \cite{need2009, bustamante2011, popejoy2016, morales2018, sirugo2019, martin2019}. 
-Although this underrepresentation has many causes, some authors have cited the statistical challenges posed by ancestrally heterogeneous populations, such as admixed populations, as a possible contributing factor \citep{need2009, bustamante2011, popejoy2016}.  \add{Manolio 2019 ``Using the data we have" and Hindorff 2018 ``Prioritizing diversity in human genomics research"}
-% need to adjust
-Considerable variability of inferred \textit{global ancestry}---the genome-wide proportion of genetic material inherited from each ancestral population---has been observed in many studies of African American and Hispanic/Latino populations \citep{parra1998, tishkoff2009, bryc2010aa, bryc2010hl, conomos2016}.
-It has been widely documented that heterogeneous global ancestry, along with other types of population structure, can lead to spurious associations in genome-wide association studies \citep{GenomicControl, eigenstrat, marchini2004, price2010}. 
-These spurious associations arise due to the fact that global ancestry can confound the association between genotypes and a phenotype of interest, particularly when genetic variants are more frequent in some ancestral populations than in others  and global ancestry has an effect on the trait through, for example, environmental differences across ancestral groups. 
 
-% summary of methods for adjusting
+%% what is ancestral heterogeneity?
+%Admixed populations such as African Americans and Hispanics/Latinos have historically been vastly underrepresented in genome-wide association studies (GWAS) \cite{need2009, bustamante2011, popejoy2016, morales2018, sirugo2019, martin2019}. 
+Considerable variability of global ancestry---the genome-wide proportion of genetic material inherited from each ancestral population---has been observed in many studies of admixed populations such as African Americans and Hispanics/Latinos \citep{parra1998, tishkoff2009, bryc2010aa, bryc2010hl, conomos2016}.
+It has been widely documented that heterogeneous global ancestry, as with other types of population structure, can lead to spurious associations in genome-wide association studies \citep{GenomicControl, eigenstrat, marchini2004, price2010}. 
+In fact, some authors have even cited the ancestral heterogeneity of admixed populations, and the statistical challenges it poses, as one of many reasons why these populations have been historically underrepresented in genome-wide association studies (GWAS) \citep{need2009, bustamante2011, popejoy2016, hindorff2018, manolio2019}.
+
+
+%% why do we need to adjust for it?  (confounding)
+Spurious associations can arise in GWAS in ancestrally heterogeneous populations when global ancestry confounds the association between genotypes and the phenotype of interest (Figure \ref{fig:confounding}). 
+This confounding occurs when the genetic variant being tested differs in frequency across ancestral populations (i.e., global ancestry is associated with genotype) and global ancestry also has an effect on the phenotype. 
+Global ancestry may be associated with the phenotype if, for example, there are environmental factors or causal loci elsewhere in the genome that differ in frequency across ancestral groups.
+
+%%% Figure 1: Confounding DAG %%%
+\begin{figure}[h]
+\center
+\includegraphics[width=0.4\textwidth]{figs/confounding}
+\caption{Global ancestry ($\boldsymbol\pi$) confounds the association between the genotype at position $j$ ($\mathbf{g}_j$) and the phenotype of interest ($\mathbf{y}$) if ancestry is associated with both the genotype (e.g., the allele frequencies differ across the ancestral populations) and the phenotype (e.g., there are environmental or other factors that affect the phenotype and differ across the ancestral populations).}
+\label{fig:confounding}
+\end{figure}
+
+
+%% how do we adjust
 A number of methods for detecting and controlling for ancestral heterogeneity in genetic association studies have been proposed. 
 Early approaches included restricting analyses to subsets of ancestrally homogeneous individuals \citep{lander1994}, performing a genome-wide correction for test statistic inflation due to ancestral heterogeneity via \textit{genomic control} \citep{GenomicControl}, and using family-based designs \citep{tdt}. 
-More recently, approaches based on mixed models have been proposed \citep{yu2006, kang2010, yang2014}. 
-These mixed model approaches use random effects to control for both close (e.g., due to family-based sampling) and distant (e.g., due to shared ancestry) relatedness across individuals.
+More recently, approaches based on mixed models have been proposed \citep{yu2006, kang2010, yang2014}, using random effects to control for both close (e.g., due to family-based sampling) and distant (e.g., due to shared ancestry) relatedness across individuals.
 However, when studies do not include closely related individuals, a simpler approach is to include inferred global ancestry as a fixed effect in marginal regression models \citep{eigenstrat, pritchard2000}. 
-This fixed effects adjustment for global ancestry is currently used extensively throughout the literature, with global ancestry inferred using either model-based ancestry inference methods (e.g., \texttt{ADMIXTURE} \citep{admixture}) or unsupervised dimension reduction techniques (e.g., principal component analysis \citep{eigenstrat}).
+This fixed effects adjustment for global ancestry is currently used extensively throughout the literature, with global ancestry inferred using either model-based ancestry inference methods (e.g., \texttt{frappe} \citep{tang2005}, \texttt{STRUCTURE} \cite{structure}, \texttt{ADMIXTURE} \citep{admixture}) or principal component analysis (e.g., \texttt{EIGENSTRAT} \citep{eigenstrat}, \texttt{SNPRelate} \citep{snprelate}, \texttt{PC-AiR} \citep{conomos2015}).
 
-% summarize model-based approaches
-Model-based approaches for global ancestry inference model the probability of observed genotypes given unobserved ancestry and allele frequencies in each ancestral population \citep{structure, tang2005, admixture, finestructure}. 
-Most often, these approaches are used to estimate global ancestry proportions, also known as \textit{admixture proportions}, the estimated proportion of genetic material inherited by each individual from each ancestral population. 
-Once estimated, these global ancestry proportions can then easily be included as covariates in GWAS models to adjust for ancestral heterogeneity.
-One of the challenges of using these model-based approaches to infer global ancestry is that the total number of ancestral populations usually needs to be pre-specified. 
-In addition, many of these model-based approaches are \textit{supervised}, requiring reference panel data from each ancestral population of interest to estimate allele frequencies.
-Furthermore, ancestry inference is typically conducted at a continental level (e.g., African versus European, rather than South European versus North European), so finer levels of population structure could be missed; recent efforts have considered global ancestry inference on a sub-continental scale \citep{finestructure, durand2014}.
+% summarize model-based approaches (SKIP --- don't want to emphasize as much)
+%Model-based approaches for global ancestry inference model the probability of observed genotypes given unobserved ancestry and allele frequencies in each ancestral population \citep{structure, tang2005, admixture, finestructure}. 
+%Most often, these approaches are used to estimate global ancestry proportions, also known as \textit{admixture proportions}, the estimated proportion of genetic material inherited by each individual from each ancestral population. 
+%Once estimated, these global ancestry proportions can then easily be included as covariates in GWAS models to adjust for ancestral heterogeneity.
+%One of the challenges of using these model-based approaches to infer global ancestry is that the total number of ancestral populations usually needs to be pre-specified. 
+%In addition, many of these model-based approaches are \textit{supervised}, requiring reference panel data from each ancestral population of interest to estimate allele frequencies.
+%Furthermore, ancestry inference is typically conducted at a continental level (e.g., African versus European, rather than South European versus North European), so finer levels of population structure could be missed; recent efforts have considered global ancestry inference on a sub-continental scale \citep{finestructure, durand2014}.
 
-% summarize PCA, mention challenges in choosing $P$ and deciding how to pre-process
-Principal component analysis (PCA), on the other hand, is a widely-implemented unsupervised approach for inferring global ancestry that does not require reference panel data or pre-specification of the number of ancestral populations of interest and is capable of capturing sub-continental structure \citep{novembre2008}. 
-To infer global ancestry using PCA, we preform an eigenvalue decomposition of the genetic relationship matrix (GRM) $\hat{\boldsymbol\Psi} = \frac{1}{m} \mathbf{X} \mathbf{X}^\top$, where $\mathbf{X}$ is the $n \times m$ matrix of standardized gentoypes for $n$ individuals at $m$ single nucleotide variants (SNVs).
-The top eigenvectors, or \textit{principal components} (PCs) of $\hat{\boldsymbol\Psi}$ tend to reflect global ancestry \citep{patterson2006, mcvean2009}, so adjusting for PCs can be an effective approach for controlling for ancestral heterogeneity in genetic association studies \citep{eigenstrat}. 
-In practice, however, determining the number of PCs needed to capture global ancestry can be difficult. 
-Furthermore, it has been shown that PCs can sometimes capture features other than global ancestry, such as relatedness across samples \citep{patterson2006, conomos2015}, data quality issues \citep{eigenstrat, weale2010}, and/or small regions of the genome with unusual patterns of linkage disequilibrium (LD) \citep{tian2008, price2008}. 
-To address this last issue, some authors have suggested running PCA on a reduced subset of SNVs, after first removing regions of the genome that are known to have high or long-range LD \citep{price2008} and/or performing LD pruning \citep{anderson2010, abdellaoui2013}. 
+%% overview of PCA 
+Principal component analysis (PCA) is a widely-implemented unsupervised approach for inferring global ancestry that does not require reference panel data or pre-specification of the number of ancestral populations of interest and is capable of capturing sub-continental structure \citep{novembre2008}. 
+To infer global ancestry using PCA, we preform a singular value decomposition of the matrix of standardized genotypes (i.e., $\mathbf{X} = \mathbf{U}\mathbf{D}\mathbf{V}^\top$) or, equivalently, an eigenvalue decomposition of the genetic relationship matrix (i.e., $\mathbf{X}\mathbf{X}^\top = \mathbf{U}\mathbf{D}^2\mathbf{U}^\top$).
+%where $\mathbf{X}$ is the $n \times m$ matrix of standardized gentoypes for $n$ individuals at $m$ single nucleotide variants (SNVs).
+It has been shown that top eigenvectors, or \textit{principal components} (PCs) ($\mathbf{u}_1, \mathbf{u}_2, \dots$) tend to reflect global ancestry \citep{patterson2006, mcvean2009}.
+To adjust for ancestral heterogeneity, we choose some number of principal components (typically on the order of 1--10 \citep{abegaz2019}) to include as covariates in our GWAS regression models. 
+
+%% issues & solutions: choosing P
+A number of challenges can arise in using PCA to adjust for ancestral heterogeneity. 
+First, determining the number of PCs needed to capture global ancestry can be difficult. 
+Numerous techniques have been proposed for selecting this number, including formal significance tests based on Tracy-Widom theory \citep{patterson2006, eigenstrat}, examining inflation factors \citep{reed2015, conomos2016} and/or the proportion of variance explained by each PC \citep{raska2012, reed2015, conomos2016}, %comparing PCs to self-reported race/ethnicity \citep{conomos2016}, 
+and/or keeping PCs that are significantly associated with the trait \citep{reiner2012, daya2019}.
+For a nice review of these methods, see Abegaz et al. \citep{abegaz2019}.
+In practice, however, it is not uncommon to see applications in which the number of PCs seems to have been chosen somewhat arbitrarily (or at least is not clearly motivated in the paper) and more PCs are used than may actually be necessary to capture global ancestry. 
+This could be due in part to work that has suggested that including higher-order PCs can provide the safeguard of removing ``virtually all stratification" \citep{mathieson2012} at the cost of only ``subtle" decreases in power \citep{liu2011}.
+%using the same number of PCs as had been used  to prior work in distinct study populations to justify the choice of 10 PCs \citep{liu2012, reed2015}
+
+%% issues & solutions: other atrifacts 
+Another challenge that must be addressed involves ensuring that PCs actually reflect global ancestry and not some other features or artifacts of the data. 
+Prior work has shown that PCs can capture relatedness across samples \citep{patterson2006, conomos2015}, data quality issues \citep{eigenstrat, weale2010}, and/or small regions of the genome with unusual patterns of linkage disequilibrium (LD) \citep{tian2008, price2008}. 
+\add{we will focus on the latter}
+\add{what happens if we adjust for PCs that capture LD instead? include here or save for discussion?}
+To address this last issue, some authors have suggested running PCA on a reduced subset of variants, after first removing regions of the genome that are known to have high or long-range LD \citep{price2008} and/or performing LD pruning \citep{anderson2010, abdellaoui2013}. 
+\add{add more references}
+\add{add Table 1: high LD regions}
+\add{add more details about how LD pruning is performed}
+
+%% motivate  our paper
 However, these suggestions are not universally implemented, and the downstream implications of adjusting for PCs that capture features other than global ancestry are not fully understood.
+\add{most work above in Europeans --- what should we do in admixed? (particularly considering that LD is more extensive)}
+\add{downstream implications if issues not addressed not fully explored}
+
 
 % outline rest of paper
 In this paper, we investigate the impact of ancestral heterogeneity on genome-wide association studies in admixed populations.
