@@ -148,10 +148,9 @@ This could be due in part to work that has suggested that including higher-order
 Another challenge that can arise in using PCA to adjust for ancestral heterogeneity involves ensuring that PCs actually reflect global ancestry and not some other features or artifacts of the data. 
 Prior work has shown that PCs can capture relatedness across samples \citep{patterson2006, price2010, abdellaoui2013, conomos2015}, array artifacts or other data quality issues \citep{patterson2006, eigenstrat, price2010, weale2010}, and/or small regions of the genome with unusual patterns of linkage disequilibrium (LD) \citep{patterson2006, eigenstrat, wellcome2007, tian2008, price2008, price2010, weale2010, zou2010, laurie2010, abdellaoui2013, prive2020}. 
 %\add{what happens if we adjust for PCs that capture LD instead? include here or save for discussion?}
-To address this last issue, some authors have suggested running PCA on a reduced subset of variants, after first removing regions of the genome that are known to have high or long-range LD (see Table \ref{tab:highLD}) \citep{wellcome2007,  fellay2007, novembre2008, price2008, anderson2010, weale2010, raska2012, conomos2016} and/or performing LD pruning (i.e., using a program such as \texttt{PLINK} \citep{plink} to remove variants that are in high LD) \citep{wellcome2007, fellay2007, novembre2008, yu2008, nelson2008, anderson2010, weale2010, laurie2010, abdellaoui2013, zhang2013, conomos2015, reed2015, galinsky2016, conomos2016, daya2019}. 
-%% motivate  our paper
-However, these suggestions are not universally implemented and the downstream implications of adjusting for PCs that capture features other than global ancestry are not fully understood.
-Furthermore, the work cited above has primarily been conducted in populations of European ancestry, so recommendations on how best to implement principal component-based adjustment for ancestral heterogeneity in admixed populations is lacking. 
+To address this last issue, some authors have suggested running PCA on a reduced subset of variants after first performing \textit{LD pruning}, using a program such as \texttt{PLINK} \citep{plink} to remove variants that are in ``high" LD (e.g., pairwise-correlation $r^2 > 0.2$) with nearby variants  \citep{wellcome2007, fellay2007, novembre2008, yu2008, nelson2008, anderson2010, weale2010, laurie2010, abdellaoui2013, zhang2013, conomos2015, reed2015, galinsky2016, conomos2016, daya2019}, and/or excluding regions of the genome that are known to have extensive, long-ranging, or otherwise unusual patterns of LD \citep{wellcome2007,  fellay2007, novembre2008, price2008, anderson2010, weale2010, raska2012, conomos2016}. 
+A list of previously-identified high LD regions is provided in Table \ref{tab:highLD}.
+%after first removing regions of the genome that are known to have high or long-range LD (see Table \ref{tab:highLD}) \citep{wellcome2007,  fellay2007, novembre2008, price2008, anderson2010, weale2010, raska2012, conomos2016} and/or performing LD pruning (i.e., using a program such as \texttt{PLINK} \citep{plink} to remove variants that are in high LD) \citep{wellcome2007, fellay2007, novembre2008, yu2008, nelson2008, anderson2010, weale2010, laurie2010, abdellaoui2013, zhang2013, conomos2015, reed2015, galinsky2016, conomos2016, daya2019}. 
 
 
 \begin{table}
@@ -192,16 +191,64 @@ chr20   & 32000000   &     34500000    &   \citep{anderson2010, price2008, weale
 \end{table}
 
 
+%% motivate  our paper
+The above-cited suggestions regarding LD pruning and filtering are not universally implemented and the downstream implications of adjusting for PCs that capture features other than global ancestry are not fully understood.
+Furthermore, much of this work was conducted in populations of European ancestry, so recommendations on how best to implement principal component-based adjustment for ancestral heterogeneity in admixed populations are lacking. 
 % outline rest of paper
 In this paper, we investigate the impact of LD filtering and pruning choices, as well as choices of the number of principal components to include in analyses, on genome-wide association studies in admixed populations.
-Through both simulation studies and analytic results, we show that including too many PCs can actually induce spurious associations in GWAS, particularly when those extraneous PCs capture local genomic features rather than genome-wide ancestry.  
-To conclude, we provide suggestions regarding best practice for appropriately controlling for ancestral heterogeneity in genetic association studies in admixed populations.
+We conduct simulation studies using whole genome sequence data for African American individuals in the Trans-Omics for Precision Medicine (TOPMed) project and provide analytic results to show that including too many PCs can actually induce spurious associations in GWAS, particularly when those extraneous PCs capture local genomic features rather than genome-wide ancestry.  
+To conclude, we provide suggestions regarding best practice for appropriately controlling for ancestral heterogeneity in genome-wide association studies in admixed populations.
 
 
 \section{Material and Methods}
 
 % provide sufficient detail so readers can understand how experiments were performed and procedures can be repeated
 % describe any statistical methods employed in study
+
+New outline: 
+
+\begin{itemize}
+\item TOPMed data
+	\begin{itemize}
+	\item what is TOPMed
+	\item which studies did we focus on
+	\item how accessed
+	\item who's in it
+	\item ...
+	\end{itemize}
+\item QC
+	\begin{itemize}
+	\item basic SNP filters
+	\item rare variants \add{move this to QC step?}; \add{citations}
+	\item missing rates \add{STILL NEED TO IMPLEMENT THIS!!}
+	\item relatives; \add{citations}
+	\item non-admixed individuals
+	\end{itemize}
+\item inferring ancestry using PCA
+	\begin{itemize}
+	\item software
+	\item types of pruning/filtering considered
+	\item plots we look at (loadings, screeplots, parallel coordinates, etc.)
+	\end{itemize}
+\item inferring ancestry using ADMIXTURE
+	\begin{itemize}
+	\item motivation for comparison
+	\item recommended pruning/filtering
+	\end{itemize}
+\item simulation study
+	\begin{itemize}
+	\item traits
+	\item models
+	\item evaluation
+	\end{itemize}
+\item software and data availability
+	\begin{itemize}
+	\item dbgap
+	\item github
+	\end{itemize}
+\end{itemize}
+
+
 
 \subsection{Adjusting for ancestral heterogeneity in  genome-wide association studies}
 
@@ -214,45 +261,42 @@ In either case, we test for an association between the trait and genotype by tes
 
 To adjust for ancestral heterogeneity, we include inferred global ancestry in the vector $\mathbf{z}_i$ of potential confounders in our regression models. We infer global ancestry using one of two techniques: model-based global ancestry inference of principal component analysis.
 
-\edit{Note: should some of the following should perhaps go to the Introduction section instead?}
 
-\subsubsection{Model-based global ancestry inference}
+%% UPDATE: skipping details of model-based GAI
+%\subsubsection{Model-based global ancestry inference}
+%
+%Various model-based approaches have been developed for estimating global ancestry proportions in admixed populations.
+%We represent global ancestry via the vector $\boldsymbol{\pi}_i = \begin{pmatrix} \pi_{i1} & \dots & \pi_{iK} \end{pmatrix}^\top$, where $\pi_{ik}$ denotes the genome-wide proportion of genetic material inherited by individual $i$ from ancestral population $k$ and $\sum_{k=1}^K \pi_{ik} = 1$. 
+%Note that the total number of ancestral populations, $K$, typically must be pre-specified, and the definition of global ancestry is typically restricted to the autosomes.
+%Admixture proportions can be estimated directly using a program such as \texttt{ADMIXTURE} \citep{admixture}, or by calculating the genome-wide average local ancestry (i.e., $\hat\pi_{ik} = \frac{1}{2m} \sum_{j=1}^m a_{ijk}$), where local ancestry $a_{ijk}$---the number of alleles (0, 1, or 2) inherited by individual $i$ from ancestral population $k$ at position $j$---was first inferred using a program such as \texttt{RFMix} \citep{rfmix}.
+%To adjust for ancestral heterogeneity, we include $K-1$ of these estimated admixture proportions as covariates in our GWAS regression models: $$E[y_i \mid g_{ij}, \hat{\boldsymbol\pi}_i] = \beta_0 + \beta_j g_{ij} + \beta_{\pi, 1} \hat\pi_{i,1} + \dots + \beta_{\pi, K-1} \hat\pi_{i, K-1}.$$
+%
+%Many model-based global ancestry inference programs are supervised, requiring data from individuals from each ancestral population of interest to form a reference panel. However, some approaches such as \texttt{ADMIXTURE} can also be run without a reference panel.
 
-Various model-based approaches have been developed for estimating global ancestry proportions in admixed populations.
-We represent global ancestry via the vector $\boldsymbol{\pi}_i = \begin{pmatrix} \pi_{i1} & \dots & \pi_{iK} \end{pmatrix}^\top$, where $\pi_{ik}$ denotes the genome-wide proportion of genetic material inherited by individual $i$ from ancestral population $k$ and $\sum_{k=1}^K \pi_{ik} = 1$. 
-Note that the total number of ancestral populations, $K$, typically must be pre-specified, and the definition of global ancestry is typically restricted to the autosomes.
-Admixture proportions can be estimated directly using a program such as \texttt{ADMIXTURE} \citep{admixture}, or by calculating the genome-wide average local ancestry (i.e., $\hat\pi_{ik} = \frac{1}{2m} \sum_{j=1}^m a_{ijk}$), where local ancestry $a_{ijk}$---the number of alleles (0, 1, or 2) inherited by individual $i$ from ancestral population $k$ at position $j$---was first inferred using a program such as \texttt{RFMix} \citep{rfmix}.
-To adjust for ancestral heterogeneity, we include $K-1$ of these estimated admixture proportions as covariates in our GWAS regression models: $$E[y_i \mid g_{ij}, \hat{\boldsymbol\pi}_i] = \beta_0 + \beta_j g_{ij} + \beta_{\pi, 1} \hat\pi_{i,1} + \dots + \beta_{\pi, K-1} \hat\pi_{i, K-1}.$$
-
-Many model-based global ancestry inference programs are supervised, requiring data from individuals from each ancestral population of interest to form a reference panel. However, some approaches such as \texttt{ADMIXTURE} can also be run without a reference panel.
-
-\subsubsection{Principal component analysis}
-
-Principal component analysis (PCA) is an unsupervised dimension-reduction technique that is widely used for inferring population structure in genetic studies, with a number of software programs available for running PCA on genotype or sequence data (e.g., \texttt{EIGENSTRAT} \citep{eigenstrat}, \texttt{SNPRelate} \citep{snprelate}, \texttt{PC-Air} \citep{conomos2015}).
-To run PCA, we perform a singular value decomposition of the matrix of standardized genotypes (i.e., $\mathbf{X} = \mathbf{UDV}^\top$) or, equivalently, an eigenvalue decomposition of the genetic relationship matrix (i.e., $\mathbf{XX}^\top = \mathbf{UD}^2\mathbf{U}^\top$). 
-The top principal components ($\mathbf{u}_1, \mathbf{u}_2, \dots$) typically capture global ancestry \citep{patterson2006, mcvean2009}. 
-To adjust for ancestral heterogeneity, we choose some number of principal components, $P$, needed to capture global ancestry (typically $1 \le P << n$) and include those PCs as covariates in our GWAS regression models: $$E[y_i \mid g_{ij}, u_{i1}, \dots, u_{iP}] = \beta_0 + \beta_j g_{ij} + \beta_{u 1} u_{i1} + \dots + \beta_{u P} u_{i P}.$$
-A number of techniques have been proposed for selecting the number of PCs, $P$, including formal significance tests based on Tracy-Widom theory \citep{patterson2006, eigenstrat}, examining the proportion of variance explained by each PC \citep{reed2015}, comparing PCs to self-reported ancestry \citep{conomos2016}, and/or keeping PCs that are significantly associated with the trait \citep{reiner2012, daya2019}. 
-
-\add{also some people just include how ever many PCs another paper included}
-
-\add{Mention that many people will include more than necessary?}
-
-\add{state what approach we take in this paper to choosing $P$}
-
-\subsubsection{Variant- and sample-level filtering}
-
-It is often recommended that filtering be performed at the variant and/or sample level prior to inferring global ancestry. 
-Prior work has shown that both model-based estimates of global ancestry \add{cite Tim's GAW paper} and principal components \citep{conomos2015, eigenstrat, patterson2006} \add{check patterson, maybe add more refs: Price 2010} can reflect family structure and/or cryptic relatedness rather than global ancestry when a sample includes related individuals, but restricting analyses to a subset of unrelated individuals (e.g., using the iterative procedure proposed by \cite{conomos2016related}) can circumvent that issue. 
-At the variant level, it is common to perform filtering based on minor allele frequency \add{find references}, as prior work has shown that methods such as \texttt{EIGENSTRAT} can perform poorly when applied to rare variants \citep{kirk2016}.
-
-Other variant-level filters have been recommended to address the sensitivity of model-based and PCA approaches to the presence of linkage disequilibrium (LD).
-This can include \textit{LD pruning}, using a program such as \texttt{PLINK} \add{CITE} to remove variants that are ``highly" correlated (e.g., pairwise-correlation $r^2 > 0.2$) with nearby variants (e.g., within a window of size \edit{??}) \add{\citep{admixture}, ADD MORE}, and/or excluding regions of the genome that are known to have extensive, long-ranging, or otherwise unusual patterns of LD \add{CITE}. 
-A list of previously-identified high LD regions is provided in Appendix \edit{??}. 
-\add{say something about how not everyone does this, it's not always clear which parameters should be used, and/or much of this work has been performed in European pop and not clear what should be done in admixed pop}
+%% UPDATE: moved most of this to intro
+%\subsubsection{Principal component analysis}
+%
+%Principal component analysis (PCA) is an unsupervised dimension-reduction technique that is widely used for inferring population structure in genetic studies, with a number of software programs available for running PCA on genotype or sequence data (e.g., \texttt{EIGENSTRAT} \citep{eigenstrat}, \texttt{SNPRelate} \citep{snprelate}, \texttt{PC-Air} \citep{conomos2015}).
+%To run PCA, we perform a singular value decomposition of the matrix of standardized genotypes (i.e., $\mathbf{X} = \mathbf{UDV}^\top$) or, equivalently, an eigenvalue decomposition of the genetic relationship matrix (i.e., $\mathbf{XX}^\top = \mathbf{UD}^2\mathbf{U}^\top$). 
+%The top principal components ($\mathbf{u}_1, \mathbf{u}_2, \dots$) typically capture global ancestry \citep{patterson2006, mcvean2009}. 
+%To adjust for ancestral heterogeneity, we choose some number of principal components, $P$, needed to capture global ancestry (typically $1 \le P << n$) and include those PCs as covariates in our GWAS regression models: $$E[y_i \mid g_{ij}, u_{i1}, \dots, u_{iP}] = \beta_0 + \beta_j g_{ij} + \beta_{u 1} u_{i1} + \dots + \beta_{u P} u_{i P}.$$
+%A number of techniques have been proposed for selecting the number of PCs, $P$, including formal significance tests based on Tracy-Widom theory \citep{patterson2006, eigenstrat}, examining the proportion of variance explained by each PC \citep{reed2015}, comparing PCs to self-reported ancestry \citep{conomos2016}, and/or keeping PCs that are significantly associated with the trait \citep{reiner2012, daya2019}. 
 
 
-\add{Add missing rates (SNPs and people) here? Or just frame as QC step?)}
+
+%% UPDATE: moved most of this to intro
+%\subsubsection{Variant- and sample-level filtering}
+%It is often recommended that filtering be performed at the variant and/or sample level prior to inferring global ancestry. 
+%Prior work has shown that both model-based estimates of global ancestry \add{cite Tim's GAW paper} and principal components \citep{conomos2015, eigenstrat, patterson2006} \add{check patterson, maybe add more refs: Price 2010} can reflect family structure and/or cryptic relatedness rather than global ancestry when a sample includes related individuals, but restricting analyses to a subset of unrelated individuals (e.g., using the iterative procedure proposed by \cite{conomos2016related}) can circumvent that issue. 
+%At the variant level, it is common to perform filtering based on minor allele frequency \add{find references}, as prior work has shown that methods such as \texttt{EIGENSTRAT} can perform poorly when applied to rare variants \citep{kirk2016}.
+%
+%Other variant-level filters have been recommended to address the sensitivity of model-based and PCA approaches to the presence of linkage disequilibrium (LD).
+%This can include \textit{LD pruning}, using a program such as \texttt{PLINK} \add{CITE} to remove variants that are ``highly" correlated (e.g., pairwise-correlation $r^2 > 0.2$) with nearby variants (e.g., within a window of size \edit{??}) \add{\citep{admixture}, ADD MORE}, and/or excluding regions of the genome that are known to have extensive, long-ranging, or otherwise unusual patterns of LD \add{CITE}. 
+%A list of previously-identified high LD regions is provided in Appendix \edit{??}. 
+%\add{say something about how not everyone does this, it's not always clear which parameters should be used, and/or much of this work has been performed in European pop and not clear what should be done in admixed pop}
+
+
+%\add{Add missing rates (SNPs and people) here? Or just frame as QC step?)}
 
 
 \subsection{Simulation study using TOPMed whole genome sequence data}
