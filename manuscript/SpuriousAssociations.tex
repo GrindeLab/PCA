@@ -137,7 +137,7 @@ to include as covariates in our GWAS regression models.
 %% issues & solutions: choosing P
 Determining the number of PCs needed to capture global ancestry can be difficult. 
 Numerous techniques have been proposed for selecting this number, including formal significance tests based on Tracy-Widom theory \citep{patterson2006, eigenstrat}, examining inflation factors \citep{reed2015, conomos2016} and/or the proportion of variance explained by each PC \citep{raska2012, reed2015, conomos2016}, comparing PCs to self-reported race/ethnicity \citep{conomos2016}, and keeping PCs that are significantly associated with the trait \citep{reiner2012, daya2019}.
-Typically, the number of PCs selected is on the order of 1--10 \citep{abegaz2019}, but in practice it is not uncommon to see applications in which more PCs are used than may actually be necessary to capture global ancestry. 
+Typically, the number of PCs selected is on the order of one to ten \citep{abegaz2019}, but in practice it is not uncommon to see applications in which more many more PCs are used---more even than may actually be necessary to capture global ancestry. 
 This could be due in part to work that has suggested that including higher-order PCs can provide the safeguard of removing ``virtually all stratification" \citep{mathieson2012} at the cost of only ``subtle" decreases in power \citep{liu2011}.
 %using the same number of PCs as had been used  to prior work in distinct study populations to justify the choice of 10 PCs \citep{liu2012, reed2015}
 
@@ -202,10 +202,10 @@ To conclude, we provide suggestions regarding best practice for appropriately co
 % provide sufficient detail so readers can understand how experiments were performed and procedures can be repeated
 % describe any statistical methods employed in study
 
-New outline: 
-
-\begin{itemize}
-\item TOPMed data
+%New outline: 
+%
+%\begin{itemize}
+%\item TOPMed data
 	%\begin{itemize}
 	%\item what is TOPMed
 	%\item which studies did we focus on
@@ -215,97 +215,232 @@ New outline:
 	%\item freeze 5b methods (COPDGene)
 	%\item TOPMed QC
 	%\end{itemize}
-\item QC
-	\begin{itemize}
+%\item filtering
+%	\begin{itemize}
 	%\item basic SNP filters --> moved to TOPMed section
-	\item rare variants \add{move this to QC step?}; \add{citations}
-	\item missing rates \add{STILL NEED TO IMPLEMENT THIS!!}
-	\item relatives; \add{citations}
-	\item non-admixed individuals
-	\end{itemize}
-\item inferring ancestry using PCA
-	\begin{itemize}
-	\item software
-	\item types of pruning/filtering considered
-	\item plots we look at (loadings, screeplots, parallel coordinates, etc.)
-	\end{itemize}
-\item inferring ancestry using ADMIXTURE
-	\begin{itemize}
-	\item motivation for comparison
-	\item recommended pruning/filtering
-	\end{itemize}
-\item simulation study
-	\begin{itemize}
-	\item traits
-	\item models
-	\item evaluation
-	\end{itemize}
-\item software and data availability
-	\begin{itemize}
-	\item dbgap
-	\item github
-	\end{itemize}
-\end{itemize}
+	%\item rare variants \add{move this to QC step?}; \add{citations}
+	%\item missing rates \add{STILL NEED TO IMPLEMENT THIS!!}
+	%\item relatives; \add{citations}
+	%\item non-admixed individuals
+	%\item LD pruning/filtering
+	%\end{itemize}
+%\item inferring ancestry using PCA
+	%\begin{itemize}
+	%\item software
+	%\item types of pruning/filtering considered --> move to filtering
+	%\item plots we look at (loadings, screeplots, parallel coordinates, etc.)
+	%\end{itemize}
+%\item inferring ancestry using ADMIXTURE --- skip since already mentioned in QC
+	%\begin{itemize}
+	%\item motivation for comparison
+	%\item recommended pruning/filtering
+	%\end{itemize}
+%\item simulation study
+%	\begin{itemize}
+%	\item traits
+%	\item models
+%	\item evaluation
+%	\end{itemize}
+%\item software and data availability
+	%\begin{itemize}
+	%\item dbgap
+	%\item github
+	%\end{itemize}
+%\end{itemize}
 
 
 \subsection{TOPMed Whole Genome Sequence Data}
 
-The Trans-Omics for Precision Medicine (TOPMed) Whole Genome Sequencing Project is an ongoing project sponsored by the National Heart, Lung, and Blood Institute (NHLBI) that is working to collect and analyze whole-genome sequences, other -omics data, and rich phenotypic information for over 100,000 individuals from diverse backgrounds. 
+The Trans-Omics for Precision Medicine (TOPMed) Whole Genome Sequencing Project is an ongoing project sponsored by the National Heart, Lung, and Blood Institute (NHLBI) that is working to collect and analyze whole-genome sequences, other 'omics data, and rich phenotypic information for over 100,000 individuals from diverse backgrounds. 
 Data are periodically released on dbGaP for analysis by the broader scientific community. 
 Our analysis focuses in particular on data from \textit{freeze 4}, released in 2017, and \textit{freeze 5b}, released in 2018.
 These two freezes include samples from a large number of contributing studies.
 We focus on two such studies: the Jackson Heart Study (JHS) (accession number: phs000964) and the Genetic Epidemiology of Chronic Obstructive Pulmonary Disease Study (COPDGene) (accession number: phs000951).
-In total, the freeze 4 JHS data include 3,406 African American individuals and the freeze 5b COPDGene data include 8,742 African American and European American individuals.
+In total, the freeze 4 JHS dataset includes 3,406 African American individuals and the freeze 5b COPDGene dataset includes 8,742 African American and European American individuals.
 
 % sequencing
-For TOPMed freezes 4 and 5b, high coverage ($\approx$ 30X) whole genome sequencing was performed by several sequencing centers, with, for the most part, all samples for a given study sequenced at the same center.
-Variant discovery, and genotype calling was performed by the TOPMed Informatics Resources Center (IRC) using the \texttt{GotCloud} pipeline \citep{jun2015}.
+For TOPMed freezes 4 and 5b, high coverage ($\approx$ 30X) whole genome sequencing was performed by several sequencing centers.
+Variant discovery and genotype calling was performed by the TOPMed Informatics Resources Center (IRC) using the \texttt{GotCloud} pipeline \citep{jun2015}.
 % QC
-Quality control (QC) was performed by a combination of the sequencing centers, IRC, and TOPMed Data Coordinating Center (DCC), and only those samples and variants that passed this QC are included in the VCF downloaded from dbGaP.
+Quality control (QC) was performed by the sequencing centers, IRC, and TOPMed Data Coordinating Center, and only those samples and variants that passed these stages of QC are included in the VCF downloaded from dbGaP.
 % references
-Details on TOPMed QC methods are available in Taliun et al. \citep{taliun2021} and on the TOPMed website: \href{https://www.nhlbiwgs.org/data-sets}{https://www.nhlbiwgs.org/data-sets}.
+Details on TOPMed sequencing and QC methods are available in Taliun et al. \citep{taliun2021} and on the TOPMed website: \href{https://www.nhlbiwgs.org/data-sets}{https://www.nhlbiwgs.org/data-sets}.
 
 
 \subsection{Additional Quality Control and Filtering}
+\label{sec:filter}
 
 %% filters applied universally
 After downloading the JHS and COPDGene data from dbGaP, we performed additional filtering before proceeding with principal component analysis.
 % bcftools filters from Joe
-At the variant level, we first removed indels and otherwise kept only biallelic single nucleotide variants (SNVs) with a minor allele count of at least one. 
+We used \texttt{bcftools} \citep{bcftools} to remove indels and otherwise restrict our analyses to biallelic single nucleotide variants (SNVs). 
 % MAF and missing rates
-We also removed variants with low minor allele frequency ($< 1\%$) and/or high rates of missing calls ($>5\%$).
+We also removed variants with low minor allele frequency ($< 1\%$) and/or \edit{high rates of missing calls ($>1\%$) --- STILL NEEDS TO BE IMPLEMENTED}.
 After this filtering, we were left with \edit{???} SNVs in JHS and \edit{???} SNVs in COPDGene.
+
 % relatives 
-At the sample level, we used the iterative procedure proposed by Conomos et al. \add{CITE} to identify a subset of mutually unrelated individuals (using a kinship threshold of \edit{CONFIRM 0.044}).
+At the sample level, we used the iterative procedure proposed by Conomos et al. \citep{conomos2016related} and implemented in the \href{https://github.com/UW-GAC/analysis_pipeline}{TOPMed Analysis Pipeline} to identify a subset of mutually unrelated individuals using a kinship threshold of 0.044 (third degree relatives).
 % Europeans
-We also performed an unsupervised \texttt{ADMIXTURE} analysis with both $K = 2$ and $K = 3$ to identify and remove individuals with primarily European ancestry. 
+We also performed an unsupervised \texttt{ADMIXTURE} \citep{admixture} analysis with both $K = 2$ and $K = 3$ to identify admixed (African American) and non-admixed (European American) individuals; remaining analyses were restricted to admixed individuals only.
+% LD pruning
+Prior to both of these analyses we implemented LD pruning/filtering as recommended in their respective user manuals.
 % how many left?
 After exclusions, a total of \edit{???} and \edit{???} unrelated African Americans remained in JHS and COPDGene, respectively.
 
+%% LD-based filtering
+In addition to the filtering described above, we also implemented different types of LD-based filtering.
+\add{Describe the different types of LD-based filtering we compared (see below).}
+These analyses were also compared to a \textit{naive} analysis that did not perform any LD-based filtering.
+The number of variants that remained after filtering is presented in Table \ref{tab:N}.
 
-\begin{table}
+\begin{itemize}
+\item Exclude
+	\begin{itemize}
+	\item None
+	\item Lit Review (Table \ref{tab:highLD})
+	\item Auto-Detect (\add{using Prive package --- implement or skip for now??})
+	\end{itemize}
+\item Prune
+	\begin{itemize}
+	\item None
+	\item Default 0.2
+	\item Stricter 0.1
+	\item \add{Stricter 0.05 ???}
+	\item \add{Different window size ???}
+	\end{itemize}
+\end{itemize}
+
+\begin{table}[h]
 \label{tab:N}
 \begin{tabular}{c|ccccc}
  & Naive & Exclude & Prune & Stricter Prune & Exclude + Stricter Prune \\
-JHS & & & & & \\
-COPDGene & & & & & \\
+JHS & \add{?} &  \add{?} &  \add{?} & \add{?} &  \add{?} \\
+COPDGene &  \add{?} &  \add{?} &  \add{?} &  \add{?} &  \add{?} \\
 \end{tabular} 
+\caption{Single nucleotide variants that remained in Jackson Heart Study (JHS) and Genetic Epidemiology of COPD (COPDGene) datasets after varying levels of LD-based filtering.}
 \end{table}
 
-%% LD-based filtering
-\add{Describe the different types of LD-based filtering we compared.}
 
+%\textbf{QC for JHS} (dbgap accession phs000964):
+%
+%\begin{itemize}
+%\item filtering
+	%\begin{itemize}
+	%\item bi-allelic SNPs
+	%\item minor allele count at least 1
+	%\item pass variant filters (in VCFs that were downloaded from dbgap): overlaps with SNP, overlaps with indel, overlaps with VNTR, failed SVM filter, high (3/5\% or more) mendelian or duplicate genotype discordance, excess heterozygosity with HWE p-value < 1e-6
+	%\end{itemize}
+%\item merge the two subsets (cg1 and cg3)
+%\item convert from VCF to GDS
+%\item remove close relatives
+	%\begin{itemize}
+	%\item run king (LD r threshold: 0.32, LD window size: 10, MAF threshold: 0.01, exclude PCA corr: TRUE, build: hg19)
+	%\item run PC-AiR 
+	%\item run PCRelate 
+	%\item run PC-AiR again
+	%\end{itemize}
+%\item find African Americans
+	%\begin{itemize}
+	%\item run stricter LD pruning (MAF  = 0.01, window size = 0.5, rsq = 0.01, regions = TRUE, build 37)
+		%\begin{itemize}
+		%\item List of regions stored here: \verb"/projects/browning/brwnlab/kelsey/spurious_assoc/highLD_regions/" (see below)
+		%\end{itemize}
+	%\item convert GDS to BED
+	%\item run ADMIXTURE (K = 2 and K = 3)
+	%\item plot proportions
+	%\item exclude 40 people inferred to be 100\% European; left with 1888
+	%\end{itemize}
+%\end{itemize}
+
+%\textbf{QC for COPDGene} (phs000951):
+%
+%\begin{itemize}
+%\item filtering
+%	\begin{itemize}
+%	\item bi-allelic SNPs
+%	\item minor allele count at least 1
+%	\item pass filtering (from GDS annotation info, I inferred this to include: variant located in centromeric region, variant failed SVM filter, mendelian or duplicate genotype discordance is high (3/5\% or more), excess heterozygosity in chrX in males, excess heterozygosity with HWE p-value < 1e-6)
+%	\end{itemize}
+%item convert from VCF to GDS
+%\item remove close relatives
+%	\begin{itemize}
+%	\item run king (LD r threshod = 0.32, LD window size = 10, MAF threshodl = 0.01, exclude PCA corr = TRUE, build = hg38); regions =         see table below
+%	\item run PCAiR
+%	\item run PCRelate
+%	\item run PCAiR again
+%	\end{itemize}
+%\item find African Americans
+%	\begin{itemize}
+%	\item run stricter LD pruning (exclude PCA corr regions = TRUE, build = hg38, LD R threshold = 0.1, LD window size = 10, MAF threshold = 0.01); regions = \verb"/projects/browning/brwnlab/kelsey/spurious_assoc/highLD_regions/" (see below)
+%	\item convert from GDS to PLINK
+%	\item run ADMIXTURE with K = 2 and K = 3
+%	\item plot proportions and use cut-off of 30\% to identify (and then remove) Europeans : Parker et al. 2014 "Admixture mapping identifies a quantitative trait locus associated with..." \verb"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4190160/" (reduced from 8406 to 2676)
+%	\end{itemize}
+%\end{itemize}
+
+%\begin{table}
+%\begin{tabular}{ccccc}
+%name & chrom & start.base  & end.base  & comment \\
+%2q21    &  2  &  129883530 & 140283530       &  LCT \\
+%HLA      &    6 &   24092021  & 38892022 & includes MHC \\
+%8p23  &        8   &  6612592 &  13455629 &   inversion \\
+%17q21.31 &    17  &  40546474 & 44644684   &  inversion \\
+%\end{tabular}
+%\caption{TOPMed hg19 high corr regions}
+%\end{table}
+
+%\begin{table}
+%\begin{tabular}{ccccc}
+%name & chrom & start.base  & end.base  & comment \\
+%2q21    &  2  &  129125957 & 139525961       &  LCT \\
+%HLA      &    6 &   24091793  & 38924246 & includes MHC \\
+%8p23  &        8   &  6755071 &  13598120 &   inversion \\
+%17q21.31 &    17  &  42394456 & 46567318   &  inversion \\
+%\end{tabular}
+%\caption{TOPMed hg38 high corr regions}
+%\end{table}
+
+\begin{itemize}
+\item what filtering was performed, and how many variants left after filtering
+	\begin{itemize}
+	\item JHS, ADMIXTURE: see above
+	\item JHS, PCA: exclude regions (TRUE/FALSE), r-squared (1, 0.1, 0.2, 0.05), window size (0, 0.5, 10), and MAF (0, 0.01) 
+		\begin{itemize}
+		\item no filtering: FALSE-1-0-0
+		\item MAF filtering: FALSE-1-0-0.01
+		\item exclude but no prune: TRUE-1-0-0.01
+		\item prune but no exclude: FALSE-0.1-0.5-0.01 and FALSE-0.1-10-0.01 and FALSE-0.2-0.5-0.01 and FALSE-0.05-0.5-0.01
+		\item prune and exclude: TRUE-0.1-0.5-0.01 and TRUE-0.1-10-0.01 and TRUE-0.2-0.5-0.01 and TRUE-0.05-0.5-0.01
+		\end{itemize}
+	\item COPD, ADMIXTURE: see above
+	\item COPD, PCA: exclude regions (TRUE/FALSE), r-squared (1, 0.1, 0.2, 0.05), window size (0, 0.5, 10), MAF (0, 0.01)
+		\begin{itemize}
+		\item no filtering: FALSE-1-0-0
+		\item MAF filtering: FALSE-1-0-0.01
+		\item exclude but no prune: TRUE-1-0-0.01
+		\item prune but no exclude: FALSE-0.1-0.5-0.01, FALSE-0.1-10-0.01, FALSE-0.2-0.5-0.01, FALSE-0.05-0.5-0.01
+		\item prune and exclude: TRUE-0.1-0.5-0.01, TRUE-0.1-10-0.01, TRUE-0.05-0.5-0.01, TRUE-0.2-0.5-0.01
+		\end{itemize}	
+	\item COPD, also ran SNPRelate on Europeans with different levels of filtering (FALSE-0.1-0.5-0.01, FALSE-0.2-0.5-0.01, FALSE-1-0-0.01, FALSE-1-0-0, TRUE-0.1-0.5-0.01, TRUE-0.2-0.5-0.01, TRUE-1-0-0.01)
+	\end{itemize}
+\end{itemize}
 
 
 \subsection{Principal Component Analysis}
 \label{sec:PCA}
 
-We used the \texttt{SNPRelate} package in \texttt{R} to run principal component analysis and visualize results. 
+We used the \texttt{SNPRelate} package in \texttt{R} to run principal component analysis using each of the subsets of SNVs described in Section \ref{sec:filter}. 
+For each set of principal components, we also used the \texttt{SNPRelate} package to assess the contribution of each SNV to each PC by calculating and plotting SNP loadings, as well as the correlation between genotypes and PCs.
 
 
+\subsection{Simulation Study}
+
+We implement a simulation study to explore the impact of different variant-level filtering choices, particularly with respect to linkage disequlibrium. 
+
+\subsubsection{Simulated Traits}
 
 
-\subsection{Adjusting for ancestral heterogeneity in  genome-wide association studies}
+\subsubsection{GWAS Models}
 
 To perform genome-wide association studies in samples of unrelated admixed individuals, we use marginal regression models, regressing the trait of interest on the genotype at each position across the genome. 
 At a given position $j$, we quantify genotype $g_{ij}$ as the number of copies (0, 1, or 2) of some pre-specified allele (e.g., the minor allele) carried by individual $i$ at that position. 
@@ -354,159 +489,10 @@ To adjust for ancestral heterogeneity, we include inferred global ancestry in th
 %\add{Add missing rates (SNPs and people) here? Or just frame as QC step?)}
 
 
-\subsection{Simulation study using TOPMed whole genome sequence data}
-
-\edit{Are we sure we want to use TOPMed? Or should we switch back to WHI?}
-
-We implement a simulation study using whole genome sequence data from the Trans-Omics for Precision Medicine (TOPMed) program to compare different approaches for adjusting for ancestral heterogeneity and explore the impact of different variant-level filtering choices, particular with respect to linkage disequlibrium. 
-
-\subsubsection{TOPMed whole genome sequence data}
-
-TOPMed is \add{describe TOPMed}.
-Whole genome sequence data for contributing TOPMed studies is available on dbGaP. 
-We focus on two such studies, the Jackson Heart Study (JHS) (accession number: phs000964) and the Chronic Obstructive Pulmonary Disease Genetic Epidemiology Study (COPDGene) (accession number: phs000951).
-
-\edit{
-\begin{itemize}
-\item describe TOPMed 
-\item describe sequencing methods
-\item how many samples in each study
-\end{itemize}
-}
-
-\subsubsection{Quality control}
-
-% variant-level filters
-We process the sequence data for quality control, keeping only those variants that are bi-allelic, have a minor allele count of at least one, and pass standard variant filters (Mendelian or duplicate genotype discordance $< 3/5\%$, Hardy-Weinberg Equilibrium p-value $> 1 \times 10^{-6}$, etc.).
-\add{Add filter for missing rates!}
-After all exclusions, we are left with \edit{???} and \edit{???} variants in JHS and COPDGene, respectively.
-
-% sample-level filters
-After variant-level filtering, we then use the iterative procedure suggested by Conomos et al. \citep{conomos2016} and implemented in the \edit{TOPMed analysis pipeline} to identify a subset of \edit{??} mutually unrelated individuals. 
-\add{more details about iterative procedure; e.g., sing a kinship threshold of \edit{0.044 $\leftarrow$ double-check} (i.e., excluding first, second, and third degree relatives)} 
-Next, we run an unsupervised \texttt{ADMIXTURE} analysis with $K = 2$ and $K = 3$ and plot inferred global ancestry proportions to identify admixed (African American) and non-admixed (European) individuals.
-\add{more details about thresholds used}
-After sample-level filtering,  \edit{???} and \edit{???} individuals remain in JHS and COPDGene, respectively.
 
 
 
-
-\textbf{QC for JHS} (dbgap accession phs000964):
-
-\begin{itemize}
-\item filtering
-	\begin{itemize}
-	\item bi-allelic SNPs
-	\item minor allele count at least 1
-	\item pass variant filters (in VCFs that were downloaded from dbgap): overlaps with SNP, overlaps with indel, overlaps with VNTR, failed SVM filter, high (3/5\% or more) mendelian or duplicate genotype discordance, excess heterozygosity with HWE p-value < 1e-6
-	\end{itemize}
-\item merge the two subsets (cg1 and cg3)
-\item convert from VCF to GDS
-\item remove close relatives
-	\begin{itemize}
-	\item run king (LD r threshold: 0.32, LD window size: 10, MAF threshold: 0.01, exclude PCA corr: TRUE, build: hg19)
-	\item run PC-AiR 
-	\item run PCRelate 
-	\item run PC-AiR again
-	\item run PCRelate again
-	\end{itemize}
-\item find African Americans
-	\begin{itemize}
-	\item run stricter LD pruning (MAF  = 0.01, window size = 0.5, rsq = 0.01, regions = TRUE, build 37)
-		\begin{itemize}
-		\item List of regions stored here: \verb"/projects/browning/brwnlab/kelsey/spurious_assoc/highLD_regions/"
-		\end{itemize}
-	\item convert GDS to BED
-	\item run ADMIXTURE (K = 2 and K = 3)
-	\item plot proportions
-	\item exclude 40 people inferred to be 100\% European; left with 1888
-	\end{itemize}
-\end{itemize}
-
-\textbf{QC for COPDGene} (phs000951):
-
-\begin{itemize}
-\item filtering
-	\begin{itemize}
-	\item bi-allelic SNPs
-	\item minor allele count at least 1
-	\item pass filtering (from GDS annotation info, I inferred this to include: variant located in centromeric region, variant failed SVM filter, mendelian or duplicate genotype discordance is high (3/5\% or more), excess heterozygosity in chrX in males, excess heterozygosity with HWE p-value < 1e-6)
-	\end{itemize}
-\item convert from VCF to GDS
-\item remove close relatives
-	\begin{itemize}
-	\item run king (LD r threshod = 0.32, LD window size = 10, MAF threshodl = 0.01, exclude PCA corr = TRUE, build = hg38); regions =         see table below
-	\item run PCAiR
-	\item run PCRelate
-	\item run PCAiR again
-	\end{itemize}
-\item find African Americans
-	\begin{itemize}
-	\item run stricter LD pruning (exclude PCA corr regions = TRUE, build = hg38, LD R threshold = 0.1, LD window size = 10, MAF threshold = 0.01); regions = \verb"/projects/browning/brwnlab/kelsey/spurious_assoc/highLD_regions/"
-	\item convert from GDS to PLINK
-	\item run ADMIXTURE with K = 2 and K = 3
-	\item plot proportions and use cut-off of 30\% to identify (and then remove) Europeans : Parker et al. 2014 "Admixture mapping identifies a quantitative trait locus associated with..." \verb"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4190160/" (reduced from 8406 to 2676)
-	\end{itemize}
-\end{itemize}
-
-\begin{table}
-\begin{tabular}{ccccc}
-name & chrom & start.base  & end.base  & comment \\
-2q21    &  2  &  129883530 & 140283530       &  LCT \\
-HLA      &    6 &   24092021  & 38892022 & includes MHC \\
-8p23  &        8   &  6612592 &  13455629 &   inversion \\
-17q21.31 &    17  &  40546474 & 44644684   &  inversion \\
-\end{tabular}
-\caption{TOPMed hg19 high corr regions}
-\end{table}
-
-\begin{table}
-\begin{tabular}{ccccc}
-name & chrom & start.base  & end.base  & comment \\
-2q21    &  2  &  129125957 & 139525961       &  LCT \\
-HLA      &    6 &   24091793  & 38924246 & includes MHC \\
-8p23  &        8   &  6755071 &  13598120 &   inversion \\
-17q21.31 &    17  &  42394456 & 46567318   &  inversion \\
-\end{tabular}
-\caption{TOPMed hg38 high corr regions}
-\end{table}
-
-\subsubsection{Genetic ancestry inference}
-
-\begin{itemize}
-\item ADMIXTURE
-	\begin{itemize}
-	\item JHS: ran with both K = 2 and K = 3
-	\item COPDGene: ran with both K = 2 and K = 3
-	\item unsupervised for both
-	\end{itemize}
-\item PCA using SNPRelate
-\item what filtering was performed, and how many variants left after filtering
-	\begin{itemize}
-	\item JHS, ADMIXTURE: see above
-	\item JHS, PCA: exclude regions (TRUE/FALSE), r-squared (1, 0.1, 0.2, 0.05), window size (0, 0.5, 10), and MAF (0, 0.01) 
-		\begin{itemize}
-		\item no filtering: FALSE-1-0-0
-		\item MAF filtering: FALSE-1-0-0.01
-		\item exclude but no prune: TRUE-1-0-0.01
-		\item prune but no exclude: FALSE-0.1-0.5-0.01 and FALSE-0.1-10-0.01 and FALSE-0.2-0.5-0.01 and FALSE-0.05-0.5-0.01
-		\item prune and exclude: TRUE-0.1-0.5-0.01 and TRUE-0.1-10-0.01 and TRUE-0.2-0.5-0.01 and TRUE-0.05-0.5-0.01
-		\end{itemize}
-	\item COPD, ADMIXTURE: see above
-	\item COPD, PCA: exclude regions (TRUE/FALSE), r-squared (1, 0.1, 0.2, 0.05), window size (0, 0.5, 10), MAF (0, 0.01)
-		\begin{itemize}
-		\item no filtering: FALSE-1-0-0
-		\item MAF filtering: FALSE-1-0-0.01
-		\item exclude but no prune: TRUE-1-0-0.01
-		\item prune but no exclude: FALSE-0.1-0.5-0.01, FALSE-0.1-10-0.01, FALSE-0.2-0.5-0.01, FALSE-0.05-0.5-0.01
-		\item prune and exclude: TRUE-0.1-0.5-0.01, TRUE-0.1-10-0.01, TRUE-0.05-0.5-0.01, TRUE-0.2-0.5-0.01
-		\end{itemize}	
-	\item COPD, also ran SNPRelate on Europeans with different levels of filtering (FALSE-0.1-0.5-0.01, FALSE-0.2-0.5-0.01, FALSE-1-0-0.01, FALSE-1-0-0, TRUE-0.1-0.5-0.01, TRUE-0.2-0.5-0.01, TRUE-1-0-0.01)
-	\end{itemize}
-\end{itemize}
-
-
-\subsubsection{Evaluating population structure adjustment approaches}
+\subsubsection{Evaluation}
 
 \begin{itemize}
 \item plot PCs vs global ancestry proportions
@@ -530,23 +516,51 @@ HLA      &    6 &   24091793  & 38924246 & includes MHC \\
 \end{itemize}
 
 
+\subsection{Code and Data Availability}
+
+All code and data used throughout this paper are publicly available online: 
+
+\begin{itemize}
+\item TOPMed Sequence Data: \href{https://www.ncbi.nlm.nih.gov/gap/}{https://www.ncbi.nlm.nih.gov/gap/}
+\item Code: \href{https://github.com/kegrinde/PCA}{https://github.com/kegrinde/PCA}
+\end{itemize}
+
 
 \section{Results}
 
 \subsection{Ancestral heterogeneity in TOPMed African American samples}
 
-\begin{itemize}
-\item quickly summarize ancestral heterogeneity (barplots of ADMIXTURE proportions)
-\end{itemize}
+We observe considerable variability in inferred global ancestry among African Americans in JHS and COPDGene. 
+Inferred admixture proportions from an unsupervised \texttt{ADMIXTURE} analysis with both $K = 2$ and $K = 3$ are presented in Figures \ref{fig:JHSbarplots} and \ref{fig:COPDbarplots}. 
+Based on these analyses, we identified \edit{???} individuals in JHS and \edit{???} individuals in COPDGene who appeared to be of European ancestry and were removed from further analyses.
+Given this observed ancestral heterogeneity, appropriately adjusting for global ancestry in GWAS models will be important in these samples.
+
+\begin{figure}[h]
+\center
+\includegraphics[width=0.45\textwidth]{figs/JHS_barplot_unsupervised_K2}
+\includegraphics[width=0.45\textwidth]{figs/JHS_barplot_unsupervised_K3}
+\caption{Barplots of estimated admixture proportions from unsupervised \texttt{ADMIXTURE} analyses with both $K = 2$ and $K = 3$ in TOPMed samples from the Jackson Heart Study. The vertical black dashed lines delineates \edit{???} individuals suspected to be of predominantly European ancestry who were excluded from further analyses.}
+\label{fig:JHSbarplots}
+\end{figure}
+
+\begin{figure}[h]
+\center
+\includegraphics[width=0.45\textwidth]{figs/COPD_barplot_unsupervised_K2}
+\includegraphics[width=0.45\textwidth]{figs/COPD_barplot_unsupervised_K3}
+\caption{Barplots of estimated admixture proportions from an unsupervised \texttt{ADMIXTURE} analyses with both $K = 2$ and $K = 3$ in TOPMed samples from the Genetic Epidemiology of COPD Study. The vertical black dashed line separates \edit{???} individuals inferred to be African American, on the right, from \edit{???} individuals inferred to be European American.}
+\label{fig:COPDbarplots}
+\end{figure}
 
 
-\subsection{Confirming the importance of adjusting for population structure}
+\subsection{Naive principal component analysis captures local genomic features} 
 
-\begin{itemize}
-\item show an example manhattan plot with no adjustment
-\item compare average number of spurious associations
-\item tie in theoretical results
-\end{itemize}
+%\subsection{Confirming the importance of adjusting for population structure}
+%
+%\begin{itemize}
+%\item show an example manhattan plot with no adjustment
+%\item compare average number of spurious associations
+%\item tie in theoretical results
+%\end{itemize}
 
 \subsection{Comparing different approaches for adjusting for population structure}
 

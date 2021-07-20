@@ -3,17 +3,16 @@
 \BOOKMARK [2][-]{subsection.2.1}{TOPMed Whole Genome Sequence Data}{section.2}% 3
 \BOOKMARK [2][-]{subsection.2.2}{Additional Quality Control and Filtering}{section.2}% 4
 \BOOKMARK [2][-]{subsection.2.3}{Principal Component Analysis}{section.2}% 5
-\BOOKMARK [2][-]{subsection.2.4}{Adjusting for ancestral heterogeneity in genome-wide association studies}{section.2}% 6
-\BOOKMARK [2][-]{subsection.2.5}{Simulation study using TOPMed whole genome sequence data}{section.2}% 7
-\BOOKMARK [3][-]{subsubsection.2.5.1}{TOPMed whole genome sequence data}{subsection.2.5}% 8
-\BOOKMARK [3][-]{subsubsection.2.5.2}{Quality control}{subsection.2.5}% 9
-\BOOKMARK [3][-]{subsubsection.2.5.3}{Genetic ancestry inference}{subsection.2.5}% 10
-\BOOKMARK [3][-]{subsubsection.2.5.4}{Evaluating population structure adjustment approaches}{subsection.2.5}% 11
-\BOOKMARK [1][-]{section.3}{Results}{}% 12
-\BOOKMARK [2][-]{subsection.3.1}{Ancestral heterogeneity in TOPMed African American samples}{section.3}% 13
-\BOOKMARK [2][-]{subsection.3.2}{Confirming the importance of adjusting for population structure}{section.3}% 14
-\BOOKMARK [2][-]{subsection.3.3}{Comparing different approaches for adjusting for population structure}{section.3}% 15
-\BOOKMARK [1][-]{section.4}{Discussion}{}% 16
-\BOOKMARK [1][-]{section.5}{Appendices}{}% 17
-\BOOKMARK [2][-]{subsection.5.1}{Regions Removed Prior to PCA}{section.5}% 18
-\BOOKMARK [2][-]{subsection.5.2}{Mathematical Derivations}{section.5}% 19
+\BOOKMARK [2][-]{subsection.2.4}{Simulation Study}{section.2}% 6
+\BOOKMARK [3][-]{subsubsection.2.4.1}{Simulated Traits}{subsection.2.4}% 7
+\BOOKMARK [3][-]{subsubsection.2.4.2}{GWAS Models}{subsection.2.4}% 8
+\BOOKMARK [3][-]{subsubsection.2.4.3}{Evaluation}{subsection.2.4}% 9
+\BOOKMARK [2][-]{subsection.2.5}{Code and Data Availability}{section.2}% 10
+\BOOKMARK [1][-]{section.3}{Results}{}% 11
+\BOOKMARK [2][-]{subsection.3.1}{Ancestral heterogeneity in TOPMed African American samples}{section.3}% 12
+\BOOKMARK [2][-]{subsection.3.2}{Naive principal component analysis captures local genomic features}{section.3}% 13
+\BOOKMARK [2][-]{subsection.3.3}{Comparing different approaches for adjusting for population structure}{section.3}% 14
+\BOOKMARK [1][-]{section.4}{Discussion}{}% 15
+\BOOKMARK [1][-]{section.5}{Appendices}{}% 16
+\BOOKMARK [2][-]{subsection.5.1}{Regions Removed Prior to PCA}{section.5}% 17
+\BOOKMARK [2][-]{subsection.5.2}{Mathematical Derivations}{section.5}% 18
