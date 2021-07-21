@@ -253,7 +253,7 @@ To conclude, we provide suggestions regarding best practice for appropriately co
 
 The Trans-Omics for Precision Medicine (TOPMed) Whole Genome Sequencing Project is an ongoing project sponsored by the National Heart, Lung, and Blood Institute (NHLBI) that is working to collect and analyze whole-genome sequences, other 'omics data, and rich phenotypic information for over 100,000 individuals from diverse backgrounds. 
 Data are periodically released on dbGaP for analysis by the broader scientific community. 
-Our analysis focuses in particular on data from \textit{freeze 4}, released in 2017, and \textit{freeze 5b}, released in 2018.
+Our analysis uses data from \textit{freeze 4}, released in 2017, and \textit{freeze 5b}, released in 2018.
 These two freezes include samples from a large number of contributing studies.
 We focus on two such studies: the Jackson Heart Study (JHS) (accession number: phs000964) and the Genetic Epidemiology of Chronic Obstructive Pulmonary Disease Study (COPDGene) (accession number: phs000951).
 In total, the freeze 4 JHS dataset includes 3,406 African American individuals and the freeze 5b COPDGene dataset includes 8,742 African American and European American individuals.
@@ -271,27 +271,28 @@ Details on TOPMed sequencing and QC methods are available in Taliun et al. \cite
 \label{sec:filter}
 
 %% filters applied universally
-After downloading the JHS and COPDGene data from dbGaP, we performed additional filtering before proceeding with principal component analysis.
+Prior to principal component analysis, we perform additional variant- and sample-level filtering.
 % bcftools filters from Joe
-We used \texttt{bcftools} \citep{bcftools} to remove indels and otherwise restrict our analyses to biallelic single nucleotide variants (SNVs). 
+We use \texttt{bcftools} \citep{bcftools} to remove indels and otherwise restrict our analyses to biallelic single nucleotide variants (SNVs). 
 % MAF and missing rates
-We also removed variants with low minor allele frequency ($< 1\%$) and/or \edit{high rates of missing calls ($>1\%$) --- STILL NEEDS TO BE IMPLEMENTED}.
-After this filtering, we were left with \edit{???} SNVs in JHS and \edit{???} SNVs in COPDGene.
+We also remove variants with low minor allele frequency ($< 1\%$) and/or \edit{high rates of missing calls ($>1\%$) --- STILL NEEDS TO BE IMPLEMENTED}.
+After this filtering, a total of \edit{???} SNVs remain in JHS and \edit{???} SNVs remain in COPDGene.
 
 % relatives 
-At the sample level, we used the iterative procedure proposed by Conomos et al. \citep{conomos2016related} and implemented in the \href{https://github.com/UW-GAC/analysis_pipeline}{TOPMed Analysis Pipeline} to identify a subset of mutually unrelated individuals using a kinship threshold of 0.044 (third degree relatives).
+At the sample level, we use the iterative procedure proposed by Conomos et al. \citep{conomos2016related} and implemented in the \href{https://github.com/UW-GAC/analysis_pipeline}{TOPMed Analysis Pipeline} to identify a subset of mutually unrelated individuals using a kinship threshold of 0.044 (third degree relatives).
 % Europeans
-We also performed an unsupervised \texttt{ADMIXTURE} \citep{admixture} analysis with both $K = 2$ and $K = 3$ to identify admixed (African American) and non-admixed (European American) individuals; remaining analyses were restricted to admixed individuals only.
+We also perform an unsupervised \texttt{ADMIXTURE} \citep{admixture} analysis with both $K = 2$ and $K = 3$ to identify admixed (African American) and non-admixed (European American) individuals; we restrict remaining analyses to admixed individuals only.
 % LD pruning
-Prior to both of these analyses we implemented LD pruning/filtering as recommended in their respective user manuals.
+Prior to both of these analyses we implement LD pruning/filtering as recommended in their respective user manuals.
 % how many left?
-After exclusions, a total of \edit{???} and \edit{???} unrelated African Americans remained in JHS and COPDGene, respectively.
+After exclusions, a total of \edit{???} and \edit{???} unrelated African Americans remain in JHS and COPDGene, respectively.
 
+\subsubsection{LD-Based Filtering}
 %% LD-based filtering
-In addition to the filtering described above, we also implemented different types of LD-based filtering.
+In addition to the filtering described above, we also implement different types of LD-based filtering.
 \add{Describe the different types of LD-based filtering we compared (see below).}
-These analyses were also compared to a \textit{naive} analysis that did not perform any LD-based filtering.
-The number of variants that remained after filtering is presented in Table \ref{tab:N}.
+These analyses are also compared to a \textit{naive} analysis that did not perform any LD-based filtering.
+The number of variants that remain after each type of filtering is presented in Table \ref{tab:N}.
 
 \begin{itemize}
 \item Exclude
@@ -429,28 +430,42 @@ COPDGene &  \add{?} &  \add{?} &  \add{?} &  \add{?} &  \add{?} \\
 \subsection{Principal Component Analysis}
 \label{sec:PCA}
 
-We used the \texttt{SNPRelate} package in \texttt{R} to run principal component analysis using each of the subsets of SNVs described in Section \ref{sec:filter}. 
-For each set of principal components, we also used the \texttt{SNPRelate} package to assess the contribution of each SNV to each PC by calculating and plotting SNP loadings, as well as the correlation between genotypes and PCs.
+We use the \texttt{SNPRelate} package in \texttt{R} to run principal component analysis using each of the subsets of SNVs described in Section \ref{sec:filter}. 
+For each set of principal components, we also use the \texttt{SNPRelate} package to assess the contribution of each variant to each PC by calculating and plotting SNP loadings, as well as the correlation between genotypes and PCs.
 
 
-\subsection{Simulation Study}
+\subsection{Simulation Study to Investigate Rates of Spurious Associations}
 
-We implement a simulation study to explore the impact of different variant-level filtering choices, particularly with respect to linkage disequlibrium. 
+We implement a simulation study to explore the impact of different variant-level filtering choices, particularly with respect to linkage disequlibrium, on rates of spurious associations in genome-wide association studies using models that adjust for ancestral heterogeneity using principal components.
 
 \subsubsection{Simulated Traits}
 
+\add{
+\begin{itemize}
+\item find loading peaks from "naive" approach
+\item simulate trait that is beta * x + rnorm(0, 1), where beta = 1 or 2 and x = genotype at one of the peaks
+\end{itemize}
+}
 
 \subsubsection{GWAS Models}
 
 To perform genome-wide association studies in samples of unrelated admixed individuals, we use marginal regression models, regressing the trait of interest on the genotype at each position across the genome. 
 At a given position $j$, we quantify genotype $g_{ij}$ as the number of copies (0, 1, or 2) of some pre-specified allele (e.g., the minor allele) carried by individual $i$ at that position. 
 Considering a quantitative trait $y_i$, we fit one linear regression model at each position ($j = 1, \dots, m$): $$E[y_i \mid g_{ij}, \mathbf{z}_i] = \beta_0 + \beta_j g_{ij} + \boldsymbol{\beta}_z \mathbf{z}_i,$$ where $\mathbf{z}_i$ is a vector of additional covariates (e.g., potential confounding variables) that we want to include in the model.
-This linear regression model can be replaced with a logistic regression model in the case of a binary trait (e.g., disease status).
-In either case, we test for an association between the trait and genotype by testing the null hypothesis $H_0: \beta_j = 0$ at each position $j = 1, \dots, m$.
+%This linear regression model can be replaced with a logistic regression model in the case of a binary trait (e.g., disease status).
+We test for an association between the trait and genotype by testing the null hypothesis $H_0: \beta_j = 0$ at each position $j = 1, \dots, m$.
 
 
-To adjust for ancestral heterogeneity, we include inferred global ancestry in the vector $\mathbf{z}_i$ of potential confounders in our regression models. We infer global ancestry using one of two techniques: model-based global ancestry inference of principal component analysis.
+To adjust for ancestral heterogeneity, we include inferred global ancestry in the vector $\mathbf{z}_i$ of potential confounders in our regression models. We infer global ancestry using one of two techniques: model-based global ancestry inference of principal component analysis. 
+\add{describe which models we compare}
 
+\add{
+\begin{itemize}
+\item for each of 188*2 simulated phenotypes
+\item for each set of PCs
+\item including 1, 4, or 10 PCs
+\end{itemize}
+}
 
 %% UPDATE: skipping details of model-based GAI
 %\subsubsection{Model-based global ancestry inference}
@@ -494,26 +509,7 @@ To adjust for ancestral heterogeneity, we include inferred global ancestry in th
 
 \subsubsection{Evaluation}
 
-\begin{itemize}
-\item plot PCs vs global ancestry proportions
-\item plot SNP loadings 
-\end{itemize}
-
-
-\begin{itemize}
-\item simulating traits (effect sizes, choice of causal SNPs)
-	\begin{itemize}
-	\item find loading peaks from "naive" approach
-	\item simulate trait that is beta * x + rnorm(0, 1), where beta = 1 or 2 and x = genotype at one of the peaks
-	\end{itemize}
-\item running GWAS
-	\begin{itemize}
-	\item for each of 188*2 simulated phenotypes
-	\item for each set of PCs
-	\item including 1, 4, or 10 PCs
-	\end{itemize}
-\item defining spurious associations
-\end{itemize}
+\add{defining spurious associations}
 
 
 \subsection{Code and Data Availability}
@@ -533,7 +529,7 @@ All code and data used throughout this paper are publicly available online:
 We observe considerable variability in inferred global ancestry among African Americans in JHS and COPDGene. 
 Inferred admixture proportions from an unsupervised \texttt{ADMIXTURE} analysis with both $K = 2$ and $K = 3$ are presented in Figures \ref{fig:JHSbarplots} and \ref{fig:COPDbarplots}. 
 Based on these analyses, we identified \edit{???} individuals in JHS and \edit{???} individuals in COPDGene who appeared to be of European ancestry and were removed from further analyses.
-Given this observed ancestral heterogeneity, appropriately adjusting for global ancestry in GWAS models will be important in these samples.
+Given this observed ancestral heterogeneity, we know that appropriately adjusting for global ancestry in GWAS models will be important in these samples.
 
 \begin{figure}[h]
 \center
@@ -551,8 +547,20 @@ Given this observed ancestral heterogeneity, appropriately adjusting for global 
 \label{fig:COPDbarplots}
 \end{figure}
 
+\subsection{Comparison of principal components and model-based admixture proportions}
 
-\subsection{Naive principal component analysis captures local genomic features} 
+\begin{itemize}
+\item scatterplots of first four PCs vs admixture proportions ($K = 2$) for each set of PCs
+\item show that for all approaches the first PC is highly correlated with the model-based admixture proportion
+\end{itemize}
+
+\subsection{Principal Component Analysis without Adequate Filtering Captures Local Genomic Features} 
+
+\begin{itemize}
+\item plots of SNP loadings and/or correlation for each set of PCs
+\item show that approaches that do not prune enough are picking up multiple local features
+\item compare to European analyses that tend to pick up just one region at a time
+\end{itemize}
 
 %\subsection{Confirming the importance of adjusting for population structure}
 %
@@ -562,8 +570,12 @@ Given this observed ancestral heterogeneity, appropriately adjusting for global 
 %\item tie in theoretical results
 %\end{itemize}
 
-\subsection{Comparing different approaches for adjusting for population structure}
+\subsection{Principal Components Can Induce Spurious Associations}
 
+%\subsection{Comparing different approaches for adjusting for population structure}
+%
+
+\add{
 Part 1: how does FWER compare?
 
 \begin{itemize}
@@ -589,6 +601,7 @@ Part 1: how does FWER compare?
 	\end{itemize}
 \item mathematical results
 \end{itemize}
+}
 
 
 %\subsection{Power}
