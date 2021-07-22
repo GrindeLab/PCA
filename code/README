@@ -16,8 +16,9 @@ qsub -q b-students.q -N filter -t 1-22 -pe local 2 run_job_array.sh step1_bcftoo
 ### Step 1b (JHS only): merge subsets ###
 #########################################
 
-## assumes the same SNVs were filtered in Step 1
+## note: assumes the same SNVs were filtered in Step 1
 ## will need to be modified if not true
+
 qsub -q b-students.q -N merge -pe local 4 -t 1-22 run_job_array.sh step1b_merge_subsets_JHS_only.sh /projects/browning/brwnlab/kelsey/spurious_assoc/jhs/vcf/filtered_cg1_freeze4 /projects/browning/brwnlab/kelsey/spurious_assoc/jhs/vcf/filtered_cg3_freeze4 /projects/browning/brwnlab/kelsey/spurious_assoc/jhs/vcf/filtered_JHS_freeze4
 
 
@@ -25,7 +26,18 @@ qsub -q b-students.q -N merge -pe local 4 -t 1-22 run_job_array.sh step1b_merge_
 ### Step 2: convert VCF to GDS ###
 ##################################
 
+## note: uses code from the TOPMed analysis pipeline
+
 ## JHS
+./step2_vcf2gds.sh /projects/topmed/analysts/grindek/analysis_pipeline-master grindek@uw.edu config/step2_vcf2gds_jhs.config
 
 ## COPDGene
+./step2_vcf2gds.sh /projects/topmed/analysts/grindek/analysis_pipeline-master grindek@uw.edu config/step2_vcf2gds_copd.config
+
+
+
+################################################
+### Step 3: filtering for PC-AiR & admixture ###
+################################################
+
 
