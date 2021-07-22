@@ -27,17 +27,41 @@ qsub -q b-students.q -N merge -pe local 4 -t 1-22 run_job_array.sh step1b_merge_
 ##################################
 
 ## note: uses code from the TOPMed analysis pipeline
+## https://github.com/UW-GAC/analysis_pipeline
 
 ## JHS
-./step2_vcf2gds.sh /projects/topmed/analysts/grindek/analysis_pipeline-master grindek@uw.edu config/step2_vcf2gds_jhs.config
+./step2_vcf2gds.sh /projects/topmed/analysts/grindek/analysis_pipeline-master config/step2_vcf2gds_jhs.config
 
 ## COPDGene
-./step2_vcf2gds.sh /projects/topmed/analysts/grindek/analysis_pipeline-master grindek@uw.edu config/step2_vcf2gds_copd.config
+./step2_vcf2gds.sh /projects/topmed/analysts/grindek/analysis_pipeline-master config/step2_vcf2gds_copd.config
 
 
 
-################################################
-### Step 3: filtering for PC-AiR & admixture ###
-################################################
+########################################
+### Step 3: removing close relatives ###
+########################################
+
+#### Step 3a: LD pruning (+ MAF and missing filters)
+## JHS
+./step3a_ld_pruning.sh /projects/topmed/analysts/grindek/analysis_pipeline-master config/step3a_ld_pruning_jhs.config
+
+## COPD
+./step3a_ld_pruning.sh /projects/topmed/analysts/grindek/analysis_pipeline-master config/step3a_ld_pruning_copd.config
+
+
+#### Step 3b: KING
+## JHS
+./step3b_king.sh /projects/topmed/analysts/grindek/analysis_pipeline-master config/step3b_king_jhs.config
+
+## COPD
+./step3b_king.sh /projects/topmed/analysts/grindek/analysis_pipeline-master config/step3b_king_copd.config
+
+#### Step 4b: PC-AiR (round 1)
+
+
+#### Step 4c: PCRelate
+
+
+#### Step 4d: PC-AiR (round 2)
 
 
