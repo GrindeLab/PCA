@@ -431,7 +431,8 @@ COPDGene &  \add{?} &  \add{?} &  \add{?} &  \add{?} &  \add{?} \\
 \label{sec:PCA}
 
 We use the \texttt{SNPRelate} package in \texttt{R} to run principal component analysis using each of the subsets of SNVs described in Section \ref{sec:filter}. 
-For each set of principal components, we also use the \texttt{SNPRelate} package to assess the contribution of each variant to each PC by calculating and plotting SNP loadings, as well as the correlation between genotypes and PCs.
+For each set of principal components, we also use the \texttt{SNPRelate} package to assess the contribution of each variant to each PC by calculating and plotting the correlation between genotypes and PCs.
+\add{also look at loadings? shouldn't this give us the same picture as corr?}
 
 
 \subsection{Simulation Study to Investigate Rates of Spurious Associations}
@@ -531,7 +532,7 @@ Inferred admixture proportions from an unsupervised \texttt{ADMIXTURE} analysis 
 Based on these analyses, we identified \edit{???} individuals in JHS and \edit{???} individuals in COPDGene who appeared to be of European ancestry and were removed from further analyses.
 Given this observed ancestral heterogeneity, we know that appropriately adjusting for global ancestry in GWAS models will be important in these samples.
 
-\begin{figure}[h]
+\begin{figure}
 \center
 \includegraphics[width=0.45\textwidth]{figs/JHS_barplot_unsupervised_K2}
 \includegraphics[width=0.45\textwidth]{figs/JHS_barplot_unsupervised_K3}
@@ -539,7 +540,7 @@ Given this observed ancestral heterogeneity, we know that appropriately adjustin
 \label{fig:JHSbarplots}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}
 \center
 \includegraphics[width=0.45\textwidth]{figs/COPD_barplot_unsupervised_K2}
 \includegraphics[width=0.45\textwidth]{figs/COPD_barplot_unsupervised_K3}
@@ -554,13 +555,80 @@ Given this observed ancestral heterogeneity, we know that appropriately adjustin
 \item show that for all approaches the first PC is highly correlated with the model-based admixture proportion
 \end{itemize}
 
-\subsection{Principal Component Analysis without Adequate Filtering Captures Local Genomic Features} 
+\subsection{Principal Component Analysis without Adequate Filtering Captures Multiple Local Genomic Features} 
 
 \begin{itemize}
 \item plots of SNP loadings and/or correlation for each set of PCs
+	\begin{itemize}
+	\item JHS:  Figures \ref{fig:corrNoExclude} and \ref{fig:corrExclude}
+	\item COPD: Figures \ref{fig:corrCOPDNoExclude} and \ref{fig:corrCOPDExclude}
+	\end{itemize}
 \item show that approaches that do not prune enough are picking up multiple local features
+	\begin{itemize}
+	\item need smaller $r^2$ threshold of 0.1 and larger window size of 10 Mb until peaks go away
+	\item in COPD is even this stricter pruning not enough??
+	\end{itemize}
 \item compare to European analyses that tend to pick up just one region at a time
+	\begin{itemize}
+	\item one peak: Figure \ref{fig:corrEuropeans}
+	\item weaker pruning fixes the problem
+	\end{itemize}
 \end{itemize}
+
+\begin{figure}
+\label{fig:corrNoExclude}
+\makebox[\textwidth][c]{
+\includegraphics[width=0.24\paperwidth]{figs/JHS_prune_FALSE_1_0_0.01_snprelate_corr_1}
+\includegraphics[width=0.24\paperwidth]{figs/JHS_prune_FALSE_0.2_0.5_0.01_snprelate_corr_1}
+\includegraphics[width=0.24\paperwidth]{figs/JHS_prune_FALSE_0.1_0.5_0.01_snprelate_corr_1}
+\includegraphics[width=0.24\paperwidth]{figs/JHS_prune_FALSE_0.1_10_0.01_snprelate_corr_1}
+}
+\caption{Correlation between the first four principal components and genotypes in Jackson Heart Study African Americans when previously-identified high-LD regions (Table \ref{tab:highLD}) \textit{are not} removed prior to analysis. From left to right, panels correspond to increasingly strict levels of LD pruning: no LD pruning, LD pruning with an $r^2$ threshold of 0.2 and a window size of 0.5 Mb, LD pruning with an $r^2$ threshold of 0.1 and a window size of 0.5 Mb, and LD pruning with an $r^2$ threshold of 0.1 and a window size of 10 Mb.}
+\end{figure}
+
+\begin{figure}
+\label{fig:corrExclude}
+\makebox[\textwidth][c]{
+\includegraphics[width=0.24\paperwidth]{figs/JHS_prune_TRUE_1_0_0.01_snprelate_corr_1}
+\includegraphics[width=0.24\paperwidth]{figs/JHS_prune_TRUE_0.2_0.5_0.01_snprelate_corr_1}
+\includegraphics[width=0.24\paperwidth]{figs/JHS_prune_TRUE_0.1_0.5_0.01_snprelate_corr_1}
+\includegraphics[width=0.24\paperwidth]{figs/JHS_prune_TRUE_0.1_10_0.01_snprelate_corr_1}
+}
+\caption{Correlation between the first four principal components and genotypes in Jackson Heart Study African Americans when previously-identified high-LD regions (Table \ref{tab:highLD}) \textit{are} removed prior to analysis. From left to right, panels correspond to increasingly strict levels of LD pruning: no LD pruning, LD pruning with an $r^2$ threshold of 0.2 and a window size of 0.5 Mb, LD pruning with an $r^2$ threshold of 0.1 and a window size of 0.5 Mb, and LD pruning with an $r^2$ threshold of 0.1 and a window size of 10 Mb.}
+\end{figure}
+
+\begin{figure}[h]
+\label{fig:corrCOPDNoExclude}
+\makebox[\textwidth][c]{
+\includegraphics[width=0.24\paperwidth]{figs/COPD_prune_FALSE_1_0_0.01_snprelate_corr_1}
+\includegraphics[width=0.24\paperwidth]{figs/COPD_prune_FALSE_0.2_0.5_0.01_snprelate_corr_1}
+\includegraphics[width=0.24\paperwidth]{figs/COPD_prune_FALSE_0.1_0.5_0.01_snprelate_corr_1}
+\includegraphics[width=0.24\paperwidth]{figs/COPD_prune_FALSE_0.1_10_0.01_snprelate_corr_1}
+}
+\caption{Correlation between the first four principal components and genotypes in COPDGene African Americans when previously-identified high-LD regions (Table \ref{tab:highLD}) \textit{are not} removed prior to analysis. From left to right, panels correspond to increasingly strict levels of LD pruning: no LD pruning, LD pruning with an $r^2$ threshold of 0.2 and a window size of 0.5 Mb, LD pruning with an $r^2$ threshold of 0.1 and a window size of 0.5 Mb, and LD pruning with an $r^2$ threshold of 0.1 and a window size of 10 Mb.}
+\end{figure}
+
+\begin{figure}[h]
+\label{fig:corrCOPDExclude}
+\makebox[\textwidth][c]{
+\includegraphics[width=0.24\paperwidth]{figs/COPD_prune_TRUE_1_0_0.01_snprelate_corr_1}
+\includegraphics[width=0.24\paperwidth]{figs/COPD_prune_TRUE_0.2_0.5_0.01_snprelate_corr_1}
+\includegraphics[width=0.24\paperwidth]{figs/COPD_prune_TRUE_0.1_0.5_0.01_snprelate_corr_1}
+\includegraphics[width=0.24\paperwidth]{figs/COPD_prune_TRUE_0.1_10_0.01_snprelate_corr_1}
+}
+\caption{Correlation between the first four principal components and genotypes in COPDGene African Americans when previously-identified high-LD regions (Table \ref{tab:highLD}) \textit{are} removed prior to analysis. From left to right, panels correspond to increasingly strict levels of LD pruning: no LD pruning, LD pruning with an $r^2$ threshold of 0.2 and a window size of 0.5 Mb, LD pruning with an $r^2$ threshold of 0.1 and a window size of 0.5 Mb, and LD pruning with an $r^2$ threshold of 0.1 and a window size of 10 Mb.}
+\end{figure}
+
+
+\begin{figure}
+\label{fig:corrEuropeans}
+\makebox[\textwidth][c]{
+\includegraphics[width=0.32\paperwidth]{figs/EUR_prune_FALSE_1_0_0.01_snprelate_load_1}
+\includegraphics[width=0.32\paperwidth]{figs/EUR_prune_FALSE_0.2_0.5_0.01_snprelate_load_1}
+\includegraphics[width=0.32\paperwidth]{figs/EUR_prune_FALSE_0.1_0.5_0.01_snprelate_load_1}
+}
+\caption{SNP loadings for the first four principal components in COPDGene European Americans when previously-identified high-LD regions (Table \ref{tab:highLD}) are not removed prior to analysis but increasingly strict levels of LD pruning are performed. From left to right, columns correspond to no LD pruning, LD pruning with an $r^2$ threshold of 0.2 and a window size of 0.5 Mb, and LD pruning with an $r^2$ threshold of 0.1 and a window size of 0.5 Mb. \add{Change to look at correlation instead of loadings}}
+\end{figure}
 
 %\subsection{Confirming the importance of adjusting for population structure}
 %
