@@ -1,0 +1,31 @@
+################################################
+### Step 1: keep biallelic SNVs with MAC > 1 ###
+################################################
+
+## JHS subset cg1
+qsub -q b-students.q -N filter -t 1-22 -pe local 2 run_job_array.sh step1_bcftools_filters.sh /projects/browning/brwnlab/sharon/for_xiaowen/dbgap_JHS_freeze4/cg1_41_phs000964_TOPMed_WGS_JHS_freeze4.chr .pass.gtonly.minDP0.genotypes.vcf.gz /projects/browning/brwnlab/kelsey/spurious_assoc/jhs/vcf/filtered_cg1_freeze4
+
+## JHS subset cg3
+qsub -q b-students.q -N filter -t 1-22 -pe local 2 run_job_array.sh step1_bcftools_filters.sh /projects/browning/brwnlab/sharon/for_xiaowen/dbgap_JHS_freeze4/cg3_41_phs000964_TOPMed_WGS_JHS_freeze4.chr .pass.gtonly.minDP0.genotypes.vcf.gz /projects/browning/brwnlab/kelsey/spurious_assoc/jhs/vcf/filtered_cg3_freeze4
+
+## COPDGene
+qsub -q b-students.q -N filter -t 1-22 -pe local 2 run_job_array.sh step1_bcftools_filters.sh /projects/browning/brwnlab/sharon/for_kelsey/dbgap_topmed_copdgene/cg1_phs000951_TOPMed_WGS_COPDGene_freeze.5b.chr .pass_and_fail.gtonly.minDP0.hg38.vcf.gz /projects/browning/brwnlab/kelsey/spurious_assoc/copd/vcf/filtered_freeze5
+
+
+#########################################
+### Step 1b (JHS only): merge subsets ###
+#########################################
+
+## assumes the same SNVs were filtered in Step 1
+## will need to be modified if not true
+qsub -q b-students.q -N merge -pe local 4 -t 1-22 run_job_array.sh step1b_merge_subsets_JHS_only.sh /projects/browning/brwnlab/kelsey/spurious_assoc/jhs/vcf/filtered_cg1_freeze4 /projects/browning/brwnlab/kelsey/spurious_assoc/jhs/vcf/filtered_cg3_freeze4 /projects/browning/brwnlab/kelsey/spurious_assoc/jhs/vcf/filtered_JHS_freeze4
+
+
+##################################
+### Step 2: convert VCF to GDS ###
+##################################
+
+## JHS
+
+## COPDGene
+
