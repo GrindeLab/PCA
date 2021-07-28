@@ -193,11 +193,13 @@ The above-cited suggestions regarding LD pruning and filtering are not universal
 Furthermore, much of this work was conducted in populations of European ancestry, so recommendations on how best to implement principal component-based adjustment for ancestral heterogeneity in admixed populations are lacking. 
 % outline rest of paper
 In this paper, we investigate the impact of LD filtering and pruning choices, as well as choices of the number of principal components to include in analyses, on genome-wide association studies in admixed populations.
-We conduct simulation studies using whole genome sequence data for African American individuals in the Trans-Omics for Precision Medicine (TOPMed) project and provide analytic results to show that including too many PCs can actually induce spurious associations in GWAS, particularly when those extraneous PCs capture local genomic features rather than genome-wide ancestry.  
+\edit{We conduct simulation studies using whole genome sequence data for African American individuals in the Trans-Omics for Precision Medicine (TOPMed) project and provide analytic results to show that including too many PCs can actually induce spurious associations in GWAS, particularly when those extraneous PCs capture local genomic features rather than genome-wide ancestry.  --- ADD WHI}
 To conclude, we provide suggestions regarding best practice for appropriately controlling for ancestral heterogeneity in genome-wide association studies in admixed populations.
 
 
 \section{Material and Methods}
+
+\edit{ADD WHI}
 
 % provide sufficient detail so readers can understand how experiments were performed and procedures can be repeated
 % describe any statistical methods employed in study
@@ -525,37 +527,79 @@ All code and data used throughout this paper are publicly available online:
 
 \section{Results}
 
-\subsection{Ancestral heterogeneity in TOPMed African American samples}
+\subsection{Ancestral heterogeneity in admixed populations}
 
-We observe considerable variability in inferred global ancestry among African Americans in JHS and COPDGene. 
-Inferred admixture proportions from an unsupervised \texttt{ADMIXTURE} analysis with both $K = 2$ and $K = 3$ are presented in Figures \ref{fig:JHSbarplots} and \ref{fig:COPDbarplots}. 
-Based on these analyses, we identified \edit{???} individuals in JHS and \edit{???} individuals in COPDGene who appeared to be of European ancestry and were removed from further analyses.
-Given this observed ancestral heterogeneity, we know that appropriately adjusting for global ancestry in GWAS models will be important in these samples.
+Inferred global ancestry proportions for TOPMed JHS African Americans, TOPMed COPDGene African Americans, WHI SHARe African Americans, and \add{WHI SHARe Hispanic Americans} are presented in Figure \ref{fig:barplots}. 
+As has been the case in other studies of admixed populations, we observe considerable variability in the relative proportions of African and European (and, in the case of WHI SHARe Hispanic Americans, Native American) ancestry across these samples.  
+This ancestral heterogeneity motivates the need to carefully adjust for global ancestry in genome-wide association studies in these, and other, admixed samples.
 
-\begin{figure}
-\center
-\includegraphics[width=0.45\textwidth]{figs/JHS_barplot_unsupervised_K2}
-\includegraphics[width=0.45\textwidth]{figs/JHS_barplot_unsupervised_K3}
-\caption{Barplots of estimated admixture proportions from unsupervised \texttt{ADMIXTURE} analyses with both $K = 2$ and $K = 3$ in TOPMed samples from the Jackson Heart Study. The vertical black dashed lines delineates \edit{???} individuals suspected to be of predominantly European ancestry who were excluded from further analyses.}
-\label{fig:JHSbarplots}
-\end{figure}
+%% MOVE SOME OF THIS TO METHODS
+%Inferred admixture proportions from an unsupervised \texttt{ADMIXTURE} analysis with both two ($K = 2$) and three ($K = 3$) ancestral populations are presented in Figure \ref{fig:barplots}. 
+%Although the analysis is unsupervised, based on prior studies of admixture in African Americans we assume that the ancestral populations colored in blue in Figure \ref{fig:barplots} correspond to European ancestry, and populations colored in orange correspond to African ancestry.
+%The COPDGene study includes both African Americans and European Americans so, as expected, we see that over half of the individuals in that sample are inferred to have nearly 100\% of their genetic material inherited from European ancestors. 
+%Our work focuses on genetic association studies in admixed populations, but we do not have self-identified or reported race/ethnicity information for these samples, so we used these inferred admixture proportions to identify and exclude \edit{???} individuals of primarily (at least $70\%$) European ancestry from our analyses.
+%(The choice of threshold follows from the results reported by Parker et al. \citep{parker2014}, showing that African Americans in the COPDGene study have inferred proportions of European ancestry ranging from 0 to 30\%.)
+%Although JHS is known to focus on African American individuals, we do also see four individuals inferred to have 100\% European ancestry in that sample; these individuals were excluded from further analyses. 
+%Among the remaining samples inferred to be African American, we observe considerable variability in the relative proportions of African and European ancestry, motivating the need to appropriately adjust for ancestral heterogeneity in genome-wide association studies in these samples. 
+
+\add{Barplots:
+\begin{itemize}
+\item JHS African Americans only (remove EA)
+\item COPDGene African Americans only (remove EA)
+\item WHI SHARe African Americans
+\item WHI SHARe Hispanic Americans
+\end{itemize}
+}
 
 \begin{figure}
 \center
 \includegraphics[width=0.45\textwidth]{figs/COPD_barplot_unsupervised_K2}
-\includegraphics[width=0.45\textwidth]{figs/COPD_barplot_unsupervised_K3}
-\caption{Barplots of estimated admixture proportions from an unsupervised \texttt{ADMIXTURE} analyses with both $K = 2$ and $K = 3$ in TOPMed samples from the Genetic Epidemiology of COPD Study. The vertical black dashed line separates \edit{???} individuals inferred to be African American, on the right, from \edit{???} individuals inferred to be European American.}
-\label{fig:COPDbarplots}
+%\includegraphics[width=0.45\textwidth]{figs/COPD_barplot_unsupervised_K3}
+\includegraphics[width=0.45\textwidth]{figs/JHS_barplot_unsupervised_K2}
+%\includegraphics[width=0.45\textwidth]{figs/JHS_barplot_unsupervised_K3}
+\caption{Barplots of estimated admixture proportions from unsupervised \texttt{ADMIXTURE} analyses with $K = 2$ in TOPMed COPDGene African Americans (left panel) and JHS African Americans (right panel).
+%The vertical black dashed lines separate individuals inferred to be African American (a mix of African and European ancestry) from individuals inferred to be European American (primarily or entirely European ancestry).
+}
+\label{fig:barplots}
 \end{figure}
+
 
 \subsection{Comparison of principal components and model-based admixture proportions}
 
+Comparing model-based admixture proportions generated by \texttt{ADMIXTURE} to principal components confirms that initial PCs are capturing genome-wide continental ancestry. 
+In all three African American samples (Figure \ref{fig:pcsvsglobAA}), the first PC is highly correlated with the inferred proportion of \edit{African/European} ancestry, while later PCs show very little correlation with global ancestry.
+\add{In WHI SHARe Hispanic Americans (Figure \ref{fig:pcsvsglobHA}, we see ...}
+We observe similar patterns of correlation between PCs and inferred admixture proportions regardless of the type of LD filtering (or lack therof) performed prior to running PCA (\add{see Supplemental Figure ???}). 
+%In an African American population, we might expect that only one principal component is needed to capture ancestral heterogeneity, at least with respect to differences in the relative proportion of African and European continental ancestry. 
+%Comparing principal components to the model-based admixture proportions generated by \texttt{ADMIXTURE} ($K = 2$), we see a high correlation (0.992--0.997) between the first PC and the inferred admixture proportions, regardless of the type of LD filtering (or lack thereof) performed prior to running PCA (see Figure \ref{fig:pcsvsglob}).
+%For the second, third, and fourth PCs, we see very little correlation (-0.015--0.009) between those principal components and model-based admixture proportions (Figure \ref{fig:pcsvsglob}).
+One might suspect that these later principal components may be capturing sub-continental structure, but, as we will see in Section \ref{sec:CorrPlots}, in many cases these later PCs are drive by a small number of variants, suggesting that they are capturing local genomic features rather than genome-wide ancestry.
+
+\add{Scatterplot grids:
 \begin{itemize}
-\item scatterplots of first four PCs vs admixture proportions ($K = 2$) for each set of PCs
-\item show that for all approaches the first PC is highly correlated with the model-based admixture proportion
+\item AA: scatterplots of AFR admixture proportions vs the first four PCs (across columns) for each sample JHS/COPD/WHI (across rows)
+\item HA: scatterplots of admixture proportions AFR/EUR/NAM (across rows) vs the first four PCs (across columns) 
+\item supplement: show that similar patterns arise even after strict LD pruning
 \end{itemize}
+}
+
+\begin{figure}[h]
+\center
+(A)
+\includegraphics[width=0.45\textwidth]{figs/pcsvsglob/JHS_pcsvsglob_prune_FALSE_1_0_0.01_K2k1}
+(B)
+\includegraphics[width=0.45\textwidth]{figs/pcsvsglob/JHS_pcsvsglob_prune_TRUE_0.1_10_0.01_K2k1}
+\label{fig:pcsvsglobAA}
+\caption{Comparison of model-based admixture proportions (from an unsupervised \texttt{ADMIXTURE} with $K = 2$) and the first four principal components from various sets of PCs generated after different levels of LD filtering: \\ (A) PCs generated in JHS African Americans without any LD filtering. \\ (B) PCs generated in JHS African Americans after excluding known high LD regions and pruning with an $r^2$ threshold of 0.1 and window size of 10 Mb. \edit{--- NEEDS UPDATING PER DIRECTIONS ABOVE}}
+\end{figure}
+
+\begin{figure}
+\label{fig:pcsvsglobHA}
+\caption{Comparison of model-based admixture proportions and the first four principal components in WHI SHARe Hispanic Americans. PCs were generated without any LD filtering.}
+\end{figure}
 
 \subsection{Principal Component Analysis without Adequate Filtering Captures Multiple Local Genomic Features} 
+\label{sec:CorrPlots}
 
 \begin{itemize}
 \item plots of SNP loadings and/or correlation for each set of PCs
