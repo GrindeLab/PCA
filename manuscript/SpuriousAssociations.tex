@@ -625,13 +625,6 @@ If we then also remove previously-identified high LD regions in addition to perf
 \add{What do we see in WHI SHARe Hispanic Americans?}
 
 
-%% for discussion:
-% why is this happening? (LD)
-% how does what we see compare to what's been observed in Europeans?
-% does LD pruning universally fix the problem (i.e., does it seem to work better in some samples than others)? how many PCs does it help (i.e., what do PCs 5--10 look like)?
-% why do we think exclusions didn't work? (high LD regions identified in Europeans, patterns of LD differ---more extensive---in admixed populations)
-
-
 \noindent\add{Correlation plots:
 \begin{itemize}
 \item Correlation plot or WHI AA with different levels of LD filtering (none vs exclude vs recommended prune vs exclude + prune)
@@ -641,11 +634,19 @@ If we then also remove previously-identified high LD regions in addition to perf
 \end{itemize}
 }
 
-\begin{figure}
+\begin{figure}[h]
 \label{fig:corrWHI}
 \caption{Correlation between PCs and genotypes in WHI SHARe African Americans. \\Each panel plots the absolute value of the correlation (y-axis) between principal components and genotypes at each position along the genome (x-axis). Panels are stratified according to which PC is being investigated (1, 2, 3, or 4) and what level of LD filtering was applied prior to running PCA: \textit{none} (all SNPs), \textit{exclude} (after excluding regions in Table \ref{tab:highLD}), \textit{prune} (after LD pruning with an $r^2$ threshold of 0.1 and a window size of 0.5 Mb, or \textit{both} (after exclusions and LD pruning).}
 \end{figure}
 
+\noindent\add{for discussion:
+\begin{itemize}
+\item why is this happening? (LD)
+\item how does what we see compare to what's been observed in Europeans?
+\item does LD pruning universally fix the problem (i.e., does it seem to work better in some samples than others)? how many PCs does it help (i.e., what do PCs 5--10 look like)?
+\item why do we think exclusions didn't work? (high LD regions identified in Europeans, patterns of LD differ---more extensive---in admixed populations)
+\end{itemize}
+}
 
 %\begin{figure}
 %\label{fig:corrNoExclude}
@@ -717,53 +718,43 @@ If we then also remove previously-identified high LD regions in addition to perf
 
 We have demonstrated that, without LD pruning, principal components can capture local genomic features rather than global ancestry in admixed populations --- but what are the downstream implications of adjusting for these PCs in genome-wide association models?
 Figure \ref{fig:spurious} presents a comparison of the rate of spurious associations in genome-wide association studies in WHI SHARe African Americans.
-\add{What do we see?}
+\add{Adjusting for PCs that capture local genomic features leads to higher rates of spurious associations} 
 
-\begin{figure}
+\begin{figure}[h]
 \label{fig:spurious}
 \caption{Comparison of the average number of spurious associations in genome-wide association studies in WHI SHARe African Americans.}
 \end{figure}
 
-%\subsection{Comparing different approaches for adjusting for population structure}
-%
+\begin{figure}[h]
+\label{fig:manh}
+\caption{Manhattan plots from GWAS in WHI SHARe African Americans using different approaches to adjust for ancestral heterogeneity.}
+\end{figure}
 
-\add{
-Part 1: how does FWER compare?
-
+\noindent\add{when/where do spurious assoc arise? 
 \begin{itemize}
-\item manhattan plots for one or two simulated traits
-\item overall summary of rejection rates
-\item is it appropriate to use same significance threshold for all?
+\item when causal SNP has high contribution to one of the PCs you adjusted for (\ref{fig:spurious})
+\item spurious assoc arises at another SNP that is also correlated with same PC (\ref{fig:manh})
 \end{itemize}
 
-\noindent Part 2: how does rate of spurious associations compare? (and alpha-adjusted spurious assoc?)
-
+why do spurious assoc arise?
 \begin{itemize}
-\item manhattan plots for one or two traits
-\item overall summary of rejection rates
-\end{itemize}
-
-\noindent Part 3: why is this happening?
-
-\begin{itemize}
-\item are admixture proportions and PCs capturing similar information?
-	\begin{itemize}
-	\item correlation between PCs and admixture proportions (PC1 highly correlated with admix prop)
-	\item correlation between PCs and genotypes (without pruning, later PCs highly correlated with genotypes in small regions)
-	\end{itemize}
-\item mathematical results
+\item discuss theoretical results, connect to idea of collider bias
 \end{itemize}
 }
 
-
-%\subsection{Power}
-%
-% skip this for now
-%
-% Do they have similar power?
+%% skip for now unless requested by co-author or reviewer
+%how does FWER compare?
+%\begin{itemize}
+%\item manhattan plots for one or two simulated traits
+%\item overall summary of rejection rates
+%\item is it appropriate to use same significance threshold for all?
+%\end{itemize}
+% do they have similar power?  --- this is easier to do b/c can use existing simulations
 
 
 \section{Discussion}
+
+\edit{NEEDS UPDATING}
 
 % explain significance of results and place them in broader context
 % may contain subheadings
