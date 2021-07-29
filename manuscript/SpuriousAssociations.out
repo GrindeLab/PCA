@@ -12,8 +12,8 @@
 \BOOKMARK [1][-]{section.3}{Results}{}% 12
 \BOOKMARK [2][-]{subsection.3.1}{Ancestral heterogeneity in admixed populations}{section.3}% 13
 \BOOKMARK [2][-]{subsection.3.2}{Comparison of principal components and model-based admixture proportions}{section.3}% 14
-\BOOKMARK [2][-]{subsection.3.3}{Principal Component Analysis without Adequate Filtering Captures Multiple Local Genomic Features}{section.3}% 15
-\BOOKMARK [2][-]{subsection.3.4}{Principal Components Can Induce Spurious Associations}{section.3}% 16
+\BOOKMARK [2][-]{subsection.3.3}{Investigation of PCs capturing local genomic features and the impact of LD pruning}{section.3}% 15
+\BOOKMARK [2][-]{subsection.3.4}{Implications of adjusting for PCs that capture local genomic features}{section.3}% 16
 \BOOKMARK [1][-]{section.4}{Discussion}{}% 17
 \BOOKMARK [1][-]{section.5}{Appendices}{}% 18
 \BOOKMARK [2][-]{subsection.5.1}{Regions Removed Prior to PCA}{section.5}% 19
