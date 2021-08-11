@@ -27,6 +27,10 @@
 % links
 \usepackage{hyperref}
 
+% remove section from figure number
+%\usepackage{chngcntr}
+%\counterwithout{figure}{section}
+
 % bibliography
 \usepackage[super]{natbib} % superscripts
 \renewcommand{\refname}{} % empty title
@@ -58,21 +62,25 @@ associations in genome-wide association studies in admixed populations
 \section*{Authors and Affiliations}
 
 Kelsey E. Grinde,$^{1}$* % should I also list UW?
-Brian L. Browning,$^{2}$ 
-Sharon R. Browning$^{3}$
+Timothy A. Thornton,$^{2,3}$
+Brian L. Browning,$^{4}$ 
+Sharon R. Browning$^{2}$
 
 %% add Lisa, Alex, Tim if we use WHI data
 
 \begin{enumerate}
 \item Department of Mathematics, Statistics, and Computer Science, Macalester College, Saint Paul, MN, 55105, USA
-\item Division of Medical Genetics, Department of Medicine, University of Washington, Seattle, WA, 98195, USA
 \item Department of Biostatistics, University of Washington, Seattle, WA, 98195, USA
+\item \add{Regeneron}
+\item Division of Medical Genetics, Department of Medicine, University of Washington, Seattle, WA, 98195, USA
 \item[*] kgrinde@macalester.edu
 \end{enumerate}
 
 
 \newpage
 \section*{Abstract}
+
+\edit{NEEDS UPDATING}
 
 % single paragraph
 % <= 250 words
@@ -151,40 +159,40 @@ A list of these previously-identified high LD regions and references that recomm
 
 
 \begin{table}
-\label{tab:highLD}
 \center
 \begin{tabular}{crrl}
 Chr & Start (bp) & End (bp) & References \\
 \hline
-chr1   & 48000000     & 52060567   &    \citep{anderson2010, price2008, weale2010} \\
-chr2   & 85941853     & 100500000   &    \citep{anderson2010, price2008, weale2010} \\
-chr2   & 129600000   & 140000000   &    \citep{price2008, novembre2008, weale2010, raska2012, conomos2016, prive2018} \\
-chr2   & 182882739    & 190000000   &    \citep{anderson2010, price2008, weale2010} \\
-chr3   & 47500000     & 50000000    &   \citep{anderson2010, price2008, weale2010}  \\
-chr3   & 83500000     & 87000000    &   \citep{anderson2010, price2008, weale2010} \\
-chr3   & 89000000     &   97500000   &    \citep{price2008, weale2010} \\
-chr3   & 163100000    &   164900000   &    \citep{prive2018} \\
-chr5   & 44000000     &   51500000    &   \citep{fellay2007, anderson2010, price2008, weale2010} \\
-chr5   & 98000000     &  100500000   &    \citep{price2008, weale2010} \\
-chr5   & 129000000    &   132000000   &    \citep{anderson2010, price2008, weale2010} \\
-chr5   & 135500000    &   138500000   &   \citep{price2008, weale2010} \\
-chr6   &  23800000     &   39000000   &    \citep{fellay2007, anderson2010, price2008, novembre2008, weale2010, raska2012, conomos2016, prive2018} \\
-chr6   &  57000000     &   64000000   &    \citep{anderson2010, price2008, weale2010}  \\
-chr6   & 140000000    &   142500000   &    \citep{anderson2010, price2008, weale2010}  \\
-chr7   &  55000000     &   66193285   &    \citep{anderson2010, price2008, weale2010}  \\
-chr8   &   6300000      &  13500000   &    \citep{fellay2007, anderson2010, price2008, novembre2008, tian2008, weale2010, raska2012, conomos2016, prive2018} \\
-chr8   &  43000000    &    50000000   &    \citep{anderson2010, price2008, weale2010}  \\
-chr8   & 112000000    &   115000000    &   \citep{anderson2010, price2008, weale2010} \\
-chr10  &  37000000    &    43000000   &    \citep{anderson2010, price2008, weale2010}  \\
-chr11   & 45000000    &    57000000   &    \citep{fellay2007, price2008, weale2010} \\
-chr11   & 87500000    &    90500000   &    \citep{anderson2010, price2008, weale2010}  \\
-chr12   & 33000000    &    40000000   &    \citep{anderson2010, price2008, weale2010} \\
-chr12   & 109500000   &    112021663   &    \citep{price2008, weale2010} \\
-chr14   & 46600000    &    47500000   &    \citep{prive2018} \\
-chr17   & 37800000    &    42000000    &   \citep{novembre2008, conomos2016} \\
-chr20   & 32000000   &     34500000    &   \citep{anderson2010, price2008, weale2010}  \\
+1   & 48000000     & 52060567   &    \citep{anderson2010, price2008, weale2010} \\
+2   & 85941853     & 100500000   &    \citep{anderson2010, price2008, weale2010} \\
+2   & 129600000   & 140000000   &    \citep{price2008, novembre2008, weale2010, raska2012, conomos2016, prive2018} \\
+2   & 182882739    & 190000000   &    \citep{anderson2010, price2008, weale2010} \\
+3   & 47500000     & 50000000    &   \citep{anderson2010, price2008, weale2010}  \\
+3   & 83500000     & 87000000    &   \citep{anderson2010, price2008, weale2010} \\
+3   & 89000000     &   97500000   &    \citep{price2008, weale2010} \\
+3   & 163100000    &   164900000   &    \citep{prive2018} \\
+5   & 44000000     &   51500000    &   \citep{fellay2007, anderson2010, price2008, weale2010} \\
+5   & 98000000     &  100500000   &    \citep{price2008, weale2010} \\
+5   & 129000000    &   132000000   &    \citep{anderson2010, price2008, weale2010} \\
+5   & 135500000    &   138500000   &   \citep{price2008, weale2010} \\
+6   &  23800000     &   39000000   &    \citep{fellay2007, anderson2010, price2008, novembre2008, weale2010, raska2012, conomos2016, prive2018} \\
+6   &  57000000     &   64000000   &    \citep{anderson2010, price2008, weale2010}  \\
+6   & 140000000    &   142500000   &    \citep{anderson2010, price2008, weale2010}  \\
+7   &  55000000     &   66193285   &    \citep{anderson2010, price2008, weale2010}  \\
+8   &   6300000      &  13500000   &    \citep{fellay2007, anderson2010, price2008, novembre2008, tian2008, weale2010, raska2012, conomos2016, prive2018} \\
+8   &  43000000    &    50000000   &    \citep{anderson2010, price2008, weale2010}  \\
+8   & 112000000    &   115000000    &   \citep{anderson2010, price2008, weale2010} \\
+10  &  37000000    &    43000000   &    \citep{anderson2010, price2008, weale2010}  \\
+11   & 45000000    &    57000000   &    \citep{fellay2007, price2008, weale2010} \\
+11   & 87500000    &    90500000   &    \citep{anderson2010, price2008, weale2010}  \\
+12   & 33000000    &    40000000   &    \citep{anderson2010, price2008, weale2010} \\
+12   & 109500000   &    112021663   &    \citep{price2008, weale2010} \\
+14   & 46600000    &    47500000   &    \citep{prive2018} \\
+17   & 37800000    &    42000000    &   \citep{novembre2008, conomos2016} \\
+20   & 32000000   &     34500000    &   \citep{anderson2010, price2008, weale2010}  \\
 \end{tabular}
-\caption{Regions of the genome with high, long-range, or otherwise unusual patterns of linkage disequilibrium (LD) that are often recommended for exclusion prior to running PCA. This list of regions was generated on the basis of an extensive literature review. Start and end physical (base pair) positions are provided with respect to genome build 36. Also available for download (in builds 36, 37, or 38) at \href{github.com/kegrinde/PCA}{https://github.com/kegrinde/PCA/}.}
+\caption{Regions of the genome with high, long-range, or otherwise unusual patterns of linkage disequilibrium (LD) that are often recommended for exclusion prior to running PCA. This list of regions was generated on the basis of an extensive literature review. Start and end physical (base pair) positions are provided with respect to genome build 36. Also available for download (in builds 36, 37, or 38) at \href{github.com/kegrinde/PCA}{https://github.com/kegrinde/PCA/}. \edit{UPDATE TO REFLECT WHI ANALYSES}}
+\label{tab:highLD}
 \end{table}
 
 
@@ -199,7 +207,7 @@ To conclude, we provide suggestions regarding best practice for appropriately co
 
 \section{Material and Methods}
 
-\edit{ADD WHI}
+\edit{ADD WHI --- see dissertation}
 
 % provide sufficient detail so readers can understand how experiments were performed and procedures can be repeated
 % describe any statistical methods employed in study
@@ -266,7 +274,7 @@ Variant discovery and genotype calling was performed by the TOPMed Informatics R
 % QC
 Quality control (QC) was performed by the sequencing centers, IRC, and TOPMed Data Coordinating Center, and only those samples and variants that passed these stages of QC are included in the VCF downloaded from dbGaP.
 % references
-Details on TOPMed sequencing and QC methods are available in Taliun et al. \citep{taliun2021} and on the TOPMed website: \href{https://www.nhlbiwgs.org/data-sets}{https://www.nhlbiwgs.org/data-sets}.
+Details on TOPMed sequencing and QC methods are available in Taliun et al. \citep{taliun2021} and on the TOPMed website: \href{https://topmed.nhlbi.nih.gov/data-sets}{https://topmed.nhlbi.nih.gov/data-sets}.
 
 
 \subsection{Additional Quality Control and Filtering}
@@ -314,13 +322,13 @@ The number of variants that remain after each type of filtering is presented in 
 \end{itemize}
 
 \begin{table}[h]
-\label{tab:N}
 \begin{tabular}{c|ccccc}
  & Naive & Exclude & Prune & Stricter Prune & Exclude + Stricter Prune \\
 JHS & \add{?} &  \add{?} &  \add{?} & \add{?} &  \add{?} \\
 COPDGene &  \add{?} &  \add{?} &  \add{?} &  \add{?} &  \add{?} \\
 \end{tabular} 
 \caption{Single nucleotide variants that remained in Jackson Heart Study (JHS) and Genetic Epidemiology of COPD (COPDGene) datasets after varying levels of LD-based filtering.}
+\label{tab:N}
 \end{table}
 
 
@@ -595,13 +603,13 @@ We observe similar patterns of correlation between PCs and inferred admixture pr
 \includegraphics[width=0.45\textwidth]{figs/pcsvsglob/JHS_pcsvsglob_prune_FALSE_1_0_0.01_K2k1}
 (B)
 \includegraphics[width=0.45\textwidth]{figs/pcsvsglob/JHS_pcsvsglob_prune_TRUE_0.1_10_0.01_K2k1}
-\label{fig:pcsvsglobAA}
 \caption{Comparison of model-based admixture proportions (from an unsupervised \texttt{ADMIXTURE} with $K = 2$) and the first four principal components from various sets of PCs generated after different levels of LD filtering: \\ (A) PCs generated in JHS African Americans without any LD filtering. \\ (B) PCs generated in JHS African Americans after excluding known high LD regions and pruning with an $r^2$ threshold of 0.1 and window size of 10 Mb. \edit{--- NEEDS UPDATING PER DIRECTIONS ABOVE}}
+\label{fig:pcsvsglobAA}
 \end{figure}
 
 \begin{figure}
-\label{fig:pcsvsglobHA}
 \caption{Comparison of model-based admixture proportions and the first four principal components in WHI SHARe Hispanic Americans. PCs were generated without any LD filtering.}
+\label{fig:pcsvsglobHA}
 \end{figure}
 
 \subsection{Investigation of PCs capturing local genomic features and the impact of LD pruning} 
@@ -609,20 +617,23 @@ We observe similar patterns of correlation between PCs and inferred admixture pr
 
 %% what do we see with no pruning
 As we see in Figures \ref{fig:pcsvsglobAA} and \ref{fig:pcsvsglobHA}, initial principal components seem to be capturing global ancestry, whereas later PCs are not.
-While it is possible that these later principal components may be capturing sub-continental structure that is not captured by the model-based admixture proportions, we see in many cases that these later PCs are actually capturing local genomic features rather than genome-wide ancestry. 
+While it is possible that these higher-order principal components may be capturing sub-continental structure that is not captured by the model-based admixture proportions, we see in many cases that these later PCs are actually capturing local genomic features rather than genome-wide ancestry. 
 This is evident upon inspection of SNP \textit{loadings}---which represent the contribution of each SNP to each PC---and the correlation between PCs and the original genotypes.
 For example, Figure \ref{fig:corrWHI} presents the correlation between PCs and genotypes in WHI SHARe African Americans. 
-We see (in the leftmost panel of the figure) that SNPs across the genome are contributing relatively equally to the first PC, whereas the second, third, and fourth PCs are driven more-so by SNPs on a select number of chromosomes. 
+We see (in the leftmost panel of the figure) that SNPs across the genome are contributing relatively equally to the first PC, whereas the second, third, and fourth PCs are driven more-so by SNPs on just a select number of chromosomes.
+\add{For example, the second PC seems to be capturing ... }
 Similar patterns are observed in JHS African Americans, COPDGene African Americans, and \add{WHI SHARe Hispanic Americans} (Supplemental Figures \add{??}): after the first PC (\edit{or the second in the case of WHI SHARe Hispanic Americans}), all later PCs exhibit multiple peaks in their genotype-PC correlation plots, indicating that those PCs are capturing local genomic features on a handful of chromosomes rather than genome-wide global ancestry. 
 
 %% why is this happening [very brief] + what happens with LD pruning
-As mentioned above, previous authors have suggested that this phenomenon arises as a result of LD among SNPs; as a result, they recommend  that SNPs in high LD with one another be remove prior to running PCA. %% in discussion, note how this differs from what had previously been seen in Europeans (one peak vs multiple peaks, weaker pruning); refer to COPD example in supplement
+As mentioned above, previous authors have suggested that this phenomenon arises due to LD among SNPs; as a result, they recommend  that SNPs in high LD with one another be remove prior to running PCA. %% in discussion, note how this differs from what had previously been seen in Europeans (one peak vs multiple peaks, weaker pruning); refer to COPD example in supplement
 Following these recommendations, we compare the set of principal components based on all SNPs to PCs generated after first removing regions of the genome known to have high LD (Table \ref{tab:highLD}), performing LD pruning, or both. 
 The remaining panels of Figure \ref{fig:corrWHI} show the correlation between genotypes and these other sets of PCs in WHI SHARe African Americans. 
 When we exclude previously-identified high LD regions before running PCA (the second column of Figure \ref{fig:corrWHI}), the pattern of \textit{which} SNPs are driving PCs 2--4 changes, but the issue of PCs capturing local genomic features has not been resolved. 
 However, after LD pruning with an $r^2$ threshold of 0.1 and a window size of 0.5 Mb (third column), we now see similar patterns with PCs 2--4 as we do with the first principal component --- SNPs are now contributing relatively equally to each PC. 
 If we then also remove previously-identified high LD regions in addition to performing LD pruning (last column), the patterns of correlation between PCs and genotypes are indistinguishable from running LD pruning alone. 
 \add{What do we see in WHI SHARe Hispanic Americans?}
+\add{What about later PCs?}
+\add{What do we see in JHS and COPD? refer to supplement}
 
 
 \noindent\add{Correlation plots:
@@ -635,8 +646,8 @@ If we then also remove previously-identified high LD regions in addition to perf
 }
 
 \begin{figure}[h]
-\label{fig:corrWHI}
 \caption{Correlation between PCs and genotypes in WHI SHARe African Americans. \\Each panel plots the absolute value of the correlation (y-axis) between principal components and genotypes at each position along the genome (x-axis). Panels are stratified according to which PC is being investigated (1, 2, 3, or 4) and what level of LD filtering was applied prior to running PCA: \textit{none} (all SNPs), \textit{exclude} (after excluding regions in Table \ref{tab:highLD}), \textit{prune} (after LD pruning with an $r^2$ threshold of 0.1 and a window size of 0.5 Mb, or \textit{both} (after exclusions and LD pruning).}
+\label{fig:corrWHI}
 \end{figure}
 
 \noindent\add{for discussion:
@@ -721,13 +732,13 @@ Figure \ref{fig:spurious} presents a comparison of the rate of spurious associat
 \add{Adjusting for PCs that capture local genomic features leads to higher rates of spurious associations} 
 
 \begin{figure}[h]
-\label{fig:spurious}
 \caption{Comparison of the average number of spurious associations in genome-wide association studies in WHI SHARe African Americans.}
+\label{fig:spurious}
 \end{figure}
 
 \begin{figure}[h]
-\label{fig:manh}
 \caption{Manhattan plots from GWAS in WHI SHARe African Americans using different approaches to adjust for ancestral heterogeneity.}
+\label{fig:manh}
 \end{figure}
 
 \noindent\add{when/where do spurious assoc arise? 
