@@ -727,7 +727,7 @@ If we then also remove previously-identified high LD regions in addition to perf
 
 \subsection{Implications of adjusting for PCs that capture local genomic features}
 
-We have demonstrated that, without LD pruning, principal components can capture local genomic features rather than global ancestry in admixed populations --- but what are the downstream implications of adjusting for these PCs in genome-wide association models?
+We have demonstrated that, especially without strict LD pruning, principal components can capture local genomic features rather than global ancestry in admixed populations --- but what are the downstream implications of adjusting for these PCs in genome-wide association models?
 Figure \ref{fig:spurious} presents a comparison of the rate of spurious associations in genome-wide association studies in WHI SHARe African Americans.
 \add{Adjusting for PCs that capture local genomic features leads to higher rates of spurious associations} 
 
@@ -765,24 +765,47 @@ why do spurious assoc arise?
 
 \section{Discussion}
 
-\edit{NEEDS UPDATING}
-
 % explain significance of results and place them in broader context
 % may contain subheadings
 
-Global ancestry = confounder
+Need to address ancestral heterogeneity in admixed populations
 \begin{itemize}
-\item Summarize conditions under which global ancestry is a confounder 
-\item Relate to current understanding in literature
+\item we observe considerable heterogeneity in global ancestry proportions in admixed populations studied here, as in other studies 
+\item well-established that global ancestry is a potential confounding variable
+\item this confounding can exist even if global ancestry does not have a direct effect on the trait (as demonstrated by our simulation studies and theoretical results)
+\item $\rightarrow$ important to carefully measure and adjust for ancestral heterogeneity in GWAS in admixed populations
 \end{itemize}
 
-\noindent Be careful with PCs!
+\noindent Comparing (naive) PCs and admixture proportions
 \begin{itemize}
-\item Summarize conditions under which PCs can be problematic
-\item Relate to current understanding in literature (what have others shown can happen if you include a PC that captures local LD? how are things different in admixed populations, where LD is more extensive?)
-\item Relate to concept of collider bias
-\item Suggested diagnostics
+\item both widely used for measuring and adjusting for ancestral heterogeneity
+\item in AA, first PC correlated with global ancestry but later PCs are not (in HL: TBD)
+\item instead, later PCs often capture local genomic features (e.g., regions with extensive LD)
+\item whi this has been documented before, note that, in contrast to what has been observed in EUR, we see that PCs seem to capture SNPs on more than one chromosome (multiple peaks in SNP loading plots); whereas in EUR we often just see one peak (cite Zou, Prive, other examples?) $\rightarrow$ why? LD patterns in admixed pops differ from those in EUR
 \end{itemize}
+
+\noindent Spurious associations
+\begin{itemize}
+\item adjusting for these PCs can lead to spurious associations
+\item this is due to a phenomenon known as collider bias
+\item ADD: what do theory and sims tell us about when/how likely a spurious association is to occur?
+\end{itemize}
+
+\noindent Impact of LD pruning and removing high LD regions
+\begin{itemize}
+\item after LD pruning, PCs no longer exhibit patterns of being driven by select few SNPs (at least for PCs 2-4)
+\item note that we had to use smaller $r^2$ and wider windows than often recommended in literature for this to be true $\rightarrow$ why? LD patterns in admixed pops differ from those in EUR
+\item excluding previously-identified high LD regions doesn't seem to be as effective $\rightarrow$ why? LD patterns in admixed pops differ from those in EUR
+\item note, too, that even strict LD pruning doesn't seem to remove all correlation between SNPs and genotypes (e.g., later PCs in WHI, TOPMed COPDGene)
+\end{itemize}
+
+\noindent Recommendations
+\begin{itemize}
+\item If using PCs, carefully inspect SNP loadings and/or correlation between PCs and genotypes
+\item If using PCs, don't use more than you need
+\item Consider using global ancestry proportions (although further work is needed to reliably capture sub-continental structure)
+\end{itemize}
+
 
 % GWAS vs admixture mapping
 
