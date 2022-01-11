@@ -537,9 +537,9 @@ All code and data used throughout this paper are publicly available online:
 
 \subsection{Ancestral heterogeneity in admixed populations}
 
-Inferred admixture proportions from \texttt{ADMIXTURE} analyses with two ($K = 2$) ancestral populations in WHI SHARe African Americans, TOPMed JHS African Americans, and TOPMed COPDGene African Americans are presented in Figure \ref{fig:barplots}. 
-We performed a supervised analysis in WHI SHARe using two reference populations: African (AFR) and European (EUR). 
-Although the analyses in TOPMed were unsupervised, based on prior studies of admixture in African Americans, and in comparison to the distribution of admixture proportions seen here in WHI SHARe African Americans, we assume that the ancestral population colored in orange (Pop1)  in Figure \ref{fig:barplots} corresponds to European ancestry, and the population colored in blue (Pop2) corresponds to African ancestry .
+Inferred admixture proportions from \texttt{ADMIXTURE} analyses with two ancestral populations ($K = 2$) in WHI SHARe African Americans, TOPMed JHS African Americans, and TOPMed COPDGene African Americans are presented in Figure \ref{fig:barplots}. 
+We performed a supervised analysis in WHI SHARe using two reference populations: \edit{YRI} (AFR) and \edit{CEU} (EUR). 
+The analyses in TOPMed were unsupervised, but based on prior studies of admixture in African Americans, and in comparison to the distribution of admixture proportions seen here in WHI SHARe African Americans, we assume that the ancestral population colored in orange (Pop1)  in Figure \ref{fig:barplots} corresponds to European ancestry, and the population colored in blue (Pop2) corresponds to African ancestry .
 
 The COPDGene study includes both African Americans and European Americans. 
 Our work focuses on genetic association studies in admixed populations, but we do not have self-identified or reported race/ethnicity information for these samples, so we used these inferred admixture proportions to identify and restrict our attention to individuals with at least $29.5\%$ African ancestry.
@@ -557,6 +557,25 @@ This ancestral heterogeneity motivates the need to carefully adjust for global a
 \caption{Barplots of estimated admixture proportions from \texttt{ADMIXTURE} in WHI SHARe (Panel A, supervised), TOPMed JHS (Panel B, unsupervised), and TOPMed COPDGene (Panel C, unsupervised) African Americans.}
 \label{fig:barplots}
 \end{figure}
+
+\edit{Notes:
+\begin{itemize}
+\item Add WHI SHARe Hispanic Americans? (check with Tim)
+\item Possible supplemental figures: 
+	\begin{itemize}
+	\item JHS and COPDGene with K = 3 (also have K = 4 for COPDGene)
+	\item WHI SHARe with global ancestry proportions estimated as genome-wide average local ancestry, unsupervised, supervised after pruning (but all very highly correlated with supervised analysis --- see correlation below) 
+	\end{itemize}
+\end{itemize}
+\begin{tabular}{l|rrrr}
+& avgLA  & unsupADM    & supADM & supPrunedADM \\
+\hline
+avgLA  &    1.0000000  &   0.9984003  &   0.9983740  &    0.9970080 \\
+unsupADM    &   0.9984003  &    1.0000000  &    0.9999973   &      0.9985752 \\
+supADM   &    0.9983740   &   0.9999973  &    1.0000000  &       0.9985835 \\
+supPrunedADM  &   0.9970080  &    0.9985752  &    0.9985835      &   1.0000000\\
+\end{tabular}
+}
 
 
 \subsection{Comparison of principal components and model-based admixture proportions}
