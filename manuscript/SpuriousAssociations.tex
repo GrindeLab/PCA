@@ -140,10 +140,10 @@ To infer global ancestry using PCA, we preform a singular value decomposition of
 %where $\mathbf{X}$ is the $n \times m$ matrix of standardized gentoypes for $n$ individuals at $m$ single nucleotide variants (SNVs).
 It has been shown that top eigenvectors, or \textit{principal components} (PCs), $\mathbf{u}_1, \mathbf{u}_2, \dots$ tend to reflect global ancestry \citep{patterson2006, mcvean2009}.
 To adjust for ancestral heterogeneity in genome-wide association studies, we choose some number of PCs %(typically on the order of 1--10 \citep{abegaz2019}
-to include as covariates in regression models. 
+to include as covariates in our GWAS regression models. 
 
 %% issues & solutions: choosing P
-Determining the number of PCs needed to capture global ancestry can be difficult. 
+Determining the number of PCs needed to capture global ancestry is non-trivial. 
 Numerous techniques have been proposed for selecting this number, including formal significance tests based on Tracy-Widom theory \citep{patterson2006, eigenstrat}, examining inflation factors \citep{reed2015, conomos2016} and/or the proportion of variance explained by each PC \citep{raska2012, reed2015, conomos2016}, comparing PCs to self-reported race/ethnicity \citep{conomos2016}, and keeping PCs that are significantly associated with the trait \citep{reiner2012, daya2019}.
 Typically, the number of PCs selected is on the order of one to ten \citep{abegaz2019}, but in practice it is not uncommon to see applications in which more many more PCs are used---more even than may actually be necessary to capture global ancestry. 
 This could be due in part to work that has suggested that including higher-order PCs can provide the safeguard of removing ``virtually all stratification" \citep{mathieson2012} at the cost of only ``subtle" decreases in power \citep{liu2011}.
@@ -154,7 +154,7 @@ Another challenge that can arise in using PCA to adjust for ancestral heterogene
 Prior work has shown that PCs can capture relatedness across samples \citep{patterson2006, price2010, abdellaoui2013, conomos2015}, array artifacts or other data quality issues \citep{patterson2006, eigenstrat, price2010, weale2010}, and/or small regions of the genome with unusual patterns of linkage disequilibrium (LD) \citep{patterson2006, eigenstrat, wellcome2007, tian2008, price2008, price2010, weale2010, zou2010, laurie2010, abdellaoui2013, prive2020}. 
 %\add{what happens if we adjust for PCs that capture LD instead? include here or save for discussion?}
 To address this last issue, some authors have suggested running PCA on a reduced subset of variants after first performing \textit{LD pruning}, using a program such as \texttt{PLINK} \citep{plink} to remove variants that are in ``high" LD (e.g., pairwise-correlation $r^2 > 0.2$) with nearby variants  \citep{wellcome2007, fellay2007, novembre2008, yu2008, nelson2008, anderson2010, weale2010, laurie2010, abdellaoui2013, zhang2013, conomos2015, reed2015, galinsky2016, conomos2016, daya2019}, and/or excluding regions of the genome that are known to have extensive, long-ranging, or otherwise unusual patterns of LD \citep{wellcome2007,  fellay2007, novembre2008, price2008, anderson2010, weale2010, raska2012, conomos2016}. 
-A list of these previously-identified high LD regions and references that recommend their exclusion is provided in Table \ref{tab:highLD}.
+A list of these previously-identified high LD regions and references that recommend their exclusion are provided in Table \ref{tab:highLD}.
 %after first removing regions of the genome that are known to have high or long-range LD (see Table \ref{tab:highLD}) \citep{wellcome2007,  fellay2007, novembre2008, price2008, anderson2010, weale2010, raska2012, conomos2016} and/or performing LD pruning (i.e., using a program such as \texttt{PLINK} \citep{plink} to remove variants that are in high LD) \citep{wellcome2007, fellay2007, novembre2008, yu2008, nelson2008, anderson2010, weale2010, laurie2010, abdellaoui2013, zhang2013, conomos2015, reed2015, galinsky2016, conomos2016, daya2019}. 
 
 
@@ -535,45 +535,26 @@ All code and data used throughout this paper are publicly available online:
 
 \section{Results}
 
-\add{
-\begin{itemize}
-\item streamline to just focus on WHI in results section, and refer quickly to TOPMed analyses in Discussion/Supplement
-\end{itemize}
-}
-
 \subsection{Ancestral heterogeneity in admixed populations}
 
-Inferred global ancestry proportions for TOPMed JHS African Americans, TOPMed COPDGene African Americans, WHI SHARe African Americans, and \add{WHI SHARe Hispanic Americans} are presented in Figure \ref{fig:barplots}. 
-As has been the case in other studies of admixed populations, we observe considerable variability in the relative proportions of African and European (and, in the case of WHI SHARe Hispanic Americans, Native American) ancestry across these samples.  
-This ancestral heterogeneity motivates the need to carefully adjust for global ancestry in genome-wide association studies in these, and other, admixed samples.
+Inferred admixture proportions from \texttt{ADMIXTURE} analyses with two ($K = 2$) ancestral populations in WHI SHARe African Americans, TOPMed JHS African Americans, and TOPMed COPDGene African Americans are presented in Figure \ref{fig:barplots}. 
+We performed a supervised analysis in WHI SHARe using two reference populations: African (AFR) and European (EUR). 
+Although the analyses in TOPMed were unsupervised, based on prior studies of admixture in African Americans, and in comparison to the distribution of admixture proportions seen here in WHI SHARe African Americans, we assume that the ancestral population colored in orange (Pop1)  in Figure \ref{fig:barplots} corresponds to European ancestry, and the population colored in blue (Pop2) corresponds to African ancestry .
 
-%% MOVE SOME OF THIS TO METHODS
-%Inferred admixture proportions from an unsupervised \texttt{ADMIXTURE} analysis with both two ($K = 2$) and three ($K = 3$) ancestral populations are presented in Figure \ref{fig:barplots}. 
-%Although the analysis is unsupervised, based on prior studies of admixture in African Americans we assume that the ancestral populations colored in blue in Figure \ref{fig:barplots} correspond to European ancestry, and populations colored in orange correspond to African ancestry.
-%The COPDGene study includes both African Americans and European Americans so, as expected, we see that over half of the individuals in that sample are inferred to have nearly 100\% of their genetic material inherited from European ancestors. 
-%Our work focuses on genetic association studies in admixed populations, but we do not have self-identified or reported race/ethnicity information for these samples, so we used these inferred admixture proportions to identify and exclude \edit{???} individuals of primarily (at least $70\%$) European ancestry from our analyses.
-%(The choice of threshold follows from the results reported by Parker et al. \citep{parker2014}, showing that African Americans in the COPDGene study have inferred proportions of European ancestry ranging from 0 to 30\%.)
-%Although JHS is known to focus on African American individuals, we do also see four individuals inferred to have 100\% European ancestry in that sample; these individuals were excluded from further analyses. 
-%Among the remaining samples inferred to be African American, we observe considerable variability in the relative proportions of African and European ancestry, motivating the need to appropriately adjust for ancestral heterogeneity in genome-wide association studies in these samples. 
+The COPDGene study includes both African Americans and European Americans. 
+Our work focuses on genetic association studies in admixed populations, but we do not have self-identified or reported race/ethnicity information for these samples, so we used these inferred admixture proportions to identify and restrict our attention to individuals with at least $29.5\%$ African ancestry.
+The choice of threshold follows from the results reported by Parker et al. \citep{parker2014}, showing that African Americans in the COPDGene study have inferred proportions of African ancestry ranging from 29.5\% to above. 
+After filtering, 2676 individuals remain.
+In addition, although JHS is known to focus on African American individuals, we do see some individuals inferred to have 100\% European ancestry in that sample.
+These individuals were excluded from further analyses, leaving a total of 1888 samples for further analysis. 
 
-\add{Barplots:
-\begin{itemize}
-\item JHS African Americans only (remove EA)
-\item COPDGene African Americans only (remove EA)
-\item WHI SHARe African Americans
-\item WHI SHARe Hispanic Americans
-\end{itemize}
-}
+Among the remaining samples inferred to be African American, we observe considerable variability in the relative proportions of African and European ancestry.
+This ancestral heterogeneity motivates the need to carefully adjust for global ancestry in genome-wide association studies in these, just as in other, admixed samples. 
 
 \begin{figure}
 \center
-\includegraphics[width=0.45\textwidth]{figs/COPD_barplot_unsupervised_K2}
-%\includegraphics[width=0.45\textwidth]{figs/COPD_barplot_unsupervised_K3}
-\includegraphics[width=0.45\textwidth]{figs/JHS_barplot_unsupervised_K2}
-%\includegraphics[width=0.45\textwidth]{figs/JHS_barplot_unsupervised_K3}
-\caption{Barplots of estimated admixture proportions from unsupervised \texttt{ADMIXTURE} analyses with $K = 2$ in TOPMed COPDGene African Americans (left panel) and JHS African Americans (right panel).
-%The vertical black dashed lines separate individuals inferred to be African American (a mix of African and European ancestry) from individuals inferred to be European American (primarily or entirely European ancestry).
-}
+\includegraphics[width=\textwidth]{figs/Figure1/figure1}
+\caption{Barplots of estimated admixture proportions from \texttt{ADMIXTURE} in WHI SHARe (Panel A, supervised), TOPMed JHS (Panel B, unsupervised), and TOPMed COPDGene (Panel C, unsupervised) African Americans.}
 \label{fig:barplots}
 \end{figure}
 
