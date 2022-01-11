@@ -135,12 +135,12 @@ This fixed effects adjustment for global ancestry is currently used extensively 
 %Furthermore, ancestry inference is typically conducted at a continental level (e.g., African versus European, rather than South European versus North European), so finer levels of population structure could be missed; recent efforts have considered global ancestry inference on a sub-continental scale \citep{finestructure, durand2014}.
 
 %% overview of PCA 
-Principal component analysis (PCA) is a widely-implemented unsupervised approach for inferring global ancestry that does not require reference panel data or pre-specification of the number of ancestral populations of interest and is capable of capturing sub-continental structure \citep{novembre2008}. 
+Principal component analysis (PCA) is a widely-implemented unsupervised approach for inferring global ancestry. Advantages of this approach are that it does not require reference panel data or pre-specification of the number of ancestral populations of interest, and it is capable of capturing sub-continental structure \citep{novembre2008}. 
 To infer global ancestry using PCA, we preform a singular value decomposition of the matrix of standardized genotypes (i.e., $\mathbf{X} = \mathbf{U}\mathbf{D}\mathbf{V}^\top$) or, equivalently, an eigenvalue decomposition of the genetic relationship matrix (i.e., $\mathbf{X}\mathbf{X}^\top = \mathbf{U}\mathbf{D}^2\mathbf{U}^\top$).
 %where $\mathbf{X}$ is the $n \times m$ matrix of standardized gentoypes for $n$ individuals at $m$ single nucleotide variants (SNVs).
 It has been shown that top eigenvectors, or \textit{principal components} (PCs), $\mathbf{u}_1, \mathbf{u}_2, \dots$ tend to reflect global ancestry \citep{patterson2006, mcvean2009}.
-To adjust for ancestral heterogeneity, we choose some number of PCs %(typically on the order of 1--10 \citep{abegaz2019}
-to include as covariates in our GWAS regression models. 
+To adjust for ancestral heterogeneity in genome-wide association studies, we choose some number of PCs %(typically on the order of 1--10 \citep{abegaz2019}
+to include as covariates in regression models. 
 
 %% issues & solutions: choosing P
 Determining the number of PCs needed to capture global ancestry can be difficult. 
@@ -789,6 +789,7 @@ Need to address ancestral heterogeneity in admixed populations
 \item adjusting for these PCs can lead to spurious associations
 \item this is due to a phenomenon known as collider bias
 \item ADD: what do theory and sims tell us about when/how likely a spurious association is to occur?
+\item ADD: could spurious associations replicate? (given that peaks often occur in similar places across datasets)
 \end{itemize}
 
 \noindent Impact of LD pruning and removing high LD regions
@@ -805,6 +806,7 @@ Need to address ancestral heterogeneity in admixed populations
 \item If using PCs, don't use more than you need
 \item Consider using global ancestry proportions (although further work is needed to reliably capture sub-continental structure)
 \end{itemize}
+
 
 
 % GWAS vs admixture mapping
