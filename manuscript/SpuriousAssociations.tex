@@ -76,6 +76,8 @@ Sharon R. Browning$^{2}$
 \item[*] kgrinde@macalester.edu
 \end{enumerate}
 
+\edit{If we use WHI data, do we need to add Alex as well?}
+
 
 \newpage
 \section*{Abstract}
@@ -549,8 +551,8 @@ Inferred admixture proportions for WHI SHARe African Americans, TOPMed JHS Afric
 
 In WHI SHARe African Americans, we compared admixture proportion estimates from a variety of model-based techniques. 
 Figure \ref{fig:barplots} presents admixture proportions estimated as genome-wide average local ancestry, using local ancestry calls from \texttt{RFMix}. 
-We also ran supervised and unsupervised \texttt{ADMIXTURE} analyses with two ancestral populations ($K = 2$). 
-All three sets of admixture proportions were highly correlated (pairwise Pearson correlation $>$ 0.998), so we decided to use only the local ancestry based admixture proportion estimates for the remainder of our analyses.
+\edit{Move to methods? We also ran supervised and unsupervised \texttt{ADMIXTURE} analyses with two ancestral populations ($K = 2$). 
+All three sets of admixture proportions were highly correlated (pairwise Pearson correlation $>$ 0.998), so we decided to use only the local ancestry based admixture proportion estimates for the remainder of our analyses.}
 
 %\begin{tabular}{l|rrrr}
 %& avgLA  & unsupADM    & supADM & supPrunedADM \\
@@ -565,7 +567,7 @@ In TOPMed samples, we performed unsupervised \texttt{ADMIXTURE} analyses with va
 Figure \ref{fig:barplots} presents results with $K = 2$.
 Although these analyses were unsupervised, based on prior studies of admixture in African Americans, and in comparison to the distribution of admixture proportions seen here in WHI SHARe, we assume that the ancestral population colored orange (Pop1) in Figure \ref{fig:barplots} corresponds to European ancestry and the population colored in blue (Pop2) corresponds to African ancestry.
 
-Note that we performed some filtering of individuals prior to presenting these barplots of estimated admixture proportions.
+\edit{This paragraph could be moved to methods?} Note that we performed some filtering of individuals prior to presenting these barplots of estimated admixture proportions.
 Our work focuses on genetic association studies in admixed populations, but the COPDGene study includes both African Americans and European Americans.
 We do not have self-identified or reported race/ethnicity information for these samples from dbGaP, so we instead used inferred admixture proportions to identify and restrict our attention to individuals with at least $29.5\%$ African ancestry.
 The choice of threshold follows from the results reported by Parker et al. \citep{parker2014}, showing that African Americans in the COPDGene study have inferred proportions of African ancestry ranging from 29.5\% and above. 
@@ -602,6 +604,34 @@ We observe similar patterns of correlation between PCs and inferred admixture pr
 
 \subsection{Investigation of PCs capturing local genomic features and the impact of LD pruning} 
 \label{sec:CorrPlots}
+
+\edit{Need to re-write this section based on new plots!}
+
+\noindent See Figure \ref{fig:corr-TOPMed} for PC-genotype correlation with naive PCs in JHS and COPDGene African Americans, and Supplemental Figure \ref{fig:corr-Eur} shows the same (except loadings instead of correlation) in COPDGene European Americans.
+
+\noindent See Figure \ref{fig:corr-compare} for a comparison of naive PCs vs exclusions vs stricter-than-default pruning vs both in WHI SHARe.
+
+\noindent See Supplemental Figures \ref{fig:corr-compare-prune}, \ref{fig:corr-compare-window}, and \ref{fig:corr-compare-exclude} for comparisons of PCs with different choices of $r^2$ thresholds (for pruning), different choices of window sizes (for pruning), and multiple iterations of data-based exclusions, respectively.
+
+\begin{figure}
+\hspace{0.3in} (A) JHS \hspace{2.4in} (B) COPDGene
+\center
+\includegraphics[width=0.49\textwidth]{figs/JHS/JHS_prune_FALSE_1_0_0.01_snprelate_corr_1}
+\includegraphics[width=0.49\textwidth]{figs/COPD/COPD_prune_FALSE_1_0_0.01_snprelate_corr_1}
+\caption{Correlation between naively generated PCs and genotypes in JHS and COPDGene African Americans. Each panel plots the absolute value of the correlation between principal components and genotypes (on the y-axis) versus the position along the genome (x-axis).  Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4) and horizontally according to the sample (A: JHS, B: COPDGene).}
+\label{fig:corr-TOPMed}
+\end{figure}
+
+
+\begin{figure}
+\center
+\includegraphics[width=\textwidth]{figs/pc_geno_corr/pc_geno_corr}
+\caption{Correlation between PCs and genotypes in WHI SHARe African Americans with different choices of pre-processing. Each panel plots the absolute value of the correlation between principal components and genotypes (on the y-axis) versus the position along the genome (x-axis).  Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4) and horizontally according to the level of filtering that was applied prior to running PCA (\textit{none}: all SNPs, \textit{exclude}: after excluding regions in Table \ref{tab:highLD}, \textit{prune}: after LD pruning with an $r^2$ threshold of 0.1 and window size of 0.5 Mb, and \textit{both}: after both exclusions and LD pruning).}
+\label{fig:corr-compare}
+\end{figure}
+
+
+
 
 %% what do we see with no pruning
 As we see in Figures \ref{fig:pcsvsglobAA} and \ref{fig:pcsvsglobHA}, initial principal components seem to be capturing global ancestry, whereas later PCs are not.
@@ -840,6 +870,33 @@ Supplemental Data include \add{??} figures and \add{??} tables.
 \label{fig:prunedpcsvsglob}
 \end{figure}
 
+\begin{figure}
+\center
+\includegraphics[width=\textwidth]{figs/pc_geno_corr/pc_geno_corr_compare_prune}
+\caption{Correlation between PCs and genotypes in WHI SHARe African Americans using different LD pruning thresholds. Each panel plots the absolute value of the correlation between principal components and genotypes (on the y-axis) versus the position along the genome (x-axis).  Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4) and horizontally according to what $r^2$ threshold was used when running LD pruning prior to PCA (\textit{none}: no LD pruning, \textit{prune0.2}: LD pruning with an $r^2$ threshold of 0.2 and window size of 0.5 Mb, and \textit{prune0.1}: LD pruning with an $r^2$ threshold of 0.1 and window size of 0.5 Mb).}
+\label{fig:corr-compare-prune}
+\end{figure}
+
+\begin{figure}
+\center
+\includegraphics[width=\textwidth]{figs/pc_geno_corr/pc_geno_corr_compare_window}
+\caption{Correlation between PCs and genotypes in WHI SHARe African Americans using different LD pruning window sizes. Each panel plots the absolute value of the correlation between principal components and genotypes (on the y-axis) versus the position along the genome (x-axis).  Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4) and horizontally according to what window size was used when running LD pruning prior to PCA (\textit{none}: no LD pruning, \textit{prune0.5}: LD pruning with an $r^2$ threshold of 0.1 and window size of 0.5 Mb, \textit{prune2}: LD pruning with an $r^2$ threshold of 0.1 and window size of 2 Mb, and \textit{prune10}: LD pruning with an $r^2$ threshold of 0.1 and window size of 10 Mb).}
+\label{fig:corr-compare-window}
+\end{figure}
+
+\begin{figure}
+\center
+\includegraphics[width=\textwidth]{figs/pc_geno_corr/pc_geno_corr_compare_exclude}
+\caption{Correlation between PCs and genotypes in WHI SHARe African Americans after multiple rounds of data-based exclusions. Each panel plots the absolute value of the correlation between principal components and genotypes (on the y-axis) versus the position along the genome (x-axis).  Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4) and horizontally according to the number of iterations of our procedure for excluding regions highly correlated with PCs that were implemented prior to PCA (\textit{none}: no exclusions, \textit{exclude1}: one round of exclusions, \textit{exclude2}: two rounds of exclusions, etc.).}
+\label{fig:corr-compare-exclude}
+\end{figure}
+
+\begin{figure}
+\center
+\includegraphics[width=0.8\textwidth]{figs/COPD/EUR_prune_FALSE_1_0_0.01_snprelate_load_1}
+\caption{SNP loadings for naively generated PCs in COPDGene European Americans. Each panel plots the principal component loading (y-axis) versus the position along the genome (x-axis) for each variant. Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4).}
+\label{fig:corr-Eur}
+\end{figure}
 
 
 \section*{Declaration of Interests}
