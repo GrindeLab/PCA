@@ -605,13 +605,22 @@ We observe similar patterns of correlation between PCs and inferred admixture pr
 \subsection{Investigation of PCs capturing local genomic features and the impact of LD pruning} 
 \label{sec:CorrPlots}
 
-\edit{Need to re-write this section based on new plots!}
+%\noindent See Figure \ref{fig:corr-TOPMed} for PC-genotype correlation with naive PCs in JHS and COPDGene African Americans, and Supplemental Figure \ref{fig:corr-Eur} shows the same (except loadings instead of correlation) in COPDGene European Americans.
+%
+%\noindent See Figure \ref{fig:corr-compare} for a comparison of naive PCs vs exclusions vs stricter-than-default pruning vs both in WHI SHARe.
+%
+%\noindent See Supplemental Figures \ref{fig:corr-compare-prune}, \ref{fig:corr-compare-window}, and \ref{fig:corr-compare-exclude} for comparisons of PCs with different choices of $r^2$ thresholds (for pruning), different choices of window sizes (for pruning), and multiple iterations of data-based exclusions, respectively.
 
-\noindent See Figure \ref{fig:corr-TOPMed} for PC-genotype correlation with naive PCs in JHS and COPDGene African Americans, and Supplemental Figure \ref{fig:corr-Eur} shows the same (except loadings instead of correlation) in COPDGene European Americans.
 
-\noindent See Figure \ref{fig:corr-compare} for a comparison of naive PCs vs exclusions vs stricter-than-default pruning vs both in WHI SHARe.
-
-\noindent See Supplemental Figures \ref{fig:corr-compare-prune}, \ref{fig:corr-compare-window}, and \ref{fig:corr-compare-exclude} for comparisons of PCs with different choices of $r^2$ thresholds (for pruning), different choices of window sizes (for pruning), and multiple iterations of data-based exclusions, respectively.
+%% what do we see with no pruning
+As we see in Figure \ref{fig:pcsvsglob}, in African American samples the first principal component seems to be capturing global ancestry, whereas later PCs are not.
+While it is possible that these higher-order principal components may be capturing sub-continental structure that is not captured by the model-based admixture proportions, we see in many cases that these later PCs are actually capturing local genomic features rather than genome-wide ancestry. 
+This is evident upon inspection of \textit{SNP loadings}, which represent the contribution of each variant to each principal component, or in investigating the correlation between principal component scores and the original genotypes.
+For example, Figure \ref{fig:corr-TOPMed} presents the correlation between principal components and genotypes in JHS and COPDGene African Americans when PCs are generated without any prior LD-based pruning or filtering.
+We see that variants across the genome are contributing relatively equally to the first principal component, whereas the second, third, and fourth PCs are driven more-so by variants on just a select number of chromosomes.
+For example, the second PC is particularly highly correlated with variants on chromosomes 6 and 8 in JHS and with variants on chromosomes 4 and 8 in COPDGene.
+We see similar patterns in WHI SHARe African Americans (leftmost panels of Figure \ref{fig:corr-compare}): PCs 2--4 exhibit multiple peaks in their genotype-PC correlation plots, indicating that those PCs are primarily capturing variation at a handful of positions along the genome rather than genome-wide global ancestry.
+Note that these patterns differ slightly from what has previously been observed in European populations: in particular, in European populations a PC might capture variation on a single chromosome (see Supplemental Figure \ref{fig:corr-Eur} and \add{add references}), whereas here in these admixed populations we see PCs driven by contributions from variants across several chromosomes.
 
 \begin{figure}
 \hspace{0.3in} (A) JHS \hspace{2.4in} (B) COPDGene
@@ -623,6 +632,15 @@ We observe similar patterns of correlation between PCs and inferred admixture pr
 \end{figure}
 
 
+%% why is this happening [very brief] + what happens with LD pruning
+As mentioned above, previous authors have suggested that this phenomenon arises due to high or otherwise unusual patterns of linkage disequilibrium among variants; as a result, they recommend that variants in high LD with one another be removed prior to running PCA. 
+Following these recommendations, we compare the set of principal components based on all variants to PCs generated after first removing regions of the genome known to have high LD (Table \ref{tab:highLD}), performing LD pruning, or both. 
+The remaining panels of Figure \ref{fig:corr-compare} show the correlation between genotypes and these other sets of PCs in WHI SHARe African Americans. 
+When we exclude previously-identified high LD regions before running PCA (the second column of Figure \ref{fig:corr-compare}), the pattern of \textit{which} SNPs are driving PCs 2--4 changes, but the issue of PCs capturing local genomic features has not been resolved. 
+However, after LD pruning with an $r^2$ threshold of 0.1 and a window size of 0.5 Mb (third column), we now see similar patterns with PCs 2--4 as we do with the first principal component --- all variants are now contributing relatively equally to each PC. 
+If we then also remove previously-identified high LD regions in addition to performing LD pruning (last column), the patterns of correlation between PCs and genotypes are indistinguishable from running LD pruning alone. 
+Note that the thresholds for LD pruning that we use here ($r^2 < 0.1$) are stricter than the default for many software programs ($r^2 < 0.2$): if we use this default $r^2$ threshold, we see improvement for the second and third principal components, but the fourth continues to capture local genomic features on a small number of chromosomes (see Supplemental Figure \ref{fig:corr-compare-prune}). 
+
 \begin{figure}
 \center
 \includegraphics[width=\textwidth]{figs/pc_geno_corr/pc_geno_corr}
@@ -631,51 +649,11 @@ We observe similar patterns of correlation between PCs and inferred admixture pr
 \end{figure}
 
 
+%\begin{figure}[h]
+%\caption{Correlation between PCs and genotypes in WHI SHARe African Americans. \\Each panel plots the absolute value of the correlation (y-axis) between principal components and genotypes at each position along the genome (x-axis). Panels are stratified according to which PC is being investigated (1, 2, 3, or 4) and what level of LD filtering was applied prior to running PCA: \textit{none} (all SNPs), \textit{exclude} (after excluding regions in Table \ref{tab:highLD}), \textit{prune} (after LD pruning with an $r^2$ threshold of 0.1 and a window size of 0.5 Mb, or \textit{both} (after exclusions and LD pruning).}
+%\label{fig:corrWHI}
+%\end{figure}
 
-
-%% what do we see with no pruning
-As we see in Figures \ref{fig:pcsvsglobAA} and \ref{fig:pcsvsglobHA}, initial principal components seem to be capturing global ancestry, whereas later PCs are not.
-While it is possible that these higher-order principal components may be capturing sub-continental structure that is not captured by the model-based admixture proportions, we see in many cases that these later PCs are actually capturing local genomic features rather than genome-wide ancestry. 
-This is evident upon inspection of SNP \textit{loadings}---which represent the contribution of each SNP to each PC---and the correlation between PCs and the original genotypes.
-For example, Figure \ref{fig:corrWHI} presents the correlation between PCs and genotypes in WHI SHARe African Americans. 
-We see (in the leftmost panel of the figure) that SNPs across the genome are contributing relatively equally to the first PC, whereas the second, third, and fourth PCs are driven more-so by SNPs on just a select number of chromosomes.
-\add{For example, the second PC seems to be capturing ... }
-Similar patterns are observed in JHS African Americans, COPDGene African Americans, and \add{WHI SHARe Hispanic Americans} (Supplemental Figures \add{??}): after the first PC (\edit{or the second in the case of WHI SHARe Hispanic Americans}), all later PCs exhibit multiple peaks in their genotype-PC correlation plots, indicating that those PCs are capturing local genomic features on a handful of chromosomes rather than genome-wide global ancestry. 
-
-%% why is this happening [very brief] + what happens with LD pruning
-As mentioned above, previous authors have suggested that this phenomenon arises due to LD among SNPs; as a result, they recommend  that SNPs in high LD with one another be remove prior to running PCA. %% in discussion, note how this differs from what had previously been seen in Europeans (one peak vs multiple peaks, weaker pruning); refer to COPD example in supplement
-Following these recommendations, we compare the set of principal components based on all SNPs to PCs generated after first removing regions of the genome known to have high LD (Table \ref{tab:highLD}), performing LD pruning, or both. 
-The remaining panels of Figure \ref{fig:corrWHI} show the correlation between genotypes and these other sets of PCs in WHI SHARe African Americans. 
-When we exclude previously-identified high LD regions before running PCA (the second column of Figure \ref{fig:corrWHI}), the pattern of \textit{which} SNPs are driving PCs 2--4 changes, but the issue of PCs capturing local genomic features has not been resolved. 
-However, after LD pruning with an $r^2$ threshold of 0.1 and a window size of 0.5 Mb (third column), we now see similar patterns with PCs 2--4 as we do with the first principal component --- SNPs are now contributing relatively equally to each PC. 
-If we then also remove previously-identified high LD regions in addition to performing LD pruning (last column), the patterns of correlation between PCs and genotypes are indistinguishable from running LD pruning alone. 
-\add{What do we see in WHI SHARe Hispanic Americans?}
-\add{What about later PCs?}
-\add{What do we see in JHS and COPD? refer to supplement}
-
-
-\noindent\add{Correlation plots:
-\begin{itemize}
-\item Correlation plot or WHI AA with different levels of LD filtering (none vs exclude vs recommended prune vs exclude + prune)
-\item For supplement: correlation plots for JHS, COPD, and WHI HA (none, exclude, best prune, both) --- or should we put WHI HA in main body of paper?
-\item For supplement: correlation plots for WHI AA with PCs 1--10
-\item For supplement: correlation plots for WHI AA comparing LD pruning choices
-\end{itemize}
-}
-
-\begin{figure}[h]
-\caption{Correlation between PCs and genotypes in WHI SHARe African Americans. \\Each panel plots the absolute value of the correlation (y-axis) between principal components and genotypes at each position along the genome (x-axis). Panels are stratified according to which PC is being investigated (1, 2, 3, or 4) and what level of LD filtering was applied prior to running PCA: \textit{none} (all SNPs), \textit{exclude} (after excluding regions in Table \ref{tab:highLD}), \textit{prune} (after LD pruning with an $r^2$ threshold of 0.1 and a window size of 0.5 Mb, or \textit{both} (after exclusions and LD pruning).}
-\label{fig:corrWHI}
-\end{figure}
-
-\noindent\add{for discussion:
-\begin{itemize}
-\item why is this happening? (LD)
-\item how does what we see compare to what's been observed in Europeans?
-\item does LD pruning universally fix the problem (i.e., does it seem to work better in some samples than others)? how many PCs does it help (i.e., what do PCs 5--10 look like)?
-\item why do we think exclusions didn't work? (high LD regions identified in Europeans, patterns of LD differ---more extensive---in admixed populations)
-\end{itemize}
-}
 
 %\begin{figure}
 %\label{fig:corrNoExclude}
@@ -799,8 +777,17 @@ Need to address ancestral heterogeneity in admixed populations
 \item both widely used for measuring and adjusting for ancestral heterogeneity
 \item in AA, first PC correlated with global ancestry but later PCs are not (in HL: TBD)
 \item instead, later PCs often capture local genomic features (e.g., regions with extensive LD)
-\item whi this has been documented before, note that, in contrast to what has been observed in EUR, we see that PCs seem to capture SNPs on more than one chromosome (multiple peaks in SNP loading plots); whereas in EUR we often just see one peak (cite Zou, Prive, other examples?) $\rightarrow$ why? LD patterns in admixed pops differ from those in EUR
+\item while this has been documented before, note that, in contrast to what has been observed in EUR, we see that PCs seem to capture SNPs on more than one chromosome (multiple peaks in SNP loading plots); whereas in EUR we often just see one peak (cite Zou, Prive, other examples?) $\rightarrow$ why? LD patterns in admixed pops differ from those in EUR %% in discussion, note how this differs from what had previously been seen in Europeans (one peak vs multiple peaks, weaker pruning); refer to COPD example in supplement
 \end{itemize}
+
+\noindent\add{for discussion:
+\begin{itemize}
+\item why is this happening? (LD)
+\item how does what we see compare to what's been observed in Europeans?
+\item does LD pruning universally fix the problem (i.e., does it seem to work better in some samples than others)? how many PCs does it help (i.e., what do PCs 5--10 look like)?
+\item why do we think exclusions didn't work? (high LD regions identified in Europeans, patterns of LD differ---more extensive---in admixed populations)
+\end{itemize}
+}
 
 \noindent Spurious associations
 \begin{itemize}
