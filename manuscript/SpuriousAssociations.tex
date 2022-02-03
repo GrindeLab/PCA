@@ -539,13 +539,13 @@ All code and data used throughout this paper are publicly available online:
 
 \subsection{Ancestral heterogeneity in admixed populations}
 
-Inferred admixture proportions for WHI SHARe African Americans, TOPMed JHS African Americans, and TOPMed COPDGene African Americans are presented in Figure \ref{fig:barplots}. 
+Inferred admixture proportions for three samples of African Americans are presented in Figure \ref{fig:barplots}. 
 
 \begin{figure}
 \center
 %\includegraphics[width=\textwidth]{figs/barplots/figure1}
 \includegraphics[width=\textwidth]{figs/barplots/barplots}
-\caption{Barplots of estimated admixture proportions in WHI SHARe (Panel A), TOPMed JHS (Panel B), and TOPMed COPDGene (Panel C) African Americans.}
+\caption{Barplots of estimated admixture proportions in WHI SHARe (A), TOPMed JHS (B), and TOPMed COPDGene (C) African Americans.}
 \label{fig:barplots}
 \end{figure}
 
@@ -565,7 +565,7 @@ All three sets of admixture proportions were highly correlated (pairwise Pearson
 
 In TOPMed samples, we performed unsupervised \texttt{ADMIXTURE} analyses with varying numbers of ancestral populations. 
 Figure \ref{fig:barplots} presents results with $K = 2$.
-Although these analyses were unsupervised, based on prior studies of admixture in African Americans, and in comparison to the distribution of admixture proportions seen here in WHI SHARe, we assume that the ancestral population colored orange (Pop1) in Figure \ref{fig:barplots} corresponds to European ancestry and the population colored in blue (Pop2) corresponds to African ancestry.
+Although these analyses were unsupervised, based on prior studies of admixture in African Americans, and in comparison to the distribution of admixture proportions seen here in WHI SHARe, we believe that the ancestral population colored orange (Pop1) in Figure \ref{fig:barplots} corresponds to European ancestry and the population colored in blue (Pop2) corresponds to African ancestry.
 
 \edit{This paragraph could be moved to methods?} Note that we performed some filtering of individuals prior to presenting these barplots of estimated admixture proportions.
 Our work focuses on genetic association studies in admixed populations, but the COPDGene study includes both African Americans and European Americans.
@@ -592,7 +592,7 @@ This ancestral heterogeneity motivates the need to carefully adjust for global a
 \begin{figure}
 \center
 \includegraphics[width=\textwidth]{figs/pcs_vs_global/pcs_vs_global}
-\caption{Scatterplots of estimated African admixture proportions versus the first four PCs in WHI SHARe (Panel A), TOPMed JHS (Panel B), and TOPMed COPDGene (Panel C) African Americans. Here we consider PCs that were generated without any LD-based filtering or pruning.}
+\caption{Scatterplots of estimated African admixture proportions versus the first four PCs in WHI SHARe (A), TOPMed JHS (B), and TOPMed COPDGene (C) African Americans. Here we consider PCs that were generated without any LD-based filtering or pruning.}
 \label{fig:pcsvsglob}
 \end{figure}
 
@@ -619,7 +619,7 @@ This is evident upon inspection of \textit{SNP loadings}, which represent the co
 For example, Figure \ref{fig:corr-TOPMed} presents the correlation between principal components and genotypes in JHS and COPDGene African Americans when PCs are generated without any prior LD-based pruning or filtering.
 We see that variants across the genome are contributing relatively equally to the first principal component, whereas the second, third, and fourth PCs are driven more-so by variants on just a select number of chromosomes.
 For example, the second PC is particularly highly correlated with variants on chromosomes 6 and 8 in JHS and with variants on chromosomes 4 and 8 in COPDGene.
-We see similar patterns in WHI SHARe African Americans (leftmost panels of Figure \ref{fig:corr-compare}): PCs 2--4 exhibit multiple peaks in their genotype-PC correlation plots, indicating that those PCs are primarily capturing variation at a handful of positions along the genome rather than genome-wide global ancestry.
+We see similar patterns in WHI SHARe African Americans (leftmost column of Figure \ref{fig:corr-compare}): PCs 2--4 exhibit multiple peaks in their genotype-PC correlation plots, indicating that those PCs are primarily capturing variation at a handful of positions along the genome rather than genome-wide global ancestry.
 Note that these patterns differ slightly from what has previously been observed in European populations: in particular, in European populations a PC might capture variation on a single chromosome (see Supplemental Figure \ref{fig:corr-Eur} and \add{add references}), whereas here in these admixed populations we see PCs driven by contributions from variants across several chromosomes.
 
 \begin{figure}
@@ -638,8 +638,8 @@ Following these recommendations, we compare the set of principal components base
 The remaining panels of Figure \ref{fig:corr-compare} show the correlation between genotypes and these other sets of PCs in WHI SHARe African Americans. 
 When we exclude previously-identified high LD regions before running PCA (the second column of Figure \ref{fig:corr-compare}), the pattern of \textit{which} SNPs are driving PCs 2--4 changes, but the issue of PCs capturing local genomic features has not been resolved. 
 However, after LD pruning with an $r^2$ threshold of 0.1 and a window size of 0.5 Mb (third column), we now see similar patterns with PCs 2--4 as we do with the first principal component --- all variants are now contributing relatively equally to each PC. 
-If we then also remove previously-identified high LD regions in addition to performing LD pruning (last column), the patterns of correlation between PCs and genotypes are indistinguishable from running LD pruning alone. 
-Note that the thresholds for LD pruning that we use here ($r^2 < 0.1$) are stricter than the default for many software programs ($r^2 < 0.2$): if we use this default $r^2$ threshold, we see improvement for the second and third principal components, but the fourth continues to capture local genomic features on a small number of chromosomes (see Supplemental Figure \ref{fig:corr-compare-prune}). 
+If we then also remove previously-identified high LD regions in addition to performing LD pruning (rightmost column), the patterns of correlation between PCs and genotypes are indistinguishable from running LD pruning alone. 
+Note that the thresholds for LD pruning that we use here ($r^2 < 0.1$) are stricter than the default for many software programs ($r^2 < 0.2$): if we use this default $r^2$ threshold, we see improvement for the second and third principal components, but the fourth continues to capture local genomic features on a small number of chromosomes (Supplemental Figure \ref{fig:corr-compare-prune}). 
 
 \begin{figure}
 \center
@@ -724,6 +724,8 @@ Note that the thresholds for LD pruning that we use here ($r^2 < 0.1$) are stric
 \subsection{Implications of adjusting for PCs that capture local genomic features}
 
 We have demonstrated that, especially without strict LD pruning, principal components can capture local genomic features rather than global ancestry in admixed populations --- but what are the downstream implications of adjusting for these PCs in genome-wide association models?
+
+
 Figure \ref{fig:spurious} presents a comparison of the rate of spurious associations in genome-wide association studies in WHI SHARe African Americans.
 \add{Adjusting for PCs that capture local genomic features leads to higher rates of spurious associations} 
 
