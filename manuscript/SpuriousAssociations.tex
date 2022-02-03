@@ -723,21 +723,45 @@ Note that the thresholds for LD pruning that we use here ($r^2 < 0.1$) are stric
 
 \subsection{Implications of adjusting for PCs that capture local genomic features}
 
-We have demonstrated that, especially without strict LD pruning, principal components can capture local genomic features rather than global ancestry in admixed populations --- but what are the downstream implications of adjusting for these PCs in genome-wide association models?
+We have demonstrated that, especially without strict LD pruning, principal components can capture local genomic features rather than global ancestry in admixed populations.
+However, it remains to be fully understood what the downstream implications would be of adjusting for these PCs in genome-wide association studies. 
+We conducted a simulation study to investigate these implications further.
+
+\edit{
+We start with an example.
+\begin{itemize}
+\item describe simulation setting
+\item extreme inflation if we don't adjust at all (statistically significant associations on \textit{every} chromosome)
+\item otherwise, when we infer and adjust for ancestral heteroegeneity using either PCA or a model-based approach, we see a single peak in our manhattan plot on chromosome 4 (as hoped, give that's where the causal variant is located) --- with one exception
+\item when we adjust for 4 PCs (as has been done in previous GWAS in WHI SHARe [CITE dissertation 29 and 57]), where those PCs were generated without any prior LD-based pruning or filtering, then we see a spurious association on chromosome 6
+\item however, that spurious association disappears if we only adjust for the first PC!
+\item note that the causal variant (on chr 4) and spurious signal (on chr 6) are both located in regions of the genome that are highly correlated with the naively generated PCs (Figure \ref{fig:corr-compare})
+\end{itemize}
+}
+
+\edit{Next: how does this generalize across all simulation settings? Take Fig 4.4 in Dissertation and restrict just to GWAS, perhaps zoom in on beta = 1, change colors so more color-blind friendly}
+
+\edit{Then: what does our theory say about this?}
+
+\add{Note to add in somewhere: unsurprisingly, given the high correlation we observed between model-based admixture proportions  and PC1 (with or without LD pruning), we see very similar results for these three adjustment approaches}
+
 
 
 Figure \ref{fig:spurious} presents a comparison of the rate of spurious associations in genome-wide association studies in WHI SHARe African Americans.
 \add{Adjusting for PCs that capture local genomic features leads to higher rates of spurious associations} 
 
 \begin{figure}[h]
+\includegraphics[width=\textwidth]{figs/manhattan/WHI_manh_gwas_70}
+\caption{Manhattan plots from genome-wide association studies in WHI SHARe African Americans using different approaches to adjust for ancestral heterogeneity. In this example, the simulated trait depends only on the genotype at a single variant on chromosome 4: $y \sim N(g_{rs2036153}, 1)$. Panels present results using different adjustment approaches: (A) no adjustment; (B) one PC, with PCs calculated using all variants; (C) four PCs, with PCs calculated using all variants; (D) model-based admixture proportion estimates; (E) one PC, with PCs calculated after LD pruning ($r^2 < 0.1$, window size = 0.5 Mb) and Table \ref{tab:highLD} exclusions; and (F) four PCs, with PCs calculated after LD pruning and exclusions.}
+\label{fig:manh}
+\end{figure}
+
+
+\begin{figure}[h]
 \caption{Comparison of the average number of spurious associations in genome-wide association studies in WHI SHARe African Americans.}
 \label{fig:spurious}
 \end{figure}
 
-\begin{figure}[h]
-\caption{Manhattan plots from GWAS in WHI SHARe African Americans using different approaches to adjust for ancestral heterogeneity.}
-\label{fig:manh}
-\end{figure}
 
 \noindent\add{when/where do spurious assoc arise? 
 \begin{itemize}
