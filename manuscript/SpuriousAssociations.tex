@@ -731,17 +731,14 @@ We have demonstrated that, especially without strict LD pruning, principal compo
 However, it remains to be fully understood what the downstream implications would be of adjusting for these PCs in genome-wide association studies. 
 We conducted a simulation study to investigate these implications further.
 
-\edit{
-We start with an example.
-\begin{itemize}
-\item describe simulation setting
-\item extreme inflation if we don't adjust at all (statistically significant associations on \textit{every} chromosome)
-\item otherwise, when we infer and adjust for ancestral heteroegeneity using either PCA or a model-based approach, we see a single peak in our manhattan plot on chromosome 4 (as hoped, give that's where the causal variant is located) --- with one exception
-\item when we adjust for 4 PCs (as has been done in previous GWAS in WHI SHARe [CITE dissertation 29 and 57]), where those PCs were generated without any prior LD-based pruning or filtering, then we see a spurious association on chromosome 6
-\item however, that spurious association disappears if we only adjust for the first PC!
-\item note that the causal variant (on chr 4) and spurious signal (on chr 6) are both located in regions of the genome that are highly correlated with the naively generated PCs (Figure \ref{fig:corr-compare})
-\end{itemize}
-}
+Figure \ref{fig:manh} presents Manhattan plots from a single replicate of our simulation study.
+In this setting, there is a single causal variant on chromosome 4, and we compare the results from genome-wide association studies in WHI SHARe African Americans using different ancestral heterogeneity adjustment approaches.
+As expected, we see extreme inflation, i.e., statistically significant associations on \textit{every} chromosome, when we do not make any adjustment for ancestral heterogeneity (Panel A).
+Otherwise, when we infer and adjust for ancestral heterogeneity using either PCA or a model-based approach, we see a single peak in our Manhattan plot on chromosome 4---as hoped, given that is where the causal variant is located---with one notable exception.
+When we adjust for the first four principal components (as has been done in previous GWAS in WHI SHARe \add{CITE dissertation 29 and 57}), where those PCs were generated without any prior LD-based pruning or filtering, then we see a spurious association on chromosome 6 (Panel C).
+However, this spurious association disappears if we only adjust for the first of these PCs (Panel B).
+Likewise, no spurious association arises if we adjust for model-based admixture proportions (Panel D) or if we use PCs that were generated after LD pruning and Table \ref{tab:highLD} exclusions (Panels E and F).
+Note that the causal variant, on chromosome 4, and the spurious signal, on chromosome 6, are both located in regions of the genome that are highly correlated with the naively generated PCs (Figure \ref{fig:corr-compare}).
 
 \begin{figure}[h]
 \includegraphics[width=\textwidth]{figs/manhattan/WHI_manh_gwas_70}
@@ -749,36 +746,37 @@ We start with an example.
 \label{fig:manh}
 \end{figure}
 
-\edit{Next: how does this generalize across all simulation settings? Take Fig 4.4 in Dissertation and restrict just to GWAS, perhaps zoom in on beta = 1, change colors so more color-blind friendly}
+These results are not unique to this simulation setting. 
+Figure \ref{fig:spurious} presents a comparison of the rate of spurious associations in genome-wide association studies in WHI SHARe African Americans.
+We see that, across all simulation settings, adjusting for PCs that capture local genomic features leads to higher rates of spurious associations.
+Comparing models that make some sort of adjustment for ancestral heterogeneity, we observe the highest average number of spurious associations when GWAS models adjust for four principal components that were generated without any LD-based pruning or exclusions.
+Excluding the high LD regions from Table \ref{tab:highLD} reduces the number of observed spurious associations slightly, but not to the levels of the other approaches.
+This is not surprising, given what we saw in Figure \ref{fig:corr-compare}: even with these exclusions, PCs 2--4 still capture local genomic features---unless those exclusions are also combined with strict LD pruning.
+We see far fewer spurious associations when models adjust for model-based admixture proportions or principal components that do not capture local genomic features (i.e., using just the first PC, regardless of LD-based pruning or exclusions, or adjusting for four PCs when LD pruning was used).
+%Given the high correlation we observed between model-based admixture proportions  and PC1 (with or without LD-based pruning or exclusions), we see very similar results for these adjustment approaches.
 
 \begin{figure}[h]
 \includegraphics[width=\textwidth]{figs/spurious_counts/gwas/spurious_sims}
-\caption{Comparison of the average number of spurious associations in genome-wide association studies in WHI SHARe African Americans.}
+\caption{Comparison of the average number of spurious associations in genome-wide association studies in WHI SHARe African Americans. \edit{FLIP top and bottom, add all, remove "low loading" from first panel title, remove "large freq diff" from second panel title; make two versions: one with beta = 1 and the other with all betas and see what collaborators think} \add{DESCRIBE MORE}}
 \label{fig:spurious}
 \end{figure}
 
-\edit{Then: what does our theory say about this?}
+\subsection{Factors that influence when spurious associations will arise}
+
+Our simulations also demonstrate that the number of spurious associations that arise when adjusting for PCs that capture local genomic features depends on a number of factors.
+In Figure \ref{fig:manh}, we saw that a spurious association arose when we adjusted for PCs that were highly correlated with variants in several regions across the genome, and both the causal variant and spurious signal were located in one of those regions. 
+Again, this pattern is confirmed by the rest of our simulation study.
+\add{What factors influence rate of spurious assoc?
+\begin{itemize}
+\item Difference in allele frequencies at causal variant (then all approaches have small number of spurious assoc, even no adjustment --- no confounding, so really no need to adjust here)
+\item Is causal variant correlated with PC? (the larger the correlation between the causal SNP and the PCs, the worse the problem)
+\item Effect size of causal variant
+\end{itemize}
+}
 
 \add{Note to add in somewhere: unsurprisingly, given the high correlation we observed between model-based admixture proportions  and PC1 (with or without LD pruning), we see very similar results for these three adjustment approaches}
 
-
-
-Figure \ref{fig:spurious} presents a comparison of the rate of spurious associations in genome-wide association studies in WHI SHARe African Americans.
-\add{Adjusting for PCs that capture local genomic features leads to higher rates of spurious associations} 
-
-
-
-
-
-
-
-\noindent\add{when/where do spurious assoc arise? 
-\begin{itemize}
-\item when causal SNP has high contribution to one of the PCs you adjusted for (\ref{fig:spurious})
-\item spurious assoc arises at another SNP that is also correlated with same PC (\ref{fig:manh})
-\end{itemize}
-
-why do spurious assoc arise?
+\add{why do spurious assoc arise?
 \begin{itemize}
 \item discuss theoretical results, connect to idea of collider bias
 \end{itemize}
