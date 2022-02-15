@@ -126,7 +126,7 @@ A number of methods for detecting and controlling for ancestral heterogeneity in
 Early approaches included restricting analyses to subsets of ancestrally homogeneous individuals \citep{lander1994}, performing a genome-wide correction for test statistic inflation due to ancestral heterogeneity via \textit{genomic control} \citep{GenomicControl}, and using family-based designs \citep{tdt}. 
 More recently, approaches based on mixed models have been proposed \citep{yu2006, kang2010, yang2014}, using random effects to control for both close (e.g., due to family-based sampling) and distant (e.g., due to shared ancestry) relatedness across individuals.
 When studies do not include closely related individuals, a simpler approach is to include inferred global ancestry as a fixed effect in marginal regression models \citep{eigenstrat, pritchard2000}. 
-This fixed effects adjustment for global ancestry is currently used extensively throughout the literature, with global ancestry inferred using either model-based ancestry inference methods (e.g., \texttt{frappe} \citep{tang2005}, \texttt{STRUCTURE} \cite{structure}, \texttt{ADMIXTURE} \citep{admixture}) or principal component analysis (e.g., \texttt{EIGENSTRAT} \citep{eigenstrat}, \texttt{SNPRelate} \citep{snprelate}, \texttt{PC-AiR} \citep{conomos2015}).
+This fixed effects adjustment for global ancestry is currently used extensively throughout the literature, with global ancestry inferred using either model-based ancestry inference methods (e.g., \texttt{frappe} \citep{tang2005}, \texttt{STRUCTURE} \cite{structure}, \texttt{ADMIXTURE} \citep{admixture}, \texttt{RFMix} \citep{rfmix}) or principal component analysis (e.g., \texttt{EIGENSTRAT} \citep{eigenstrat}, \texttt{SNPRelate} \citep{snprelate}, \texttt{PC-AiR} \citep{conomos2015}).
 
 % summarize model-based approaches (SKIP --- don't want to emphasize as much)
 %Model-based approaches for global ancestry inference model the probability of observed genotypes given unobserved ancestry and allele frequencies in each ancestral population \citep{structure, tang2005, admixture, finestructure}. 
@@ -146,9 +146,9 @@ to include as covariates in our GWAS regression models.
 
 %% issues & solutions: choosing P
 Determining the number of PCs needed to capture global ancestry is non-trivial. 
-Numerous techniques have been proposed for selecting this number, including formal significance tests based on Tracy-Widom theory \citep{patterson2006, eigenstrat}, examining inflation factors \citep{reed2015, conomos2016} and/or the proportion of variance explained by each PC \citep{raska2012, reed2015, conomos2016}, comparing PCs to self-reported race/ethnicity \citep{conomos2016}, and keeping PCs that are significantly associated with the trait \citep{reiner2012, daya2019}.
+Numerous techniques have been proposed, including formal significance tests based on Tracy-Widom theory \citep{patterson2006, eigenstrat}, examining inflation factors \citep{reed2015, conomos2016} and/or the proportion of variance explained by each PC \citep{raska2012, reed2015, conomos2016}, comparing PCs to self-reported race/ethnicity \citep{conomos2016}, and keeping PCs that are significantly associated with the trait \citep{reiner2012, daya2019}.
 Typically, the number of PCs selected is on the order of one to ten \citep{abegaz2019}, but in practice it is not uncommon to see applications in which more many more PCs are used---more even than may actually be necessary to capture global ancestry. 
-This could be due in part to work that has suggested that including higher-order PCs can provide the safeguard of removing ``virtually all stratification" \citep{mathieson2012} at the cost of only ``subtle" decreases in power \citep{liu2011}.
+This could be due in part to work that has suggested that including higher-order PCs can provide the safeguard of removing ``virtually all stratification" \citep{mathieson2012} at the cost of perhaps only ``subtle" decreases in power \citep{liu2011}.
 %using the same number of PCs as had been used  to prior work in distinct study populations to justify the choice of 10 PCs \citep{liu2012, reed2015}
 
 %% issues & solutions: other atrifacts 
@@ -539,7 +539,7 @@ All code and data used throughout this paper are publicly available online:
 
 \subsection{Ancestral heterogeneity in admixed populations}
 
-Inferred admixture proportions for three samples of African Americans are presented in Figure \ref{fig:barplots}. 
+Inferred admixture proportions for three samples of African American individuals are presented in Figure \ref{fig:barplots}. 
 
 \begin{figure}
 \center
@@ -587,7 +587,7 @@ This ancestral heterogeneity motivates the need to carefully adjust for global a
 }
 
 
-\subsection{Comparison of principal components and model-based admixture proportions}
+\subsection{Initial PCs capture global ancestry}
 
 \begin{figure}
 \center
@@ -597,12 +597,12 @@ This ancestral heterogeneity motivates the need to carefully adjust for global a
 \end{figure}
 
 In an African American population, we might expect that only one principal component is needed to capture ancestral heterogeneity, at least with respect to differences in the relative proportion of African and European continental ancestry. 
-Comparing model-based admixture proportions to principal components confirms that initial PCs are capturing genome-wide continental ancestry. 
-In all three samples of African Americans, the first PC is highly correlated with the inferred proportion of African ancestry, while later PCs show very little correlation with global ancestry (Figure \ref{fig:pcsvsglob}).
+Comparing model-based admixture proportions to principal components in WHI SHARe, JHS, and COPDGene confirms this hypothesis. 
+In all three samples of African Americans, the first principal component is highly correlated with the inferred proportion of African ancestry, while later PCs show very little correlation with genome-wide continental ancestry (Figure \ref{fig:pcsvsglob}).
 We observe similar patterns of correlation between PCs and inferred admixture proportions regardless of the type of LD filtering (or lack therof) performed prior to running PCA (Supplemental Figure \ref{fig:prunedpcsvsglob}). 
 
 
-\subsection{Investigation of PCs capturing local genomic features and the impact of LD pruning} 
+\subsection{Later PCs may capture local genomic features}
 \label{sec:CorrPlots}
 
 %\noindent See Figure \ref{fig:corr-TOPMed} for PC-genotype correlation with naive PCs in JHS and COPDGene African Americans, and Supplemental Figure \ref{fig:corr-Eur} shows the same (except loadings instead of correlation) in COPDGene European Americans.
@@ -618,8 +618,9 @@ While it is possible that these higher-order principal components may be capturi
 This is evident upon inspection of \textit{SNP loadings}, which represent the contribution of each variant to each principal component, or in investigating the correlation between principal component scores and the original genotypes.
 For example, Figure \ref{fig:corr-TOPMed} presents the correlation between principal components and genotypes in JHS and COPDGene African Americans when PCs are generated without any prior LD-based pruning or filtering.
 We see that variants across the genome are contributing relatively equally to the first principal component, whereas the second, third, and fourth PCs are driven more-so by variants on just a select number of chromosomes.
-For example, the second PC is particularly highly correlated with variants on chromosomes 6 and 8 in JHS and with variants on chromosomes 4 and 8 in COPDGene.
-We see similar patterns in WHI SHARe African Americans (leftmost column of Figure \ref{fig:corr-compare}): PCs 2--4 exhibit multiple peaks in their genotype-PC correlation plots, indicating that those PCs are primarily capturing variation at a handful of positions along the genome rather than genome-wide global ancestry.
+For example, the second PC is particularly highly correlated with variants on chromosomes 6 and 8---and less so with variants on 2, 3, and 11---in JHS.
+We see similar patterns, though with peaks on different combinations of chromosomes, in COPDGene (Figure \ref{fig:corr-TOPMed}B) and WHI SHARe African Americans (leftmost column of Figure \ref{fig:corr-compare}).
+The peaks in these genotype-PC correlation plots indicate that those PCs are primarily capturing variation at a handful of positions along the genome rather than genome-wide global ancestry.
 Note that these patterns differ slightly from what has previously been observed in European populations: in particular, in European populations a PC might capture variation on a single chromosome (see Supplemental Figure \ref{fig:corr-Eur} and \add{add references}), whereas here in these admixed populations we see PCs driven by contributions from variants across several chromosomes.
 
 \begin{figure}
@@ -627,10 +628,12 @@ Note that these patterns differ slightly from what has previously been observed 
 \center
 \includegraphics[width=0.49\textwidth]{figs/JHS/JHS_prune_FALSE_1_0_0.01_snprelate_corr_1}
 \includegraphics[width=0.49\textwidth]{figs/COPD/COPD_prune_FALSE_1_0_0.01_snprelate_corr_1}
-\caption{Correlation between naively generated PCs and genotypes in JHS and COPDGene African Americans. Each panel plots the absolute value of the correlation between principal components and genotypes (on the y-axis) versus the position along the genome (x-axis).  Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4) and horizontally according to the sample (A: JHS, B: COPDGene).}
+\caption{Correlation between naively generated PCs and genotypes in JHS and COPDGene African Americans. Each panel plots the absolute value of the correlation between principal components and genotypes (on the y-axis) versus the position along the genome (x-axis).  Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4) and horizontally according to the sample (A: JHS, B: COPDGene). Peaks in this plot indicate that a variant has a larger \textit{loading}, i.e., a larger contribution to that principal component.}
 \label{fig:corr-TOPMed}
 \end{figure}
 
+
+\subsection{Impact of LD pruning}
 
 %% why is this happening [very brief] + what happens with LD pruning
 As mentioned above, previous authors have suggested that this phenomenon arises due to high or otherwise unusual patterns of linkage disequilibrium among variants; as a result, they recommend that variants in high LD with one another be removed prior to running PCA. 
@@ -640,6 +643,7 @@ When we exclude previously-identified high LD regions before running PCA (the se
 However, after LD pruning with an $r^2$ threshold of 0.1 and a window size of 0.5 Mb (third column), we now see similar patterns with PCs 2--4 as we do with the first principal component --- all variants are now contributing relatively equally to each PC. 
 If we then also remove previously-identified high LD regions in addition to performing LD pruning (rightmost column), the patterns of correlation between PCs and genotypes are indistinguishable from running LD pruning alone. 
 Note that the thresholds for LD pruning that we use here ($r^2 < 0.1$) are stricter than the default for many software programs ($r^2 < 0.2$): if we use this default $r^2$ threshold, we see improvement for the second and third principal components, but the fourth continues to capture local genomic features on a small number of chromosomes (Supplemental Figure \ref{fig:corr-compare-prune}). 
+Similar patterns are observed in JHS and COPDGene.
 
 \begin{figure}
 \center
@@ -721,7 +725,7 @@ Note that the thresholds for LD pruning that we use here ($r^2 < 0.1$) are stric
 %\end{itemize}
 
 
-\subsection{Implications of adjusting for PCs that capture local genomic features}
+\subsection{Adjusting for PCs that capture local genomic features can induce spurious associations}
 
 We have demonstrated that, especially without strict LD pruning, principal components can capture local genomic features rather than global ancestry in admixed populations.
 However, it remains to be fully understood what the downstream implications would be of adjusting for these PCs in genome-wide association studies. 
