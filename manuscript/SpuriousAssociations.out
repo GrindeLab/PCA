@@ -11,7 +11,7 @@
 \BOOKMARK [2][-]{subsection.2.5}{Code and Data Availability}{section.2}% 11
 \BOOKMARK [1][-]{section.3}{Results}{}% 12
 \BOOKMARK [2][-]{subsection.3.1}{Ancestral heterogeneity in admixed populations}{section.3}% 13
-\BOOKMARK [2][-]{subsection.3.2}{Initial PCs capture global ancestry}{section.3}% 14
+\BOOKMARK [2][-]{subsection.3.2}{Initial PC captures global ancestry}{section.3}% 14
 \BOOKMARK [2][-]{subsection.3.3}{Later PCs may capture local genomic features}{section.3}% 15
 \BOOKMARK [2][-]{subsection.3.4}{Impact of LD pruning}{section.3}% 16
 \BOOKMARK [2][-]{subsection.3.5}{Adjusting for PCs that capture local genomic features can induce spurious associations}{section.3}% 17

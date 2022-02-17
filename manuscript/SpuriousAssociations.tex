@@ -587,7 +587,7 @@ This ancestral heterogeneity motivates the need to carefully adjust for global a
 }
 
 
-\subsection{Initial PCs capture global ancestry}
+\subsection{Initial PC captures global ancestry}
 
 \begin{figure}
 \center
@@ -619,16 +619,16 @@ This is evident upon inspection of \textit{SNP loadings}, which represent the co
 For example, Figure \ref{fig:corr-TOPMed} presents the correlation between principal components and genotypes in JHS and COPDGene African Americans when PCs are generated without any prior LD-based pruning or filtering.
 We see that variants across the genome are contributing relatively equally to the first principal component, whereas the second, third, and fourth PCs are driven more-so by variants on just a select number of chromosomes.
 For example, the second PC is particularly highly correlated with variants on chromosomes 6 and 8---and less so with variants on 2, 3, and 11---in JHS.
-We see similar patterns, though with peaks on different combinations of chromosomes, in COPDGene (Figure \ref{fig:corr-TOPMed}B) and WHI SHARe African Americans (leftmost column of Figure \ref{fig:corr-compare}).
+We see similar patterns, although with peaks on different combinations of chromosomes, in COPDGene (Figure \ref{fig:corr-TOPMed}B) and WHI SHARe African Americans (leftmost column of Figure \ref{fig:corr-compare}).
 The peaks in these genotype-PC correlation plots indicate that those PCs are primarily capturing variation at a handful of positions along the genome rather than genome-wide global ancestry.
-Note that these patterns differ slightly from what has previously been observed in European populations: in particular, in European populations a PC might capture variation on a single chromosome (see Supplemental Figure \ref{fig:corr-Eur} and \add{add references}), whereas here in these admixed populations we see PCs driven by contributions from variants across several chromosomes.
+Note that these patterns differ slightly from what has previously been observed in European populations: in particular, in European populations a PC might capture variation on a single chromosome (e.g., see Supplemental Figure \ref{fig:corr-Eur}), whereas here in these admixed populations we see PCs driven by contributions from variants across several chromosomes.
 
 \begin{figure}
 \hspace{0.3in} (A) JHS \hspace{2.4in} (B) COPDGene
 \center
 \includegraphics[width=0.49\textwidth]{figs/JHS/JHS_prune_FALSE_1_0_0.01_snprelate_corr_1}
 \includegraphics[width=0.49\textwidth]{figs/COPD/COPD_prune_FALSE_1_0_0.01_snprelate_corr_1}
-\caption{Correlation between naively generated PCs and genotypes in JHS and COPDGene African Americans. Each panel plots the absolute value of the correlation between principal components and genotypes (on the y-axis) versus the position along the genome (x-axis).  Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4) and horizontally according to the sample (A: JHS, B: COPDGene). Peaks in this plot indicate that a variant has a larger \textit{loading}, i.e., a larger contribution to that principal component.}
+\caption{Correlation between naively generated PCs (i.e., PCs that were constructed without any prior LD-based filtering or exclusions) and genotypes in JHS and COPDGene African Americans. Each panel plots the absolute value of the correlation between principal components and genotypes (on the y-axis) versus the position along the genome (x-axis).  Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4) and horizontally according to the sample (A: JHS, B: COPDGene). Peaks in this plot indicate that a variant has a larger \textit{loading}, i.e., a larger contribution to that principal component.}
 \label{fig:corr-TOPMed}
 \end{figure}
 
@@ -636,7 +636,7 @@ Note that these patterns differ slightly from what has previously been observed 
 \subsection{Impact of LD pruning}
 
 %% why is this happening [very brief] + what happens with LD pruning
-As mentioned above, previous authors have suggested that this phenomenon arises due to high or otherwise unusual patterns of linkage disequilibrium among variants; as a result, they recommend that variants in high LD with one another be removed prior to running PCA. 
+Previous authors have suggested that this phenomenon of principal components capturing local genomic features arises due to high or otherwise unusual patterns of linkage disequilibrium among variants; as a result, they recommend that variants in high LD with one another be removed prior to running PCA. 
 Following these recommendations, we compare the set of principal components based on all variants to PCs generated after first removing regions of the genome known to have high LD (Table \ref{tab:highLD}), performing LD pruning, or both. 
 The remaining panels of Figure \ref{fig:corr-compare} show the correlation between genotypes and these other sets of PCs in WHI SHARe African Americans. 
 When we exclude previously-identified high LD regions before running PCA (the second column of Figure \ref{fig:corr-compare}), the pattern of \textit{which} SNPs are driving PCs 2--4 changes, but the issue of PCs capturing local genomic features has not been resolved. 
@@ -731,14 +731,14 @@ We have demonstrated that, especially without strict LD pruning, principal compo
 However, it remains to be fully understood what the downstream implications would be of adjusting for these PCs in genome-wide association studies. 
 We conducted a simulation study to investigate these implications further.
 
-Figure \ref{fig:manh} presents Manhattan plots from a single replicate of our simulation study.
+Figure \ref{fig:manh} presents Manhattan plots from one replicate of our simulation study.
 In this setting, there is a single causal variant on chromosome 4, and we compare the results from genome-wide association studies in WHI SHARe African Americans using different ancestral heterogeneity adjustment approaches.
 As expected, we see extreme inflation, i.e., statistically significant associations on \textit{every} chromosome, when we do not make any adjustment for ancestral heterogeneity (Panel A).
 Otherwise, when we infer and adjust for ancestral heterogeneity using either PCA or a model-based approach, we see a single peak in our Manhattan plot on chromosome 4---as hoped, given that is where the causal variant is located---with one notable exception.
-When we adjust for the first four principal components (as has been done in previous GWAS in WHI SHARe \add{CITE dissertation 29 and 57}), where those PCs were generated without any prior LD-based pruning or filtering, then we see a spurious association on chromosome 6 (Panel C).
+When we adjust for the first four principal components (as has been done in previous GWAS in WHI SHARe \citep{reiner2012, carty2012}), where those PCs were generated without any prior LD-based pruning or filtering, then we see a spurious association on chromosome 6 (Panel C).
 However, this spurious association disappears if we only adjust for the first of these PCs (Panel B).
 Likewise, no spurious association arises if we adjust for model-based admixture proportions (Panel D) or if we use PCs that were generated after LD pruning and Table \ref{tab:highLD} exclusions (Panels E and F).
-Note that the causal variant, on chromosome 4, and the spurious signal, on chromosome 6, are both located in regions of the genome that are highly correlated with the naively generated PCs (Figure \ref{fig:corr-compare}).
+Note that the causal variant, on chromosome 4, and the spurious signal, on chromosome 6, are both located in regions of the genome that are highly correlated with the PCs that were generated without any prior LD pruning (Figure \ref{fig:corr-compare}).
 
 \begin{figure}[h]
 \includegraphics[width=\textwidth]{figs/manhattan/WHI_manh_gwas_70}
@@ -748,11 +748,11 @@ Note that the causal variant, on chromosome 4, and the spurious signal, on chrom
 
 These results are not unique to this simulation setting. 
 Figure \ref{fig:spurious} presents a comparison of the rate of spurious associations in genome-wide association studies in WHI SHARe African Americans.
-We see that, across all simulation settings, adjusting for PCs that capture local genomic features leads to higher rates of spurious associations.
-Comparing models that make some sort of adjustment for ancestral heterogeneity, we observe the highest average number of spurious associations when GWAS models adjust for four principal components that were generated without any LD-based pruning or exclusions.
-Excluding the high LD regions from Table \ref{tab:highLD} reduces the number of observed spurious associations slightly, but not to the levels of the other approaches.
-This is not surprising, given what we saw in Figure \ref{fig:corr-compare}: even with these exclusions, PCs 2--4 still capture local genomic features---unless those exclusions are also combined with strict LD pruning.
-We see far fewer spurious associations when models adjust for model-based admixture proportions or principal components that do not capture local genomic features (i.e., using just the first PC, regardless of LD-based pruning or exclusions, or adjusting for four PCs when LD pruning was used).
+We see that, across all simulation settings, adjusting for PCs that capture local genomic features leads to higher numbers of spurious associations.
+Comparing models that make some sort of adjustment for ancestral heterogeneity, we observe the most spurious associations when GWAS models adjust for four principal components that were generated without any LD-based pruning or exclusions.
+Excluding the high LD regions from Table \ref{tab:highLD} prior to running PCA reduces the number of observed spurious associations slightly, but not to the levels of the other approaches.
+Given what we saw in Figure \ref{fig:corr-compare}, this is perhaps not surprising: even with these exclusions, PCs 2--4 still capture local genomic features---unless those exclusions are also combined with strict LD pruning.
+We see far fewer spurious associations when models adjust for model-based admixture proportions or principal components that do not capture local genomic features (i.e., using just the first PC, regardless of LD-based pruning or exclusions, or adjusting for four PCs when LD pruning was performed).
 %Given the high correlation we observed between model-based admixture proportions  and PC1 (with or without LD-based pruning or exclusions), we see very similar results for these adjustment approaches.
 
 \begin{figure}[h]
@@ -763,9 +763,9 @@ We see far fewer spurious associations when models adjust for model-based admixt
 
 \subsection{Factors that influence when spurious associations will arise}
 
-Our simulations also demonstrate that the number of spurious associations that arise when adjusting for PCs that capture local genomic features depends on a number of factors.
+Our simulations also highlight a number of factors that influence the number of spurious associations that arise when adjusting for PCs that capture local genomic features.
 In Figure \ref{fig:manh}, we saw that a spurious association arose when we adjusted for PCs that were highly correlated with variants in several regions across the genome, and both the causal variant and spurious signal were located in one of those regions. 
-Again, this pattern is confirmed by the rest of our simulation study.
+Again, this pattern is confirmed by the other replicates of our simulation study.
 \add{What factors influence rate of spurious assoc?
 \begin{itemize}
 \item Difference in allele frequencies at causal variant (then all approaches have small number of spurious assoc, even no adjustment --- no confounding, so really no need to adjust here)
