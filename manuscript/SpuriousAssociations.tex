@@ -748,41 +748,36 @@ Note that the causal variant, on chromosome 4, and the spurious signal, on chrom
 
 These results are not unique to this simulation setting. 
 Figure \ref{fig:spurious} presents a comparison of the rate of spurious associations in genome-wide association studies in WHI SHARe African Americans.
-We see that, across all simulation settings, adjusting for PCs that capture local genomic features leads to higher numbers of spurious associations.
+We see that, across all simulation settings (Panel A), adjusting for PCs that capture local genomic features leads to higher numbers of spurious associations, on average.
 Comparing models that make some sort of adjustment for ancestral heterogeneity, we observe the most spurious associations when GWAS models adjust for four principal components that were generated without any LD-based pruning or exclusions.
 Excluding the high LD regions from Table \ref{tab:highLD} prior to running PCA reduces the number of observed spurious associations slightly, but not to the levels of the other approaches.
 Given what we saw in Figure \ref{fig:corr-compare}, this is perhaps not surprising: even with these exclusions, PCs 2--4 still capture local genomic features---unless those exclusions are also combined with strict LD pruning.
-We see far fewer spurious associations when models adjust for model-based admixture proportions or principal components that do not capture local genomic features (i.e., using just the first PC, regardless of LD-based pruning or exclusions, or adjusting for four PCs when LD pruning was performed).
+We see fewer spurious associations when models adjust for model-based admixture proportions or principal components that do not capture local genomic features (i.e., using just the first PC, regardless of LD-based pruning or exclusions, or adjusting for four PCs when LD pruning was performed).
 %Given the high correlation we observed between model-based admixture proportions  and PC1 (with or without LD-based pruning or exclusions), we see very similar results for these adjustment approaches.
 
 \begin{figure}[h]
 \includegraphics[width=\textwidth]{figs/spurious_counts/gwas/figure7_spurious_beta1}
-\caption{Comparison of the average number of spurious associations in genome-wide association studies in WHI SHARe African Americans. \add{DESCRIBE MORE}}
-\label{fig:spurious}
-\end{figure}
-
-\begin{figure}[h]
-\includegraphics[width=\textwidth]{figs/spurious_counts/gwas/supplement_spurious_allbeta}
-\caption{MOVE TO SUPPLEMENT: Comparison of the average number of spurious associations in genome-wide association studies in WHI SHARe African Americans. \add{DESCRIBE MORE}}
+\caption{Comparison of the number of spurious associations in genome-wide association studies in WHI SHARe African Americans using different approaches to adjust for ancestral heterogeneity. Panels display the average number of spurious associations that were observed across (A) all simulation settings, or across the subset of simulation settings in which the causal variant has (B) a small difference in ancestral allele frequencies, (C) low SNP loadings for each of the first four PCs, (D) a high SNP loading for at least one of the first four PCs, or (D) the highest SNP loading on its chromosome for one of the first four PCs. Within each panel, we compare the number of spurious associations when GWAS models adjust for model-based admixture proportions, 1 PC (with or without LD pruning and/or Table \ref{tab:highLD} exclusions), or 4 PCs (with or without LD pruning and/or Table \ref{tab:highLD} exclusions). Results shown here are for simulated traits with a single causal variant with an effect size ($\beta$) of 1.}
 \label{fig:spurious}
 \end{figure}
 
 
-\subsection{Factors that influence when spurious associations will arise}
+\subsection{Factors that influence the rate of spurious associations}
 
-Our simulations also highlight a number of factors that influence the number of spurious associations that arise when adjusting for PCs that capture local genomic features.
-In Figure \ref{fig:manh}, we saw that a spurious association arose when we adjusted for PCs that were highly correlated with variants in several regions across the genome, and both the causal variant and spurious signal were located in one of those regions. 
-Again, this pattern is confirmed by the other replicates of our simulation study.
-\add{What factors influence rate of spurious assoc?
-\begin{itemize}
-\item Difference in allele frequencies at causal variant (then all approaches have small number of spurious assoc, even no adjustment --- no confounding, so really no need to adjust here)
-\item Is causal variant correlated with PC? (the larger the correlation between the causal SNP and the PCs, the worse the problem)
-\item Effect size of causal variant
-\end{itemize}
-}
+Our simulations also highlight factors that influence when, and how many, spurious associations arise when adjusting for PCs that capture local genomic features.
+% all approaches have no spurious assoc when there is small diff in allele freq at causal variant --- no confounding in this scenario, so really no need to adjust at all
+First, we note that there are no spurious associations, regardless of the adjustment approach (or even lack thereof), when there are small differences in ancestral allele frequencies at the causal variant. 
+This is to be expected: in this scenario, the causal variant is not associated with global ancestry, so global ancestry is not a confounding variable (Figure \ref{fig:confounding}) and there is no need for adjustment.
+% low for approaches that don't capture local genomic features
+Considering other simulation settings in which the causal variant has a larger difference in ancestral allele frequencies, so adjusting for ancestral heterogeneity is needed, the number of observed spurious associations remains low for models that adjust for admixture proportions, a single principal component (regardless of pre-processing), or four PCs---if those PCs were were generated after strict LD pruning.
+% correlation between PC and causal variant
+For the two models that adjust for PCs capturing local genomic features (i.e., the models that adjust for 4 PCs that were generated with or without Table \ref{tab:highLD} exclusions, but no LD pruning), however, we see a higher rate of spurious associations, particularly when the causal variant is highly correlated with one of those PCs.
+Notably, as the size of the causal variant's SNP loading increases from low (Panel C), to high (Panel D), to the highest on its chromosome (Panel E), we see an increasing number of spurious associations for these two approaches.
+This confirms the pattern we saw in Figure \ref{fig:manh}, where a spurious association arose when we adjusted for PCs that were highly correlated with variants in several regions across the genome, and both the causal variant and spurious signal were located in one of those regions. 
+% effect size of causal variant
+Finally, we note that these problems worsen as the effect size of the causal variant increases (see Supplemental Figure \ref{fig:spurious-all-beta}).
 
-\add{Note to add in somewhere: unsurprisingly, given the high correlation we observed between model-based admixture proportions  and PC1 (with or without LD pruning), we see very similar results for these three adjustment approaches}
-
+The patterns observed here can be explained by the phenomenon of \textit{collider bias}.
 \add{why do spurious assoc arise?
 \begin{itemize}
 \item discuss theoretical results, connect to idea of collider bias
@@ -890,39 +885,45 @@ Need to address ancestral heterogeneity in admixed populations
 
 Supplemental Data include \add{??} figures and \add{??} tables.
 
-\begin{figure}
+\begin{figure}[h]
 \center
 \includegraphics[width=\textwidth]{figs/pcs_vs_global/pruned_pcs_vs_global}
 \caption{Scatterplots of estimated African admixture proportions versus the first four PCs in WHI SHARe (Panel A), TOPMed JHS (Panel B), and TOPMed COPDGene (Panel C) African Americans. Here we consider PCs that were generated after LD pruning ($r^2 = 0.1$, window size = 0.5 Mb) and filtering previously identified high-LD regions (\ref{tab:highLD}).}
 \label{fig:prunedpcsvsglob}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
 \center
 \includegraphics[width=\textwidth]{figs/pc_geno_corr/pc_geno_corr_compare_prune}
 \caption{Correlation between PCs and genotypes in WHI SHARe African Americans using different LD pruning thresholds. Each panel plots the absolute value of the correlation between principal components and genotypes (on the y-axis) versus the position along the genome (x-axis).  Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4) and horizontally according to what $r^2$ threshold was used when running LD pruning prior to PCA (\textit{none}: no LD pruning, \textit{prune0.2}: LD pruning with an $r^2$ threshold of 0.2 and window size of 0.5 Mb, and \textit{prune0.1}: LD pruning with an $r^2$ threshold of 0.1 and window size of 0.5 Mb).}
 \label{fig:corr-compare-prune}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
 \center
 \includegraphics[width=\textwidth]{figs/pc_geno_corr/pc_geno_corr_compare_window}
 \caption{Correlation between PCs and genotypes in WHI SHARe African Americans using different LD pruning window sizes. Each panel plots the absolute value of the correlation between principal components and genotypes (on the y-axis) versus the position along the genome (x-axis).  Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4) and horizontally according to what window size was used when running LD pruning prior to PCA (\textit{none}: no LD pruning, \textit{prune0.5}: LD pruning with an $r^2$ threshold of 0.1 and window size of 0.5 Mb, \textit{prune2}: LD pruning with an $r^2$ threshold of 0.1 and window size of 2 Mb, and \textit{prune10}: LD pruning with an $r^2$ threshold of 0.1 and window size of 10 Mb).}
 \label{fig:corr-compare-window}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
 \center
 \includegraphics[width=\textwidth]{figs/pc_geno_corr/pc_geno_corr_compare_exclude}
 \caption{Correlation between PCs and genotypes in WHI SHARe African Americans after multiple rounds of data-based exclusions. Each panel plots the absolute value of the correlation between principal components and genotypes (on the y-axis) versus the position along the genome (x-axis).  Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4) and horizontally according to the number of iterations of our procedure for excluding regions highly correlated with PCs that were implemented prior to PCA (\textit{none}: no exclusions, \textit{exclude1}: one round of exclusions, \textit{exclude2}: two rounds of exclusions, etc.).}
 \label{fig:corr-compare-exclude}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
 \center
 \includegraphics[width=0.8\textwidth]{figs/COPD/EUR_prune_FALSE_1_0_0.01_snprelate_load_1}
-\caption{SNP loadings for naively generated PCs in COPDGene European Americans. Each panel plots the principal component loading (y-axis) versus the position along the genome (x-axis) for each variant. Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4).}
+\caption{SNP loadings for naively generated PCs in COPDGene European Americans. Each panel plots the principal component loading (y-axis) versus the position along the genome (x-axis) for each variant. Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4). Unlike in admixed populations, we see a single peak on chromosome 11.}
 \label{fig:corr-Eur}
+\end{figure}
+
+\begin{figure}[h]
+\includegraphics[width=\textwidth]{figs/spurious_counts/gwas/supplement_spurious_allbeta}
+\caption{Comparison of the number of spurious associations in genome-wide association studies in WHI SHARe African Americans using different approaches to adjust for ancestral heterogeneity. Panels display the average number of spurious associations that were observed across (A) all simulation settings, or across the subset of simulation settings in which the causal variant has (B) a small difference in ancestral allele frequencies, (C) low SNP loadings for each of the first four PCs, (D) a high SNP loading for at least one of the first four PCs, or (D) the highest SNP loading on its chromosome for one of the first four PCs. Within each panel, we compare the number of spurious associations when GWAS models adjust for model-based admixture proportions, 1 PC (with or without LD pruning and/or Table \ref{tab:highLD} exclusions), or 4 PCs (with or without LD pruning and/or Table \ref{tab:highLD} exclusions). Results shown here are for simulated traits with a single causal variant, with effect size ($\beta$) ranging from 0 to 8.}
+\label{fig:spurious-all-beta}
 \end{figure}
 
 
