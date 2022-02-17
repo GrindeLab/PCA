@@ -59,27 +59,32 @@ make_plot <- function(type){
 }
 
 ### make plots for each type of setting
-all_sims <- make_plot('all') + ggtitle('All simulation settings')
-peak_none <- make_plot('peak_none') + ggtitle('Highest loading') + theme(legend.position = 'none')
+all_sims <- make_plot('all') + ggtitle('(A) All simulation settings') + theme(legend.position = 'none')
+peak_none <- make_plot('peak_none') + ggtitle('(E) Highest loading') + theme(legend.position = 'none')
 peak_lit <- make_plot('peak_lit')
 peak_both <- make_plot('peak_both')
-high_none <- make_plot('high_none') + ggtitle('High loading') + theme(legend.position = 'none')
+high_none <- make_plot('high_none') + ggtitle('(D) High loading') + theme(legend.position = 'none')
 high_lit <- make_plot('high_lit')
 high_both <- make_plot('high_both')
-low_high <- make_plot('low_high') + ggtitle('Low loading, large allele frequency diff.') + theme(legend.position = 'none')
-low_low <- make_plot('low_low') + ggtitle('Low loading, small allele frequency diff.') + theme(legend.position = 'none')
+low_high <- make_plot('low_high') + ggtitle('(C) Low loading') + theme(legend.position = 'none')
+low_low <- make_plot('low_low') + ggtitle('(B) Small diff. in ancestral allele freq.') + theme(legend.position = 'none')
 
 ## get legend by itself
-lgnd <- get_legend(all_sims)
+lgnd <- get_legend(peak_lit)
 
-
-
-ggdraw(plot_grid(plot_grid(low_low, high_none, ncol = 1, align = 'v'),
-                 plot_grid(low_high, peak_none, ncol = 1, align = 'v'),
-                 plot_grid(lgnd, NULL, ncol = 1, align = 'v'),
+ggdraw(plot_grid(plot_grid(all_sims, low_high, ncol = 1, align = 'v'),
+                 plot_grid(low_low, high_none, ncol = 1, align = 'v'),
+                 plot_grid(lgnd, peak_none, ncol = 1, align = 'v'),
                  nrow = 1,
-                 rel_widths = c(1, 1, 0.6)))
-ggsave(filename = 'spurious_allbeta.pdf', dpi = 'print', width = 10, height = 7, units = 'in')
+                 rel_widths = c(1, 1, 1)))
+ggsave(filename = 'supplement_spurious_allbeta.pdf', dpi = 'print', width = 10, height = 7, units = 'in')
+
+#ggdraw(plot_grid(plot_grid(low_low, high_none, ncol = 1, align = 'v'),
+#                 plot_grid(low_high, peak_none, ncol = 1, align = 'v'),
+#                 plot_grid(lgnd, NULL, ncol = 1, align = 'v'),
+#                 nrow = 1,
+#                 rel_widths = c(1, 1, 0.6)))
+#ggsave(filename = 'old_spurious_allbeta.pdf', dpi = 'print', width = 10, height = 7, units = 'in')
 
 
 
@@ -89,8 +94,8 @@ make_barplot <- function(type){
   fname <- paste0('average_counts_',type,'.csv')
   amap <- read.csv(fname)
   amap <- amap %>%
-    mutate(`LD-based exclusions` = recode(exclusions, none = 'None', lit = 'Regions with high/extended LD'),
-           `LD pruning` = recode(pruning, none = 'None', `0.1` = 'r^2 < 0.1, window = 0.5 Mb'),
+    mutate(`LD-based exclusions` = recode(exclusions, none = 'No exclusions', lit = 'Exclude high LD regions'),
+           `LD pruning` = recode(pruning, none = 'No LD pruning', `0.1` = 'LD pruning (r^2 < 0.1, window = 0.5 Mb)'),
            `Adjustment technique` = recode(pcs, pi = 'Model-based admixture prop.', `1` = '1 PC', `4` = '4 PCs', none = 'None'))
   
   amap$covariates <- with(amap,paste(pcs,exclusions,pruning,sep='_'))
@@ -105,23 +110,37 @@ make_barplot <- function(type){
   ## just keep beta = 1
   amap.beta1 <- amap.long %>%
     filter(beta == 1)
-  ## just keep 1 PC (no prune or exclusion), 1 PC (prune + exclude), 4 PC (neither), 4 PC (both), admix prop
+  ## add pre-processing column
   amap.beta1 <- amap.beta1 %>%
-    filter(covariates %in% c('pi', '1_none_none', '1_lit_0.1', '4_none_none', '4_lit_0.1'))
+    mutate(preprocess = paste(`LD-based exclusions`, `LD pruning`, sep = '\n'))
+  amap.beta1 <- amap.beta1 %>%
+    mutate(preprocess = recode(preprocess, `Exclude high LD regions\nLD pruning (r^2 < 0.1, window = 0.5 Mb)` = 'Both',
+                               `Exclude high LD regions\nNo LD pruning` = 'Exclusions,\nNo Pruning',
+                               `No exclusions\nLD pruning (r^2 < 0.1, window = 0.5 Mb)` = 'Pruning,\nNo Exclusions',
+                               `No exclusions\nNo LD pruning`  = 'Neither')) %>%
+    mutate(preprocess = factor(preprocess, levels = c('Neither', 'Exclusions,\nNo Pruning', 'Pruning,\nNo Exclusions', 'Both')))
+  ## remove the 'none' results
+  amap.beta1 <- amap.beta1 %>%
+    filter(covariates != 'none')
+  ## just keep 1 PC (no prune or exclusion), 1 PC (prune + exclude), 4 PC (neither), 4 PC (both), admix prop
+  #amap.beta1 <- amap.beta1 %>%
+  #  filter(covariates %in% c('pi', '1_none_none', '1_lit_0.1', '4_none_none', '4_lit_0.1'))
   ## plot
   p <- amap.beta1 %>%
-    mutate(LD = paste(exclusions, pruning, sep = '_')) %>%
-    mutate(LD = recode(LD, `none_none` = 'no exclusions or pruning',
-                       `lit_0.1` = 'exclusions and pruning \n(r^2 < 0.1, 0.5 Mb window)')) %>%
-    #ggplot(aes(x = LD , y = spur)) +
-    ggplot(aes(x = covariates, y = spur)) + 
+    #mutate(LD = paste(exclusions, pruning, sep = '_')) %>%
+    #mutate(LD = recode(LD, `none_none` = 'no exclusions or pruning',
+    #                   `lit_0.1` = 'exclusions and pruning \n(r^2 < 0.1, 0.5 Mb window)')) %>%
+    ##ggplot(aes(x = LD , y = spur)) +
+    ggplot(aes(x = `Adjustment technique`, y = spur)) + 
     geom_col(aes(fill = `Adjustment technique`)) + 
     scale_fill_brewer(palette = 'Dark2') + 
-    #facet_grid(. ~ `Adjustment technique`, scales = 'free_x', space = 'free_x') + 
-    facet_grid(. ~ LD, scales = 'free_x', space = 'free_x') + 
+    ##facet_grid(. ~ `Adjustment technique`, scales = 'free_x', space = 'free_x') + 
+    #facet_grid(. ~ LD, scales = 'free_x', space = 'free_x') + 
+    facet_grid(. ~ preprocess, scales = 'free_x', space = 'free_x') + 
+    #facet_grid( `LD pruning` ~ `LD-based exclusions`, scales = 'free_x', space = 'free_x') + 
     theme_bw()+
     geom_hline(yintercept=0.05,linetype=3)+
-    coord_cartesian(ylim=c(0,0.35))+
+    coord_cartesian(ylim=c(0,0.31))+
     ylab('Average spurious associations') + 
     xlab('') + 
     theme(axis.text.x = element_blank())+
@@ -129,25 +148,33 @@ make_barplot <- function(type){
   return(p)
 }
 
-bar_all <- make_barplot('all') + ggtitle('All simulation settings')
-bar_peak_none <- make_barplot('peak_none') + ggtitle('Highest loading') + theme(legend.position = 'none')
+bar_all <- make_barplot('all') + ggtitle('(A) All simulation settings') + theme(legend.position = 'none')
+bar_peak_none <- make_barplot('peak_none') + ggtitle('(E) Highest loading') + theme(legend.position = 'none')
 bar_peak_lit <- make_barplot('peak_lit')
 bar_peak_both <- make_barplot('peak_both')
-bar_high_none <- make_barplot('high_none') + ggtitle('High loading') + theme(legend.position = 'none')
+bar_high_none <- make_barplot('high_none') + ggtitle('(D) High loading') + theme(legend.position = 'none')
 bar_high_lit <- make_barplot('high_lit')
 bar_high_both <- make_barplot('high_both')
-bar_low_high <- make_barplot('low_high') + ggtitle('Low loading, large allele frequency diff.') + theme(legend.position = 'none')
-bar_low_low <- make_barplot('low_low') + ggtitle('Low loading, small allele frequency diff.') + theme(legend.position = 'none')
+bar_low_high <- make_barplot('low_high') + ggtitle('(C) Low loading') + theme(legend.position = 'none')
+bar_low_low <- make_barplot('low_low') + ggtitle('(B) Small diff. in ancestral allele frequencies') + theme(legend.position = 'none')
 
-bar_lgnd <- get_legend(bar_all)
-grid.arrange(bar_low_high, bar_high_none, bar_peak_none, nrow = 1)
+bar_lgnd <- get_legend(bar_peak_lit)
 
-ggdraw(plot_grid(plot_grid(bar_low_low, bar_high_none, ncol = 1, align = 'v'),
-                 plot_grid(bar_low_high, bar_peak_none, ncol = 1, align = 'v'),
-                 plot_grid(bar_lgnd, NULL, ncol = 1, align = 'v'),
+#grid.arrange(bar_low_high, bar_high_none, bar_peak_none, nrow = 1)
+
+#ggdraw(plot_grid(plot_grid(bar_low_low, bar_high_none, ncol = 1, align = 'v'),
+#                 plot_grid(bar_low_high, bar_peak_none, ncol = 1, align = 'v'),
+#                 plot_grid(bar_lgnd, NULL, ncol = 1, align = 'v'),
+#                 nrow = 1,
+#                 rel_widths = c(1, 1, 0.5)))
+#ggsave(filename = 'spurious_beta1.pdf', dpi = 'print', width = 11, height = 6, units = 'in')
+
+ggdraw(plot_grid(plot_grid(bar_all, bar_low_high, ncol = 1, align = 'v'),
+                 plot_grid(bar_low_low, bar_high_none, ncol = 1, align = 'v'),
+                 plot_grid(bar_lgnd, bar_peak_none, ncol = 1, align = 'v'),
                  nrow = 1,
-                 rel_widths = c(1, 1, 0.5)))
-ggsave(filename = 'spurious_beta1.pdf', dpi = 'print', width = 11, height = 6, units = 'in')
+                 rel_widths = c(1, 1, 1)))
+ggsave(filename = 'figure7_spurious_beta1.pdf', dpi = 'print', width = 13.5, height = 6, units = 'in')
 
 
 #### Combine into one figure ####
