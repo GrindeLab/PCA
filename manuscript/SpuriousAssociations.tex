@@ -784,12 +784,60 @@ This confirms the pattern we saw in Figure \ref{fig:manh}, where a spurious asso
 % effect size of causal variant
 Finally, we note that these problems worsen as the effect size of the causal variant increases (see Supplemental Figure \ref{fig:spurious-all-beta}).
 
-The patterns observed here can be explained by the phenomenon of \textit{collider bias}.
-\add{why do spurious assoc arise?
-\begin{itemize}
-\item discuss theoretical results, connect to idea of collider bias
-\end{itemize}
-}
+To better understand the patterns observed in our simulation study, we compare the expected effect size estimates from GWAS models in admixed populations with two ancestral populations using different techniques for adjusting for ancestral heterogeneity.
+As in our simulations, we assume that the trait depends on a single causal variant: $$y_i \stackrel{iid}{\sim} N(\beta_1 g_{i1} + \beta_\pi \pi_i, 1),$$ where $g_{i1}$ represents the number of minor alleles carried by individual $i$ at the causal variant, which we will refer to as \textit{Variant 1}, and $\pi_i$ is the individual's admixture proportion.
+(Note that $\beta_\pi = 0$ in our simulation study, but we consider the more general setting here.)
+We can then derive the expected effect size estimate at that causal variant, as well as a second variant that is not associated with the trait and sits on a different chromosome than the causal variant.
+When we consider a GWAS model that adjusts for the true admixture proportions,
+%$\pi_i$, $$E[y_i | g_{ij}, \pi_i] = \beta_0 + \beta_j g_{ij} + \beta_\pi \pi_i,$$ 
+the expected effect size estimates at the causal variant (Variant 1) and the unlinked neutral variant (Variant 2) are
+$$
+\begin{aligned}
+E[\hat\beta_1] &= \beta_1 \\
+E[\hat\beta_2] &= 0,
+\end{aligned}
+$$
+where $\beta_1$ is the true effect size of the causal variant and $\beta_2 = 0$ is the true effect size of the neutral variant.
+In other words, models that perfectly adjust for ancestral heterogeneity will yield unbiased estimates of the effect size at the causal and unlinked neutral variants.
+%This suggests, in turn, that these models will control the rate of spurious associations.
+
+% unadjusted model
+In comparison, GWAS models that do not make any adjustment for ancestral heterogeneity will yield effect size estimates of
+$$
+\begin{aligned}
+E[\hat\beta_1] & = \beta_1 + \frac{(p_{11}- p_{10})V_\pi \beta_\pi }{p_{10}(1-p_{10}) + (p_{11}-p_{10})(1-p_{11}-p_{10})E_\pi + (p_{11}-p_{10})^2(V_\pi + E_\pi - E_\pi^2)} \\
+E[\hat\beta_2] & = 0 + \frac{(p_{21}-p_{20}) V_\pi\{\beta_\pi + 2\beta_1(p_{11}- p_{10})\}}{p_{20}(1-p_{20}) + (p_{21}-p_{20})(1-p_{21}-p_{20})E_\pi + (p_{21}-p_{20})^2(V_\pi + E_\pi - E_\pi^2)},\\
+\end{aligned}
+$$
+where $E_\pi, V_\pi$ are the population mean and variance of the admixture proportions, $\beta_\pi$ is the direct effect of admixture proportions on the trait, $p_{11}, p_{10}$ are the allele frequencies of the causal variant in the two ancestral populations, and $p_{21}, p_{20}$ are the ancestral allele frequencies of the unlinked neutral variant.
+From these results, we see that the unadjusted model will yield a biased estimate of the effect size of the causal variant ($E[\hat\beta_1] \neq \beta_1]$) unless there is no ancestral heterogeneity (i.e., $V_\pi = 0$), global ancestry does not have a direct effect on the trait (i.e., $\beta_\pi = 0$), or the causal variant does not have different allele frequencies in the ancestral populations (i.e., $p_{11} = p_{10}$). 
+We see, also, that the model can yield a biased effect size at the unlinked neutral variant ($E[\hat\beta_2] \neq 0$) even if global ancestry does not have a direct effect on the trait, provided that both the causal variant and the variant being tested have allele frequencies that differ between the two ancestral populations (i.e., $p_{11} \neq p_{10}$ and $p_{21} \neq p_{20}$).
+These biased effect size estimates at neutral variants will translate into spurious associations as sample sizes increase, just as we saw in our simulations (Figure \ref{fig:manh}A and Supplemental Figure \ref{fig:spurious-all-beta}).
+This result underscores the importance of adjusting for ancestral heterogeneity even when global ancestry does not have a direct effect on the trait.
+\add{Add DAG from dissertation? (Figure 4.5)}
+
+% results with two PCs
+To emulate the idea of adjusting for principal components that adjust for local genomic features, we also consider a scenario in which our GWAS model adjusts for two ``principal components".
+We assume that the first principal component captures global ancestry (i.e., $\mathbf{u}_1 = \boldsymbol\pi$) but the second principal component captures some feature other than global ancestry (i.e., $\mathbf{u}_2 = \mathbf{z}$ for some variable $z$).
+Then, we can show that the expected effect size estimates at the causal variant and an unlinked neutral variant will be
+$$
+\begin{aligned}
+E[\hat\beta_1] & = \beta_1 \\
+E[\hat\beta_2] & = 0 + \beta_1 \frac{-V_\pi E\{\text{Cov}(g_1, z \mid \pi)\} E\{\text{Cov}(g_2, z \mid \pi)\}}{V_z(V_\pi V_{g_2} - C_{g_2,\pi}^2) - V_\pi C_{g_2,z}^2 + C_{\pi, z}(2C_{g_2,\pi} C_{g_2,z} - V_{g_2}C_{\pi,z})}, \\
+\end{aligned}
+$$
+where $V_a = \text{Var}(a)$ and $C_{a,b} = \text{Cov}(a,b)$.
+We see that this model adjusting for an extraneous principal component will yield an unbiased effect size estimate at the causal variant, but the same is not true for the unlinked neutral variant.
+In particular, the effect size estimate at this neutral variant will be biased away from zero when there is  ancestral heterogeneity (i.e., $V_\pi \neq 0$) and the second principal component is correlated with both the causal variant and the variant being tested (i.e., $\text{Cov}(g_1, z \mid \pi) \neq 0$ and $\text{Cov}(g_2, z \mid \pi) \neq 0$).
+In other words, these results indicate that a model that adjusts for a PC that captures genotype at the causal variant as well as a second variant that is not associated with the trait, then spurious associations will arise at that second neutral variant in large enough samples.
+This is exactly what we observe in our simulations (Figure \ref{fig:manh}C, Figure \ref{fig:spurious}D,  Figure \ref{fig:spurious}E).
+However, if the extra PC does not capture genotype at the causal variant, then spurious associations will not arise (Figure \ref{fig:manh}F, Figure \ref{fig:spurious}C).
+
+% 
+Proofs and simulations validating these analytic results are available in Appendix \add{???}.
+
+% connect to idea of collider bias
+\add{connect to collider bias --- or save for discussion?}
 
 %% skip for now unless requested by co-author or reviewer
 %how does FWER compare?
