@@ -207,14 +207,119 @@ In this paper, we investigate the impact of LD filtering and pruning choices, as
 To conclude, we provide suggestions regarding best practice for appropriately controlling for ancestral heterogeneity in genome-wide association studies in admixed populations.
 
 
-\section{Material and Methods}
 
-\edit{ADD WHI --- see dissertation}
+\section{Material and Methods}
 
 % provide sufficient detail so readers can understand how experiments were performed and procedures can be repeated
 % describe any statistical methods employed in study
 
-%New outline: 
+\subsection{Data and QC}
+
+Our analyses focus on genotype and sequence data from three samples of unrelated African American individuals.
+In particular, we consider genotype data from the Women's Health Initiative SNP Health Association Resource (WHI SHARe), as well as whole genome sequencing data from two contributing studies to the Trans-Omics for Precision Medicine (TOPMed) Whole Genome Sequencing Project: the Jackson Heart Study (JHS) and the Genetic Epidemiology of Chronic Obstructive Pulmonary Disease Study (COPDGene).
+Quality control (QC), including identifying subsets of unrelated individuals, was performed on each sample prior to running any further analyses.
+
+\subsubsection{WHI SHARe Genotype Data}
+
+The Women's Health Initiative (WHI) is a long-term study of the health of women in the United States.
+In total, 161,808 postmenopausal women aged 50--79 years old were recruited to participate in this study.
+Additional details on study design and cohort characteristics can be found elsewhere \cite{whi}.
+Included in this study are 12,151 self-identified African American women who consented to genetic research, a subsample of which were selected for genotyping using the Affymetrix Genome-Wide Human SNP Array 6.0.
+This array contains 906,000 single nucleotide polymorphisms (SNPs) and more than 946,000 probes for the detection of copy number variants; in these analyses, we focus only on the SNPs.
+
+The genotype data were processed for quality control, including call rate, concordance rates for blinded and unblinded duplicates, and sex discrepancy, leaving 871,309 unflagged SNPs with a genotyping rate of 99.8\% and 8,421 African American women \cite{reiner2012}.
+We additionally used the iterative procedure suggested by Conomos et al. \cite{conomos2016related} to identify a subset of 8,064 mutually unrelated individuals, using a kinship threshold of 0.044 (i.e., excluding first, second, and third degree relatives).
+
+\subsubsection{TOPMed Whole Genome Sequence Data}
+
+The Trans-Omics for Precision Medicine (TOPMed) Whole Genome Sequencing Project is an ongoing project sponsored by the National Heart, Lung, and Blood Institute (NHLBI).
+The goal of this project is to collect and analyze whole-genome sequences, other 'omics data, and rich phenotypic information for over 100,000 individuals from diverse backgrounds. 
+Data are periodically released on dbGaP for analysis by the broader scientific community. 
+Our analysis uses data from \textit{freeze 4}, released in 2017, and \textit{freeze 5b}, released in 2018.
+These two freezes include samples from a large number of contributing studies.
+We focus on two such studies: the Jackson Heart Study (JHS) (accession number: phs000964) and the Genetic Epidemiology of Chronic Obstructive Pulmonary Disease Study (COPDGene) (accession number: phs000951).
+In total, the freeze 4 JHS dataset includes 3,406 African American individuals and the freeze 5b COPDGene dataset includes 8,742 African American and European American individuals.
+% sequencing
+For TOPMed freezes 4 and 5b, high coverage ($\approx$ 30X) whole genome sequencing was performed by several sequencing centers.
+Variant discovery and genotype calling was performed by the TOPMed Informatics Resources Center (IRC) using the \texttt{GotCloud} pipeline \citep{jun2015}.
+
+% QC
+Quality control (QC) was performed by the sequencing centers, IRC, and TOPMed Data Coordinating Center, and only those samples and variants that passed these stages of QC are included in the VCF downloaded from dbGaP.
+% references
+Details on TOPMed sequencing and QC methods are available in Taliun et al. \citep{taliun2021} and on the TOPMed website: \href{https://topmed.nhlbi.nih.gov/data-sets}{https://topmed.nhlbi.nih.gov/data-sets}.
+%% filters applied universally
+Prior to genetic ancestry inference, we performed two additional stages of variant- and sample-level filtering.
+% bcftools filters from Joe
+We used \texttt{bcftools} \citep{bcftools} to remove indels and otherwise restrict our analyses to biallelic single nucleotide variants (SNVs). 
+% relatives 
+Finally, we used the \href{https://github.com/UW-GAC/analysis_pipeline}{University of Washington Genetic Analysis Center TOPMed analysis pipeline} to restrict our analyses to a subset of mutually unrelated individuals (kinship threshold = 0.044)\citep{conomos2016related} .
+%\edit{Will this confuse people? Is saying we used the TOPMed pipeline enough? Perhaps skip?:} Note that this procedure of identifying related individuals involves an initial step of LD pruning and filtering, as recommend by the TOPMed Analysis Pipeline.
+\add{How many variants and samples left after QC?}
+
+
+\subsection{Genetic Ancestry Inference}
+
+\edit{brief introductory statement}
+
+\subsubsection{Model-Based Approaches}
+
+\edit{RFMix, supervised and unsupervised ADMIXTURE in WHI; unsupervised ADMIXTURE in TOPMed}
+
+\edit{TOPMed: We also perform an unsupervised \texttt{ADMIXTURE} \citep{admixture} analysis with both $K = 2$ and $K = 3$ to identify admixed (African American) and non-admixed (European American) individuals; we restrict remaining analyses to admixed individuals only. After exclusions, a total of \edit{???} and \edit{???} unrelated African Americans remain in JHS and COPDGene, respectively.}
+
+\subsubsection{Principal Component Analysis}
+
+\edit{implementation using which package; pre-processing (LD pruning and literature-based filters in WHI and TOPMed, data-based filters in WHI only, rare variaints in TOPMed only); diagnostics}
+
+\edit{TOPMed: We also remove variants with low minor allele frequency ($< 1\%$). After this filtering, a total of \edit{???} SNVs remain in JHS and \edit{???} SNVs remain in COPDGene.}
+
+
+\subsection{Simulation Study}
+
+\edit{brief introductory statement}
+
+\subsubsection{Trait Simulation}
+
+\edit{see dissertation}
+
+\subsubsection{GWAS Models}
+
+\edit{see dissertation}
+
+\subsubsection{Spurious Associations}
+
+\edit{see dissertation}
+
+
+
+\subsection{Software}
+
+All code and data used throughout this paper are publicly available online: 
+
+Data: 
+\begin{itemize}
+\item WHI Data: \edit{TBD}
+\item TOPMed Sequence Data: \href{https://www.ncbi.nlm.nih.gov/gap/}{https://www.ncbi.nlm.nih.gov/gap/}
+\end{itemize}
+
+Software: (\edit{see dissertation}) 
+\begin{itemize}
+\item bcftools
+\item Beagle
+\item RFMix
+\item ADMIXTURE
+\item SNPRelate
+\item PC-AiR
+\item PLINK
+\item TOPMed Analysis Pipeline: \href{https://github.com/UW-GAC/analysis_pipeline}{https://github.com/UW-GAC/analysis\_pipeline}
+\item R
+\end{itemize}
+
+Other Resources: \href{https://github.com/kegrinde/PCA}{https://github.com/kegrinde/PCA}
+
+
+
+%old outline: 
 %
 %\begin{itemize}
 %\item TOPMed data
@@ -261,43 +366,9 @@ To conclude, we provide suggestions regarding best practice for appropriately co
 %\end{itemize}
 
 
-\subsection{TOPMed Whole Genome Sequence Data}
-
-The Trans-Omics for Precision Medicine (TOPMed) Whole Genome Sequencing Project is an ongoing project sponsored by the National Heart, Lung, and Blood Institute (NHLBI) that is working to collect and analyze whole-genome sequences, other 'omics data, and rich phenotypic information for over 100,000 individuals from diverse backgrounds. 
-Data are periodically released on dbGaP for analysis by the broader scientific community. 
-Our analysis uses data from \textit{freeze 4}, released in 2017, and \textit{freeze 5b}, released in 2018.
-These two freezes include samples from a large number of contributing studies.
-We focus on two such studies: the Jackson Heart Study (JHS) (accession number: phs000964) and the Genetic Epidemiology of Chronic Obstructive Pulmonary Disease Study (COPDGene) (accession number: phs000951).
-In total, the freeze 4 JHS dataset includes 3,406 African American individuals and the freeze 5b COPDGene dataset includes 8,742 African American and European American individuals.
-
-% sequencing
-For TOPMed freezes 4 and 5b, high coverage ($\approx$ 30X) whole genome sequencing was performed by several sequencing centers.
-Variant discovery and genotype calling was performed by the TOPMed Informatics Resources Center (IRC) using the \texttt{GotCloud} pipeline \citep{jun2015}.
-% QC
-Quality control (QC) was performed by the sequencing centers, IRC, and TOPMed Data Coordinating Center, and only those samples and variants that passed these stages of QC are included in the VCF downloaded from dbGaP.
-% references
-Details on TOPMed sequencing and QC methods are available in Taliun et al. \citep{taliun2021} and on the TOPMed website: \href{https://topmed.nhlbi.nih.gov/data-sets}{https://topmed.nhlbi.nih.gov/data-sets}.
+\subsection{Old Methods}
 
 
-\subsection{Additional Quality Control and Filtering}
-\label{sec:filter}
-
-%% filters applied universally
-Prior to principal component analysis, we perform additional variant- and sample-level filtering.
-% bcftools filters from Joe
-We use \texttt{bcftools} \citep{bcftools} to remove indels and otherwise restrict our analyses to biallelic single nucleotide variants (SNVs). 
-% MAF and missing rates
-We also remove variants with low minor allele frequency ($< 1\%$) and/or \edit{high rates of missing calls ($>1\%$) --- STILL NEEDS TO BE IMPLEMENTED}.
-After this filtering, a total of \edit{???} SNVs remain in JHS and \edit{???} SNVs remain in COPDGene.
-
-% relatives 
-At the sample level, we use the iterative procedure proposed by Conomos et al. \citep{conomos2016related} and implemented in the \href{https://github.com/UW-GAC/analysis_pipeline}{TOPMed Analysis Pipeline} to identify a subset of mutually unrelated individuals using a kinship threshold of 0.044 (third degree relatives).
-% Europeans
-We also perform an unsupervised \texttt{ADMIXTURE} \citep{admixture} analysis with both $K = 2$ and $K = 3$ to identify admixed (African American) and non-admixed (European American) individuals; we restrict remaining analyses to admixed individuals only.
-% LD pruning
-Prior to both of these analyses we implement LD pruning/filtering as recommended in their respective user manuals.
-% how many left?
-After exclusions, a total of \edit{???} and \edit{???} unrelated African Americans remain in JHS and COPDGene, respectively.
 
 \subsubsection{LD-Based Filtering}
 %% LD-based filtering
@@ -525,14 +596,7 @@ To adjust for ancestral heterogeneity, we include inferred global ancestry in th
 \add{defining spurious associations}
 
 
-\subsection{Code and Data Availability}
 
-All code and data used throughout this paper are publicly available online: 
-
-\begin{itemize}
-\item TOPMed Sequence Data: \href{https://www.ncbi.nlm.nih.gov/gap/}{https://www.ncbi.nlm.nih.gov/gap/}
-\item Code: \href{https://github.com/kegrinde/PCA}{https://github.com/kegrinde/PCA}
-\end{itemize}
 
 
 \section{Results}
