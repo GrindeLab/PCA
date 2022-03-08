@@ -213,18 +213,18 @@ To conclude, we provide suggestions regarding best practice for appropriately co
 % provide sufficient detail so readers can understand how experiments were performed and procedures can be repeated
 % describe any statistical methods employed in study
 
-\subsection{Data and QC}
+\subsection{Data and Quality Control}
 
 Our analyses focus on genotype and sequence data from three samples of unrelated African American individuals.
 In particular, we consider genotype data from the Women's Health Initiative SNP Health Association Resource (WHI SHARe), as well as whole genome sequencing data from two contributing studies to the Trans-Omics for Precision Medicine (TOPMed) Whole Genome Sequencing Project: the Jackson Heart Study (JHS) and the Genetic Epidemiology of Chronic Obstructive Pulmonary Disease Study (COPDGene).
-Quality control (QC), including identifying subsets of unrelated individuals, was performed on each sample prior to running any further analyses.
+Quality control (QC), including identifying subsets of unrelated African American individuals, was performed on each sample prior to running any further analyses.
 
 \subsubsection{WHI SHARe Genotype Data}
 
 The Women's Health Initiative (WHI) is a long-term study of the health of women in the United States.
 In total, 161,808 postmenopausal women aged 50--79 years old were recruited to participate in this study.
 Additional details on study design and cohort characteristics can be found elsewhere \cite{whi}.
-Included in this study are 12,151 self-identified African American women who consented to genetic research, a subsample of which were selected for genotyping using the Affymetrix Genome-Wide Human SNP Array 6.0.
+Included in the WHI study are 12,151 self-identified African American women who consented to genetic research, a subsample of which were selected for genotyping using the Affymetrix Genome-Wide Human SNP Array 6.0.
 This array contains 906,000 single nucleotide polymorphisms (SNPs) and more than 946,000 probes for the detection of copy number variants; in these analyses, we focus only on the SNPs.
 
 The genotype data were processed for quality control, including call rate, concordance rates for blinded and unblinded duplicates, and sex discrepancy, leaving 871,309 unflagged SNPs with a genotyping rate of 99.8\% and 8,421 African American women \cite{reiner2012}.
@@ -259,13 +259,30 @@ Finally, we used the \href{https://github.com/UW-GAC/analysis_pipeline}{Universi
 
 \subsection{Genetic Ancestry Inference}
 
-\edit{brief introductory statement}
+We consider two approaches to inferring genetic ancestry in these admixed samples: model-based approaches and principal component analysis.
 
 \subsubsection{Model-Based Approaches}
 
-\edit{RFMix, supervised and unsupervised ADMIXTURE in WHI; unsupervised ADMIXTURE in TOPMed}
+In WHI SHARe African Americans, we inferred both local and global genetic ancestry using model-based ancestry inference techniques. 
+Local ancestry inference was performed using \texttt{RFMix} \citep{rfmix} and a reference panel including individuals of European and African decent from the International HapMap Project (HapMap) \citep{hapmap}: see Grinde et al. \cite{steam} for more details.
+We then calculated global ancestry proportions via the genome-wide average local ancestry $\hat\pi_{ik} = \frac{1}{2m}\sum_{j=1}^m a_{ijk},$ where $a_{ijk}$ is the number of alleles (0, 1, or 2) inherited by individual $i$ from population $k$ at variant $j$.
+We also compared these \texttt{RFMix}-based global ancestry estimates to results from supervised and unsupervised \texttt{ADMIXTURE}  \citep{admixture} analyses with two ancestral populations ($K = 2$).
+The supervised analysis used the same HapMap reference panel as was used to infer local ancestry using \texttt{RFMix}.
+% supervised = same Hap
+All three sets of admixture proportions were highly correlated (pairwise Pearson correlation $>$ 0.998), so we focus on the local ancestry based admixture proportions for the remainder of our analyses.
 
-\edit{TOPMed: We also perform an unsupervised \texttt{ADMIXTURE} \citep{admixture} analysis with both $K = 2$ and $K = 3$ to identify admixed (African American) and non-admixed (European American) individuals; we restrict remaining analyses to admixed individuals only. After exclusions, a total of \edit{???} and \edit{???} unrelated African Americans remain in JHS and COPDGene, respectively.}
+In TOPMed JHS and COPDGene samples, we inferred global ancestry via unsupervised \texttt{ADMIXTURE} analyses with both two and three ancestral populations (i.e., $K = 2$ and $K = 3$). 
+% did not do supervised or RFMix because more time-intensive
+We also used these inferred global ancestry proportions to identify subsets of admixed individuals and restrict remaining analyses to admixed individuals only.
+The COPDGene study includes both African Americans and European Americans, but  self-identified race/ethnicity information was not available from dbGaP.
+Instead, we used inferred admixture proportions to identify and restrict our attention to individuals with at least 29.5\% African ancestry.
+% although these analyses were unsupervised, we inferred which ancestral population corresonded to African ancestry based on observed ancestry proportions
+The choice of threshold follows from the results reported by Parker et al. \cite{parker2014}, showing that African Americans in the COPDGene have inferred proportions of African ancestry ranging from 29.5\% and above.
+(Note that we are not suggesting that this same threshold be applied to identify African American individuals in other samples.)
+After filtering, 2676 individuals remain. 
+In addition, although JHS is known to focus on African Americans, we did identify a handful of individuals inferred to have 100\% European ancestry in that sample.
+These individuals were excluded from further analyses, leaving a total of 1888 admixed samples. 
+
 
 \subsubsection{Principal Component Analysis}
 
@@ -276,46 +293,67 @@ Finally, we used the \href{https://github.com/UW-GAC/analysis_pipeline}{Universi
 
 \subsection{Simulation Study}
 
-\edit{brief introductory statement}
+To explore the impact of adjusting for principal components that capture local genomic features, we conducted a simulation study using genotype data and simulated traits in the WHI SHARe African American sample.
 
 \subsubsection{Trait Simulation}
 
-\edit{see dissertation}
+Traits were simulated for each individual $i = 1, \dots, 8064$ such that they depended only on the genotype $g_{ij}$ at a single causal variant with effect size $\beta_j$: $$y_i = \beta_j g_{ij} + \epsilon_i, \ \epsilon_i \stackrel{iid}{\sim} N(0, 1).$$
+We considered seven choices of effect sizes ($\beta_j = 0, 0.25, 0.5, 1, 2, 4, 8$) and 473 choices for the position $j$ of the causal variant, varying the position of this causal variant across all 22 autosomes.
+
+To choose the location of these causal variants, we first estimated the difference in ancestral allele frequencies for each variant using the observed allele frequencies in our HapMap reference panel (which included samples from the CEU (Utah residents with Northern and Western European ancestry) and YRI (Yoruba in Ibadan, Nigeria)  populations).
+We also considered the SNP loadings %(i.e., the contribution of each SNP to each PC \add{\cite{136}}) 
+for the set of PCs that were generated without any prior LD-based filtering or pruning.
+%Based on these calculations, we selected 473 variants with positions spread across the genome, high or low SNP loadings, and large or small ancestral allele frequency differences.
+We identified the 10 variants on each chromosome with the highest absolute SNP loadings for each of the first four PCs. 
+In total, 373 unique variants were selected according to 	this procedure. 
+For comparison, we also selected 100 variants across the autosomes with low SNP loadings ($|\text{loading}| < 0.0008$) for all of the first four PCs.
+Among these 100 variants, 85 were selected such that they had different allele frequencies in the African and European ancestral populations ($|\hat{p}_{CEU} - \hat{p}_{YRI}| > 0.6$), and 15 were selected that had similar allele frequencies in the two ancestral populations ($|\hat{p}_{CEU} - \hat{p}_{YRI}| < 0.005$).
+
 
 \subsubsection{GWAS Models}
 
-\edit{see dissertation}
+For each simulated trait, we ran genome-wide association studies using models of the general form
+$$E[y_i \mid g_{ij}, \mathbf{w}_i] = \alpha + \beta_j g_{ij} + \boldsymbol\gamma \mathbf{w}_i,$$
+where $y_i$ is the simulated quantitative trait, $g_{ij}$ is the genotype at position $j$,  and $\mathbf{w}_i$ is a vector of additional covariates.
+Note that we quantify genotype $g_{ij}$ by the number of copies---0, 1, or, 2---of some pre-specified allele (e.g., the minor allele) carried by individual $i$ at position $j$.
+We fit these models at every position $j = 1, \dots, m$ across the genome and test for association between the trait and genotype by testing the null hypothesis $H_0: \beta_j = 0$.
+
+In particular, we consider four models: a model making no adjustment for ancestral heterogeneity (i.e., $\mathbf{w}_i = \emptyset$), a model adjusting for model-based admixture proportions ($\mathbf{w}_i = \hat\pi_i$), a model adjusting for the first principal component ($\mathbf{w}_i = u_{1i}$), and a model adjusting for the first four principal components ($\mathbf{w}_i = \begin{bmatrix} u_{1i} & u_{2i} & u_{3i} & u_{4i} \end{bmatrix}$). 
+For the models adjusting for principal components, we consider four sets of PCs based on different pre-processing criteria: \textit{none} (no prior LD-based exclusions or pruning), \textit{exclusions only} (excluding regions from Table \ref{tab:highLD} but no LD pruning), \textit{pruning only} (LD pruning with $r^2 < 0.1$ and a window size of 0.5 Mb, but not excluding regions from Table \ref{tab:highLD}), and \textit{both} (both Table \ref{tab:highLD} exclusions and LD pruning).
 
 \subsubsection{Spurious Associations}
 
-\edit{see dissertation}
+To evaluate these ancestral heterogeneity adjustment approaches, we compared the number of spurious associations that appeared when we used each model.
+We quantified spurious associations by counting the number of chromosomes, not including the chromosome on which the causal variant was located, with at least one variant reaching genome-wide significance.
+For all models, the genome-wide significance threshold was set to the $p = 5.0 \times 10^{-8}$ threshold that is used extensively throughout the GWAS literature \cite{peer2008, jannot2015}.
 
 
+\subsection{Data and Software Availability}
 
-\subsection{Software}
+WHI SHARe genotype data and TOPMed whole genome sequence data are available for analysis upon request and application. Visit study sites and dbGaP for more information.
 
-All code and data used throughout this paper are publicly available online: 
+All software packages used throughout this paper are freely available online: 
 
-Data: 
+%Data: 
+%\begin{itemize}
+%\item WHI Data: \edit{TBD}
+%\item TOPMed Sequence Data: \href{https://www.ncbi.nlm.nih.gov/gap/}{https://www.ncbi.nlm.nih.gov/gap/}
+%\end{itemize}
+
 \begin{itemize}
-\item WHI Data: \edit{TBD}
-\item TOPMed Sequence Data: \href{https://www.ncbi.nlm.nih.gov/gap/}{https://www.ncbi.nlm.nih.gov/gap/}
+\item bcftools \citep{bcftools} (quality control): \href{https://samtools.github.io/bcftools/}{https://samtools.github.io/bcftools/}
+%\item Beagle (phasing and imputation): 
+\item RFMix \citep{rfmix} (local ancestry inference):  \href{https://sites.google.com/site/rfmixlocalancestryinference/}{https://sites.google.com/site/rfmixlocalancestryinference/}
+\item ADMIXTURE \citep{admixture} (global ancestry inference): \href{https://dalexander.github.io/admixture/}{https://dalexander.github.io/admixture/}
+\item PCRelate \citep{conomos2016related} and PC-AiR \citep{conomos2015}
+ (identifying unrelated individuals): \href{https://rdrr.io/bioc/GENESIS/}{https://rdrr.io/bioc/GENESIS/}
+\item SNPRelate \citep{snprelate} (LD pruning, PCA, and calculating and plotting SNP loadings or the correlation between PCs and genotypes): \\ \href{https://www.bioconductor.org/packages/release/bioc/html/SNPRelate.html}{https://www.bioconductor.org/packages/release/bioc/html/SNPRelate.html} 
+\item PLINK \citep{plink} (GWAS): \href{https://zzz.bwh.harvard.edu/plink/}{https://zzz.bwh.harvard.edu/plink/}
+\item TOPMed Analysis Pipeline (identifying unrelated individuals, LD pruning, PCA,  calculating and plotting correlation between PCs and genotypes, and GWAS in whole genome sequence data): \href{https://github.com/UW-GAC/analysis_pipeline}{https://github.com/UW-GAC/analysis\_pipeline}
+\item R (analyzing and visualizing results): \href{https://cran.r-project.org/}{https://cran.r-project.org/}
 \end{itemize}
 
-Software: (\edit{see dissertation}) 
-\begin{itemize}
-\item bcftools
-\item Beagle
-\item RFMix
-\item ADMIXTURE
-\item SNPRelate
-\item PC-AiR
-\item PLINK
-\item TOPMed Analysis Pipeline: \href{https://github.com/UW-GAC/analysis_pipeline}{https://github.com/UW-GAC/analysis\_pipeline}
-\item R
-\end{itemize}
-
-Other Resources: \href{https://github.com/kegrinde/PCA}{https://github.com/kegrinde/PCA}
+Other resources pertaining to this paper, including download-able lists of the high LD regions in Table \ref{tab:highLD} in various builds, can be found on the lead author's GitHub page: \href{https://github.com/kegrinde/PCA}{https://github.com/kegrinde/PCA}.
 
 
 
@@ -518,38 +556,38 @@ For each set of principal components, we also use the \texttt{SNPRelate} package
 \add{also look at loadings? shouldn't this give us the same picture as corr?}
 
 
-\subsection{Simulation Study to Investigate Rates of Spurious Associations}
+%\subsection{Simulation Study to Investigate Rates of Spurious Associations}
+%
+%We implement a simulation study to explore the impact of different variant-level filtering choices, particularly with respect to linkage disequlibrium, on rates of spurious associations in genome-wide association studies using models that adjust for ancestral heterogeneity using principal components.
+%
+%\subsubsection{Simulated Traits}
+%
+%\add{
+%\begin{itemize}
+%\item find loading peaks from "naive" approach
+%\item simulate trait that is beta * x + rnorm(0, 1), where beta = 1 or 2 and x = genotype at one of the peaks
+%\end{itemize}
+%}
 
-We implement a simulation study to explore the impact of different variant-level filtering choices, particularly with respect to linkage disequlibrium, on rates of spurious associations in genome-wide association studies using models that adjust for ancestral heterogeneity using principal components.
-
-\subsubsection{Simulated Traits}
-
-\add{
-\begin{itemize}
-\item find loading peaks from "naive" approach
-\item simulate trait that is beta * x + rnorm(0, 1), where beta = 1 or 2 and x = genotype at one of the peaks
-\end{itemize}
-}
-
-\subsubsection{GWAS Models}
-
-To perform genome-wide association studies in samples of unrelated admixed individuals, we use marginal regression models, regressing the trait of interest on the genotype at each position across the genome. 
-At a given position $j$, we quantify genotype $g_{ij}$ as the number of copies (0, 1, or 2) of some pre-specified allele (e.g., the minor allele) carried by individual $i$ at that position. 
-Considering a quantitative trait $y_i$, we fit one linear regression model at each position ($j = 1, \dots, m$): $$E[y_i \mid g_{ij}, \mathbf{z}_i] = \beta_0 + \beta_j g_{ij} + \boldsymbol{\beta}_z \mathbf{z}_i,$$ where $\mathbf{z}_i$ is a vector of additional covariates (e.g., potential confounding variables) that we want to include in the model.
-%This linear regression model can be replaced with a logistic regression model in the case of a binary trait (e.g., disease status).
-We test for an association between the trait and genotype by testing the null hypothesis $H_0: \beta_j = 0$ at each position $j = 1, \dots, m$.
-
-
-To adjust for ancestral heterogeneity, we include inferred global ancestry in the vector $\mathbf{z}_i$ of potential confounders in our regression models. We infer global ancestry using one of two techniques: model-based global ancestry inference of principal component analysis. 
-\add{describe which models we compare}
-
-\add{
-\begin{itemize}
-\item for each of 188*2 simulated phenotypes
-\item for each set of PCs
-\item including 1, 4, or 10 PCs
-\end{itemize}
-}
+%\subsubsection{GWAS Models}
+%
+%To perform genome-wide association studies in samples of unrelated admixed individuals, we use marginal regression models, regressing the trait of interest on the genotype at each position across the genome. 
+%At a given position $j$, we quantify genotype $g_{ij}$ as the number of copies (0, 1, or 2) of some pre-specified allele (e.g., the minor allele) carried by individual $i$ at that position. 
+%Considering a quantitative trait $y_i$, we fit one linear regression model at each position ($j = 1, \dots, m$): $$E[y_i \mid g_{ij}, \mathbf{z}_i] = \beta_0 + \beta_j g_{ij} + \boldsymbol{\beta}_z \mathbf{z}_i,$$ where $\mathbf{z}_i$ is a vector of additional covariates (e.g., potential confounding variables) that we want to include in the model.
+%%This linear regression model can be replaced with a logistic regression model in the case of a binary trait (e.g., disease status).
+%We test for an association between the trait and genotype by testing the null hypothesis $H_0: \beta_j = 0$ at each position $j = 1, \dots, m$.
+%
+%
+%To adjust for ancestral heterogeneity, we include inferred global ancestry in the vector $\mathbf{z}_i$ of potential confounders in our regression models. We infer global ancestry using one of two techniques: model-based global ancestry inference of principal component analysis. 
+%\add{describe which models we compare}
+%
+%\add{
+%\begin{itemize}
+%\item for each of 188*2 simulated phenotypes
+%\item for each set of PCs
+%\item including 1, 4, or 10 PCs
+%\end{itemize}
+%}
 
 %% UPDATE: skipping details of model-based GAI
 %\subsubsection{Model-based global ancestry inference}
@@ -591,13 +629,6 @@ To adjust for ancestral heterogeneity, we include inferred global ancestry in th
 
 
 
-\subsubsection{Evaluation}
-
-\add{defining spurious associations}
-
-
-
-
 
 \section{Results}
 
@@ -615,8 +646,8 @@ Inferred admixture proportions for three samples of African American individuals
 
 In WHI SHARe African Americans, we compared admixture proportion estimates from a variety of model-based techniques. 
 Figure \ref{fig:barplots} presents admixture proportions estimated as genome-wide average local ancestry, using local ancestry calls from \texttt{RFMix}. 
-\edit{Move to methods? We also ran supervised and unsupervised \texttt{ADMIXTURE} analyses with two ancestral populations ($K = 2$). 
-All three sets of admixture proportions were highly correlated (pairwise Pearson correlation $>$ 0.998), so we decided to use only the local ancestry based admixture proportion estimates for the remainder of our analyses.}
+These local ancestry based admixture proportion estimates were highly correlated (Pearson correlation $>$ 0.998) with admixture proportions from supervised and unsupervised \texttt{ADMIXTURE} analyses with two ancestral populations ($K = 2$). 
+
 
 %\begin{tabular}{l|rrrr}
 %& avgLA  & unsupADM    & supADM & supPrunedADM \\
@@ -631,14 +662,6 @@ In TOPMed samples, we performed unsupervised \texttt{ADMIXTURE} analyses with va
 Figure \ref{fig:barplots} presents results with $K = 2$.
 Although these analyses were unsupervised, based on prior studies of admixture in African Americans, and in comparison to the distribution of admixture proportions seen here in WHI SHARe, we believe that the ancestral population colored orange (Pop1) in Figure \ref{fig:barplots} corresponds to European ancestry and the population colored in blue (Pop2) corresponds to African ancestry.
 
-\edit{This paragraph could be moved to methods?} Note that we performed some filtering of individuals prior to presenting these barplots of estimated admixture proportions.
-Our work focuses on genetic association studies in admixed populations, but the COPDGene study includes both African Americans and European Americans.
-We do not have self-identified or reported race/ethnicity information for these samples from dbGaP, so we instead used inferred admixture proportions to identify and restrict our attention to individuals with at least $29.5\%$ African ancestry.
-The choice of threshold follows from the results reported by Parker et al. \citep{parker2014}, showing that African Americans in the COPDGene study have inferred proportions of African ancestry ranging from 29.5\% and above. 
-After filtering, 2676 individuals remain.
-In addition, although JHS is known to focus on African American individuals, we did see some individuals inferred to have 100\% European ancestry in that sample.
-These individuals were excluded from further analyses, leaving a total of 1888 admixed samples. 
-
 In all three samples, we observe considerable variability in the relative proportions of African and European ancestry across individuals.
 This ancestral heterogeneity motivates the need to carefully adjust for global ancestry in genome-wide association studies in these, just as in other, admixed samples. 
 
@@ -646,7 +669,7 @@ This ancestral heterogeneity motivates the need to carefully adjust for global a
 \begin{itemize}
 \item Add WHI SHARe Hispanic Americans? (check with Tim)
 \item Possible supplemental figure: JHS and COPDGene with K = 3 (and/or K = 4 for COPDGene)
-\item Possible supplemental figure: JHS and COPDGene barplots before filtering
+\item Possible supplemental figure: JHS and COPDGene barplots before filtering out European Americans
 \end{itemize}
 }
 
