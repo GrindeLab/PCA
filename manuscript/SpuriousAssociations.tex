@@ -126,7 +126,7 @@ A number of methods for detecting and controlling for ancestral heterogeneity in
 Early approaches included restricting analyses to subsets of ancestrally homogeneous individuals \citep{lander1994}, performing a genome-wide correction for test statistic inflation due to ancestral heterogeneity via \textit{genomic control} \citep{GenomicControl}, and using family-based designs \citep{tdt}. 
 More recently, approaches based on mixed models have been proposed \citep{yu2006, kang2010, yang2014}, using random effects to control for both close (e.g., due to family-based sampling) and distant (e.g., due to shared ancestry) relatedness across individuals.
 When studies do not include closely related individuals, a simpler approach is to include inferred global ancestry as a fixed effect in marginal regression models \citep{eigenstrat, pritchard2000}. 
-This fixed effects adjustment for global ancestry is currently used extensively throughout the literature, with global ancestry inferred using either model-based ancestry inference methods (e.g., \texttt{frappe} \citep{tang2005}, \texttt{STRUCTURE} \cite{structure}, \texttt{ADMIXTURE} \citep{admixture}, \texttt{RFMix} \citep{rfmix}) or principal component analysis (e.g., \texttt{EIGENSTRAT} \citep{eigenstrat}, \texttt{SNPRelate} \citep{snprelate}, \texttt{PC-AiR} \citep{conomos2015}).
+This fixed effects adjustment for global ancestry is used extensively throughout the literature, with global ancestry inferred using either model-based ancestry inference methods (e.g., \texttt{frappe} \citep{tang2005}, \texttt{STRUCTURE} \cite{structure}, \texttt{ADMIXTURE} \citep{admixture}, \texttt{RFMix} \citep{rfmix}) or principal component analysis (e.g., \texttt{EIGENSTRAT} \citep{eigenstrat}, \texttt{SNPRelate} \citep{snprelate}, \texttt{PC-AiR} \citep{conomos2015}).
 
 % summarize model-based approaches (SKIP --- don't want to emphasize as much)
 %Model-based approaches for global ancestry inference model the probability of observed genotypes given unobserved ancestry and allele frequencies in each ancestral population \citep{structure, tang2005, admixture, finestructure}. 
@@ -137,7 +137,8 @@ This fixed effects adjustment for global ancestry is currently used extensively 
 %Furthermore, ancestry inference is typically conducted at a continental level (e.g., African versus European, rather than South European versus North European), so finer levels of population structure could be missed; recent efforts have considered global ancestry inference on a sub-continental scale \citep{finestructure, durand2014}.
 
 %% overview of PCA 
-Principal component analysis (PCA) is a widely-implemented unsupervised approach for inferring global ancestry. Advantages of this approach are that it does not require reference panel data or pre-specification of the number of ancestral populations of interest, and it is capable of capturing sub-continental structure \citep{novembre2008}. 
+Principal component analysis (PCA) is a widely-implemented unsupervised approach for inferring global ancestry that offers the advantages of not requiring reference panel data or pre-specification of the number of ancestral populations of interest.
+It is also capable of capturing sub-continental structure \citep{novembre2008}. 
 To infer global ancestry using PCA, we preform a singular value decomposition of the matrix of standardized genotypes (i.e., $\mathbf{X} = \mathbf{U}\mathbf{D}\mathbf{V}^\top$) or, equivalently, an eigenvalue decomposition of the genetic relationship matrix (i.e., $\mathbf{X}\mathbf{X}^\top = \mathbf{U}\mathbf{D}^2\mathbf{U}^\top$).
 %where $\mathbf{X}$ is the $n \times m$ matrix of standardized gentoypes for $n$ individuals at $m$ single nucleotide variants (SNVs).
 It has been shown that top eigenvectors, or \textit{principal components} (PCs), $\mathbf{u}_1, \mathbf{u}_2, \dots$ tend to reflect global ancestry \citep{patterson2006, mcvean2009}.
@@ -155,7 +156,7 @@ This could be due in part to work that has suggested that including higher-order
 Another challenge that can arise in using PCA to adjust for ancestral heterogeneity involves ensuring that PCs actually reflect global ancestry and not some other features or artifacts of the data. 
 Prior work has shown that PCs can capture relatedness across samples \citep{patterson2006, price2010, abdellaoui2013, conomos2015}, array artifacts or other data quality issues \citep{patterson2006, eigenstrat, price2010, weale2010}, and/or small regions of the genome with unusual patterns of linkage disequilibrium (LD) \citep{patterson2006, eigenstrat, wellcome2007, tian2008, price2008, price2010, weale2010, zou2010, laurie2010, abdellaoui2013, prive2020}. 
 %\add{what happens if we adjust for PCs that capture LD instead? include here or save for discussion?}
-To address this last issue, some authors have suggested running PCA on a reduced subset of variants after first performing \textit{LD pruning}, using a program such as \texttt{PLINK} \citep{plink} to remove variants that are in ``high" LD (e.g., pairwise-correlation $r^2 > 0.2$) with nearby variants  \citep{wellcome2007, fellay2007, novembre2008, yu2008, nelson2008, anderson2010, weale2010, laurie2010, abdellaoui2013, zhang2013, conomos2015, reed2015, galinsky2016, conomos2016, daya2019}, and/or excluding regions of the genome that are known to have extensive, long-ranging, or otherwise unusual patterns of LD \citep{wellcome2007,  fellay2007, novembre2008, price2008, anderson2010, weale2010, raska2012, conomos2016}. 
+To address this last issue, many authors have suggested running PCA on a reduced subset of variants after first performing \textit{LD pruning}, using a program such as \texttt{PLINK} \citep{plink} to remove variants that are in ``high" LD (e.g., pairwise-correlation $r^2 > 0.2$) with nearby variants  \citep{wellcome2007, fellay2007, novembre2008, yu2008, nelson2008, anderson2010, weale2010, laurie2010, abdellaoui2013, zhang2013, conomos2015, reed2015, galinsky2016, conomos2016, daya2019}, and/or excluding regions of the genome that are known to have extensive, long-ranging, or otherwise unusual patterns of LD \citep{wellcome2007,  fellay2007, novembre2008, price2008, anderson2010, weale2010, raska2012, conomos2016}. 
 A list of these previously-identified high LD regions and references that recommend their exclusion are provided in Table \ref{tab:highLD}.
 %after first removing regions of the genome that are known to have high or long-range LD (see Table \ref{tab:highLD}) \citep{wellcome2007,  fellay2007, novembre2008, price2008, anderson2010, weale2010, raska2012, conomos2016} and/or performing LD pruning (i.e., using a program such as \texttt{PLINK} \citep{plink} to remove variants that are in high LD) \citep{wellcome2007, fellay2007, novembre2008, yu2008, nelson2008, anderson2010, weale2010, laurie2010, abdellaoui2013, zhang2013, conomos2015, reed2015, galinsky2016, conomos2016, daya2019}. 
 
@@ -200,7 +201,7 @@ Chr & Start (bp) & End (bp) & References \\
 
 %% motivate  our paper
 The above-cited suggestions regarding LD pruning and filtering are not universally implemented and the downstream implications of adjusting for PCs that capture features other than global ancestry are not fully understood.
-Furthermore, much of this work was conducted in populations of European ancestry, so recommendations on how best to implement principal component-based adjustment for ancestral heterogeneity in admixed populations are lacking. 
+Furthermore, much of this prior work was conducted in populations of European ancestry, so recommendations on how best to implement principal component-based adjustment for ancestral heterogeneity in admixed populations are lacking. 
 % outline rest of paper
 In this paper, we investigate the impact of LD filtering and pruning choices, as well as choices of the number of principal components to include in analyses, on genome-wide association studies in admixed populations.
 \edit{We conduct simulation studies using whole genome sequence data for African American individuals in the Trans-Omics for Precision Medicine (TOPMed) project and provide analytic results to show that including too many PCs can actually induce spurious associations in GWAS, particularly when those extraneous PCs capture local genomic features rather than genome-wide ancestry.  --- ADD WHI}
@@ -217,7 +218,7 @@ To conclude, we provide suggestions regarding best practice for appropriately co
 
 Our analyses focus on genotype and sequence data from three samples of unrelated African American individuals.
 In particular, we consider genotype data from the Women's Health Initiative SNP Health Association Resource (WHI SHARe), as well as whole genome sequencing data from two contributing studies to the Trans-Omics for Precision Medicine (TOPMed) Whole Genome Sequencing Project: the Jackson Heart Study (JHS) and the Genetic Epidemiology of Chronic Obstructive Pulmonary Disease Study (COPDGene).
-Quality control (QC), including identifying subsets of unrelated African American individuals, was performed on each sample prior to running any further analyses.
+We performed quality control (QC) and identified subsets of unrelated African American individuals prior to running any further analyses.
 
 \subsubsection{WHI SHARe Genotype Data}
 
@@ -244,7 +245,7 @@ For TOPMed freezes 4 and 5b, high coverage ($\approx$ 30X) whole genome sequenci
 Variant discovery and genotype calling was performed by the TOPMed Informatics Resources Center (IRC) using the \texttt{GotCloud} pipeline \citep{jun2015}.
 
 % QC
-Quality control (QC) was performed by the sequencing centers, IRC, and TOPMed Data Coordinating Center, and only those samples and variants that passed these stages of QC are included in the VCF downloaded from dbGaP.
+Quality control (QC) was performed by the sequencing centers, IRC, and TOPMed Data Coordinating Center, and only those samples and variants that passed these stages of QC are included in the Variant Call Format (VCF) files downloaded from dbGaP.
 % references
 Details on TOPMed sequencing and QC methods are available in Taliun et al. \citep{taliun2021} and on the TOPMed website: \href{https://topmed.nhlbi.nih.gov/data-sets}{https://topmed.nhlbi.nih.gov/data-sets}.
 %% filters applied universally
@@ -265,20 +266,20 @@ We consider two approaches to inferring genetic ancestry in these admixed sample
 
 In WHI SHARe African Americans, we inferred both local and global genetic ancestry using model-based ancestry inference techniques. 
 Local ancestry inference was performed using \texttt{RFMix} \citep{rfmix} and a reference panel including individuals of European and African decent from the International HapMap Project (HapMap) \citep{hapmap}: see Grinde et al. \cite{steam} for more details.
-We then calculated global ancestry proportions via the genome-wide average local ancestry $\hat\pi_{ik} = \frac{1}{2m}\sum_{j=1}^m a_{ijk},$ where $a_{ijk}$ is the number of alleles (0, 1, or 2) inherited by individual $i$ from population $k$ at variant $j$.
+We then calculated global ancestry proportions via the genome-wide average local ancestry $\hat\pi_{ik} = \frac{1}{2m}\sum_{j=1}^m a_{ijk},$ where $a_{ijk}$ is the inferred number of alleles (0, 1, or 2) inherited by individual $i$ at variant $j$ from population $k$.
 We also compared these \texttt{RFMix}-based global ancestry estimates to results from supervised and unsupervised \texttt{ADMIXTURE}  \citep{admixture} analyses with two ancestral populations ($K = 2$).
 The supervised analysis used the same HapMap reference panel as was used to infer local ancestry using \texttt{RFMix}.
 % supervised = same Hap
-All three sets of admixture proportions were highly correlated (pairwise Pearson correlation $>$ 0.998), so we focus on the local ancestry based admixture proportions for the remainder of our analyses.
+All three sets of admixture proportions were highly correlated (pairwise Pearson correlation $>$ 0.998), so we focus on the \texttt{RFMix}-based admixture proportion estimates for the remainder of our analyses.
 
 In TOPMed JHS and COPDGene samples, we inferred global ancestry via unsupervised \texttt{ADMIXTURE} analyses with both two and three ancestral populations (i.e., $K = 2$ and $K = 3$). 
 % did not do supervised or RFMix because more time-intensive
 We also used these inferred global ancestry proportions to identify subsets of admixed individuals and restrict remaining analyses to admixed individuals only.
-The COPDGene study includes both African Americans and European Americans, but  self-identified race/ethnicity information was not available from dbGaP.
+In particular, the COPDGene study includes both African Americans and European Americans, but  self-identified race/ethnicity information was not available from dbGaP.
 Instead, we used inferred admixture proportions to identify and restrict our attention to individuals with at least 29.5\% African ancestry.
 % although these analyses were unsupervised, we inferred which ancestral population corresonded to African ancestry based on observed ancestry proportions
-The choice of threshold follows from the results reported by Parker et al. \cite{parker2014}, showing that African Americans in the COPDGene have inferred proportions of African ancestry ranging from 29.5\% and above.
-(Note that we are not suggesting that this same threshold be applied to identify African American individuals in other samples.)
+The choice of threshold follows from the results reported by Parker et al. \cite{parker2014}, showing that the self-identifed African American individuals in the COPDGene study have inferred proportions of African ancestry ranging from 29.5\% and above.
+(Note that we are not suggesting that this same threshold be universally applied to identify African American individuals in other samples.)
 After filtering, 2676 individuals remain. 
 In addition, although JHS is known to focus on African Americans, we did identify a handful of individuals inferred to have 100\% European ancestry in that sample.
 These individuals were excluded from further analyses, leaving a total of 1888 admixed samples. 
@@ -286,9 +287,45 @@ These individuals were excluded from further analyses, leaving a total of 1888 a
 
 \subsubsection{Principal Component Analysis}
 
-\edit{implementation using which package; pre-processing (LD pruning and literature-based filters in WHI and TOPMed, data-based filters in WHI only, rare variaints in TOPMed only); diagnostics}
+%% PCA in WHI
+We ran PCA on the WHI SHARe genotype data using \texttt{SNPRelate} \citep{snprelate}. 
+First, we applied PCA to the set of all 551,025 SNPs with available genotypes.
+We refer to these PCs as the \textit{naively generated PCs}.
+We also applied PCA to subsets of SNPs based on the following pre-processing criteria: excluding SNPs falling into regions of the genome that have been cited in the literature as potentially problematic for PCA (Table \ref{tab:highLD}), LD pruning with an $r^2$ threshold of 0.1 and window size of 0.5 mega basepairs (Mb), or both literature-based exclusions and LD pruning.
+LD pruning and literature-based filters were implemented using the \texttt{SNPRelate} package.
+Table \ref{tab:preprocessN} summarizes the number of SNPs remaining after each set of pre-processing steps.
+After running PCA on these different sets of variants, we also used \texttt{SNPRelate} to assess the contribution of each SNP to each principal component by calculating the correlation between PCs and genotypes, as well as the SNP loadings.
 
-\edit{TOPMed: We also remove variants with low minor allele frequency ($< 1\%$). After this filtering, a total of \edit{???} SNVs remain in JHS and \edit{???} SNVs remain in COPDGene.}
+\begin{table}
+\begin{tabular}{l|rrrr}
+ & WHI SHARe & TOPMed JHS & TOPMed COPDGene \\
+\hline
+None & 551,025 & \add{??} & \add{??} \\
+Exclude Table \ref{tab:highLD} Regions & 536,668 & \add{??} &  \add{??}  \\
+LD Prune ($r^2 < 0.1$, Window = 0.5 Mb) & 49,723  & \add{??}  & \add{??}  \\
+Both (Exclude and Prune) & 48,794 & \add{??}  & \add{??}   \\
+\end{tabular}
+\caption{Number of autosomal variants remaining after different combinations of pre-processing steps were applied prior to running PCA.} 
+\label{tab:preprocessN}
+\end{table}
+
+%% PCA in TOPMed
+In TOPMed JHS and COPDGene samples, we used the University of Washington Genetic Analysis Center (UW GAC) pipeline to implement pre-processing, run principal component analysis, and calculate and visualize the contribution of individual variants to each PC. 
+We similarly applied PCA to various subsets of variants based on different pre-processing criteria, including a \textit{naive} analysis with no prior LD-based pruning or filtering, an analysis after \textit{excluding} the regions listed in Table \ref{tab:highLD}, an analysis after LD \textit{pruning} with an $r^2$ threshold of 0.1, and an analysis after both LD-based pruning and filtering.
+Following the recommendations of Kirk \citep{JKdissertation} and the UW GAC pipeline documentation, we also removed variants with a minor allele frequency lower than 0.01 in all cases.
+Note that the UW GAC pipeline does provide the option to exclude some of the regions listed in Table \ref{tab:highLD} (the\textit{LCT} gene on chromosome 2, the HLA region on chromosome 6, and the locations of large inversions on chromosomes 8 and 17). 
+
+%\begin{table}
+%\begin{tabular}{ccccc}
+%name & chrom & start.base  & end.base  & comment \\
+%2q21    &  2  &  129125957 & 139525961       &  LCT \\
+%HLA      &    6 &   24091793  & 38924246 & includes MHC \\
+%8p23  &        8   &  6755071 &  13598120 &   inversion \\
+%17q21.31 &    17  &  42394456 & 46567318   &  inversion \\
+%\end{tabular}
+%\caption{TOPMed hg38 high corr regions}
+%\end{table}, but we customized the pipeline code slightly to add the other regions identified in our literature review.
+
 
 
 \subsection{Simulation Study}
@@ -300,11 +337,11 @@ To explore the impact of adjusting for principal components that capture local g
 Traits were simulated for each individual $i = 1, \dots, 8064$ such that they depended only on the genotype $g_{ij}$ at a single causal variant with effect size $\beta_j$: $$y_i = \beta_j g_{ij} + \epsilon_i, \ \epsilon_i \stackrel{iid}{\sim} N(0, 1).$$
 We considered seven choices of effect sizes ($\beta_j = 0, 0.25, 0.5, 1, 2, 4, 8$) and 473 choices for the position $j$ of the causal variant, varying the position of this causal variant across all 22 autosomes.
 
-To choose the location of these causal variants, we first estimated the difference in ancestral allele frequencies for each variant using the observed allele frequencies in our HapMap reference panel (which included samples from the CEU (Utah residents with Northern and Western European ancestry) and YRI (Yoruba in Ibadan, Nigeria)  populations).
+To choose the location of these causal variants, we first estimated the difference in ancestral allele frequencies for each variant using the observed allele frequencies in our HapMap reference panel (which included samples from the CEU (Utah residents with Northern and Western European ancestry) and YRI (Yoruba in Ibadan, Nigeria)  populations: see Grinde et al. \citep{steam} for more details).
 We also considered the SNP loadings %(i.e., the contribution of each SNP to each PC \add{\cite{136}}) 
 for the set of PCs that were generated without any prior LD-based filtering or pruning.
 %Based on these calculations, we selected 473 variants with positions spread across the genome, high or low SNP loadings, and large or small ancestral allele frequency differences.
-We identified the 10 variants on each chromosome with the highest absolute SNP loadings for each of the first four PCs. 
+We identified the 10 variants on each chromosome with the highest absolute SNP loading for each of the first four PCs. 
 In total, 373 unique variants were selected according to 	this procedure. 
 For comparison, we also selected 100 variants across the autosomes with low SNP loadings ($|\text{loading}| < 0.0008$) for all of the first four PCs.
 Among these 100 variants, 85 were selected such that they had different allele frequencies in the African and European ancestral populations ($|\hat{p}_{CEU} - \hat{p}_{YRI}| > 0.6$), and 15 were selected that had similar allele frequencies in the two ancestral populations ($|\hat{p}_{CEU} - \hat{p}_{YRI}| < 0.005$).
@@ -316,7 +353,7 @@ For each simulated trait, we ran genome-wide association studies using models of
 $$E[y_i \mid g_{ij}, \mathbf{w}_i] = \alpha + \beta_j g_{ij} + \boldsymbol\gamma \mathbf{w}_i,$$
 where $y_i$ is the simulated quantitative trait, $g_{ij}$ is the genotype at position $j$,  and $\mathbf{w}_i$ is a vector of additional covariates.
 Note that we quantify genotype $g_{ij}$ by the number of copies---0, 1, or, 2---of some pre-specified allele (e.g., the minor allele) carried by individual $i$ at position $j$.
-We fit these models at every position $j = 1, \dots, m$ across the genome and test for association between the trait and genotype by testing the null hypothesis $H_0: \beta_j = 0$.
+We fit these models at every position $j = 1, \dots, m$ across the genome and test for association between the trait and genotype by testing the null hypothesis $H_0: \beta_j = 0$ using a traditional Wald test and a genome-wide significance threshold of $p < 5.0 \times 10^{-8}$. \cite{peer2008, jannot2015}
 
 In particular, we consider four models: a model making no adjustment for ancestral heterogeneity (i.e., $\mathbf{w}_i = \emptyset$), a model adjusting for model-based admixture proportions ($\mathbf{w}_i = \hat\pi_i$), a model adjusting for the first principal component ($\mathbf{w}_i = u_{1i}$), and a model adjusting for the first four principal components ($\mathbf{w}_i = \begin{bmatrix} u_{1i} & u_{2i} & u_{3i} & u_{4i} \end{bmatrix}$). 
 For the models adjusting for principal components, we consider four sets of PCs based on different pre-processing criteria: \textit{none} (no prior LD-based exclusions or pruning), \textit{exclusions only} (excluding regions from Table \ref{tab:highLD} but no LD pruning), \textit{pruning only} (LD pruning with $r^2 < 0.1$ and a window size of 0.5 Mb, but not excluding regions from Table \ref{tab:highLD}), and \textit{both} (both Table \ref{tab:highLD} exclusions and LD pruning).
@@ -331,7 +368,6 @@ For all models, the genome-wide significance threshold was set to the $p = 5.0 \
 \subsection{Data and Software Availability}
 
 WHI SHARe genotype data and TOPMed whole genome sequence data are available for analysis upon request and application. Visit study sites and dbGaP for more information.
-
 All software packages used throughout this paper are freely available online: 
 
 %Data: 
@@ -347,9 +383,9 @@ All software packages used throughout this paper are freely available online:
 \item ADMIXTURE \citep{admixture} (global ancestry inference): \href{https://dalexander.github.io/admixture/}{https://dalexander.github.io/admixture/}
 \item PCRelate \citep{conomos2016related} and PC-AiR \citep{conomos2015}
  (identifying unrelated individuals): \href{https://rdrr.io/bioc/GENESIS/}{https://rdrr.io/bioc/GENESIS/}
-\item SNPRelate \citep{snprelate} (LD pruning, PCA, and calculating and plotting SNP loadings or the correlation between PCs and genotypes): \\ \href{https://www.bioconductor.org/packages/release/bioc/html/SNPRelate.html}{https://www.bioconductor.org/packages/release/bioc/html/SNPRelate.html} 
+\item SNPRelate \citep{snprelate} (LD pruning, PCA, and PCA-related diagnostics): \\ \href{https://www.bioconductor.org/packages/release/bioc/html/SNPRelate.html}{https://www.bioconductor.org/packages/release/bioc/html/SNPRelate.html} 
 \item PLINK \citep{plink} (GWAS): \href{https://zzz.bwh.harvard.edu/plink/}{https://zzz.bwh.harvard.edu/plink/}
-\item TOPMed Analysis Pipeline (identifying unrelated individuals, LD pruning, PCA,  calculating and plotting correlation between PCs and genotypes, and GWAS in whole genome sequence data): \href{https://github.com/UW-GAC/analysis_pipeline}{https://github.com/UW-GAC/analysis\_pipeline}
+\item TOPMed Analysis Pipeline (identifying unrelated individuals, LD pruning, PCA,  PCA-related diagnostics, and association studies in whole genome sequence data): \\ \href{https://github.com/UW-GAC/analysis_pipeline}{https://github.com/UW-GAC/analysis\_pipeline}
 \item R (analyzing and visualizing results): \href{https://cran.r-project.org/}{https://cran.r-project.org/}
 \end{itemize}
 
@@ -404,44 +440,7 @@ Other resources pertaining to this paper, including download-able lists of the h
 %\end{itemize}
 
 
-\subsection{Old Methods}
-
-
-
-\subsubsection{LD-Based Filtering}
-%% LD-based filtering
-In addition to the filtering described above, we also implement different types of LD-based filtering.
-\add{Describe the different types of LD-based filtering we compared (see below).}
-These analyses are also compared to a \textit{naive} analysis that did not perform any LD-based filtering.
-The number of variants that remain after each type of filtering is presented in Table \ref{tab:N}.
-
-\begin{itemize}
-\item Exclude
-	\begin{itemize}
-	\item None
-	\item Lit Review (Table \ref{tab:highLD})
-	\item Auto-Detect (\add{using Prive package --- implement or skip for now??})
-	\end{itemize}
-\item Prune
-	\begin{itemize}
-	\item None
-	\item Default 0.2
-	\item Stricter 0.1
-	\item \add{Stricter 0.05 ???}
-	\item \add{Different window size ???}
-	\end{itemize}
-\end{itemize}
-
-\begin{table}[h]
-\begin{tabular}{c|ccccc}
- & Naive & Exclude & Prune & Stricter Prune & Exclude + Stricter Prune \\
-JHS & \add{?} &  \add{?} &  \add{?} & \add{?} &  \add{?} \\
-COPDGene &  \add{?} &  \add{?} &  \add{?} &  \add{?} &  \add{?} \\
-\end{tabular} 
-\caption{Single nucleotide variants that remained in Jackson Heart Study (JHS) and Genetic Epidemiology of COPD (COPDGene) datasets after varying levels of LD-based filtering.}
-\label{tab:N}
-\end{table}
-
+%\subsection{Old Methods}
 
 %\textbf{QC for JHS} (dbgap accession phs000964):
 %
@@ -522,38 +521,30 @@ COPDGene &  \add{?} &  \add{?} &  \add{?} &  \add{?} &  \add{?} \\
 %\caption{TOPMed hg38 high corr regions}
 %\end{table}
 
-\begin{itemize}
-\item what filtering was performed, and how many variants left after filtering
-	\begin{itemize}
-	\item JHS, ADMIXTURE: see above
-	\item JHS, PCA: exclude regions (TRUE/FALSE), r-squared (1, 0.1, 0.2, 0.05), window size (0, 0.5, 10), and MAF (0, 0.01) 
-		\begin{itemize}
-		\item no filtering: FALSE-1-0-0
-		\item MAF filtering: FALSE-1-0-0.01
-		\item exclude but no prune: TRUE-1-0-0.01
-		\item prune but no exclude: FALSE-0.1-0.5-0.01 and FALSE-0.1-10-0.01 and FALSE-0.2-0.5-0.01 and FALSE-0.05-0.5-0.01
-		\item prune and exclude: TRUE-0.1-0.5-0.01 and TRUE-0.1-10-0.01 and TRUE-0.2-0.5-0.01 and TRUE-0.05-0.5-0.01
-		\end{itemize}
-	\item COPD, ADMIXTURE: see above
-	\item COPD, PCA: exclude regions (TRUE/FALSE), r-squared (1, 0.1, 0.2, 0.05), window size (0, 0.5, 10), MAF (0, 0.01)
-		\begin{itemize}
-		\item no filtering: FALSE-1-0-0
-		\item MAF filtering: FALSE-1-0-0.01
-		\item exclude but no prune: TRUE-1-0-0.01
-		\item prune but no exclude: FALSE-0.1-0.5-0.01, FALSE-0.1-10-0.01, FALSE-0.2-0.5-0.01, FALSE-0.05-0.5-0.01
-		\item prune and exclude: TRUE-0.1-0.5-0.01, TRUE-0.1-10-0.01, TRUE-0.05-0.5-0.01, TRUE-0.2-0.5-0.01
-		\end{itemize}	
-	\item COPD, also ran SNPRelate on Europeans with different levels of filtering (FALSE-0.1-0.5-0.01, FALSE-0.2-0.5-0.01, FALSE-1-0-0.01, FALSE-1-0-0, TRUE-0.1-0.5-0.01, TRUE-0.2-0.5-0.01, TRUE-1-0-0.01)
-	\end{itemize}
-\end{itemize}
-
-
-\subsection{Principal Component Analysis}
-\label{sec:PCA}
-
-We use the \texttt{SNPRelate} package in \texttt{R} to run principal component analysis using each of the subsets of SNVs described in Section \ref{sec:filter}. 
-For each set of principal components, we also use the \texttt{SNPRelate} package to assess the contribution of each variant to each PC by calculating and plotting the correlation between genotypes and PCs.
-\add{also look at loadings? shouldn't this give us the same picture as corr?}
+%\begin{itemize}
+%\item what filtering was performed, and how many variants left after filtering
+%	\begin{itemize}
+%	\item JHS, ADMIXTURE: see above
+%	\item JHS, PCA: exclude regions (TRUE/FALSE), r-squared (1, 0.1, 0.2, 0.05), window size (0, 0.5, 10), and MAF (0, 0.01) 
+%		\begin{itemize}
+%		\item no filtering: FALSE-1-0-0
+%		\item MAF filtering: FALSE-1-0-0.01
+%		\item exclude but no prune: TRUE-1-0-0.01
+%		\item prune but no exclude: FALSE-0.1-0.5-0.01 and FALSE-0.1-10-0.01 and FALSE-0.2-0.5-0.01 and FALSE-0.05-0.5-0.01
+%		\item prune and exclude: TRUE-0.1-0.5-0.01 and TRUE-0.1-10-0.01 and TRUE-0.2-0.5-0.01 and TRUE-0.05-0.5-0.01
+%		\end{itemize}
+%	\item COPD, ADMIXTURE: see above
+%	\item COPD, PCA: exclude regions (TRUE/FALSE), r-squared (1, 0.1, 0.2, 0.05), window size (0, 0.5, 10), MAF (0, 0.01)
+%		\begin{itemize}
+%		\item no filtering: FALSE-1-0-0
+%		\item MAF filtering: FALSE-1-0-0.01
+%		\item exclude but no prune: TRUE-1-0-0.01
+%		\item prune but no exclude: FALSE-0.1-0.5-0.01, FALSE-0.1-10-0.01, FALSE-0.2-0.5-0.01, FALSE-0.05-0.5-0.01
+%		\item prune and exclude: TRUE-0.1-0.5-0.01, TRUE-0.1-10-0.01, TRUE-0.05-0.5-0.01, TRUE-0.2-0.5-0.01
+%		\end{itemize}	
+%	\item COPD, also ran SNPRelate on Europeans with different levels of filtering (FALSE-0.1-0.5-0.01, FALSE-0.2-0.5-0.01, FALSE-1-0-0.01, FALSE-1-0-0, TRUE-0.1-0.5-0.01, TRUE-0.2-0.5-0.01, TRUE-1-0-0.01)
+%	\end{itemize}
+%\end{itemize}
 
 
 %\subsection{Simulation Study to Investigate Rates of Spurious Associations}
@@ -665,16 +656,16 @@ Although these analyses were unsupervised, based on prior studies of admixture i
 In all three samples, we observe considerable variability in the relative proportions of African and European ancestry across individuals.
 This ancestral heterogeneity motivates the need to carefully adjust for global ancestry in genome-wide association studies in these, just as in other, admixed samples. 
 
-\edit{
-\begin{itemize}
-\item Add WHI SHARe Hispanic Americans? (check with Tim)
-\item Possible supplemental figure: JHS and COPDGene with K = 3 (and/or K = 4 for COPDGene)
-\item Possible supplemental figure: JHS and COPDGene barplots before filtering out European Americans
-\end{itemize}
-}
+%\edit{
+%\begin{itemize}
+%\item Add WHI SHARe Hispanic Americans? (check with Tim)
+%\item Possible supplemental figure: JHS and COPDGene with K = 3 (and/or K = 4 for COPDGene)
+%\item Possible supplemental figure: JHS and COPDGene barplots before filtering out European Americans
+%\end{itemize}
+%}
 
 
-\subsection{Initial PC captures global ancestry}
+\subsection{First PC captures global ancestry}
 
 \begin{figure}
 \center
