@@ -107,7 +107,7 @@ Principal component analysis (PCA) is widely used to control for population stru
 %Admixed populations such as African Americans and Hispanics/Latinos have historically been vastly underrepresented in genome-wide association studies (GWAS) \cite{need2009, bustamante2011, popejoy2016, morales2018, sirugo2019, martin2019}. 
 Considerable variability in global ancestry---the genome-wide proportion of genetic material inherited from each ancestral population---has been observed in many studies of admixed populations such as African Americans and Hispanics/Latinos \citep{parra1998, tishkoff2009, bryc2010aa, bryc2010hl, conomos2016}.
 It has been widely documented that heterogeneous global ancestry, as with other types of population structure, can lead to spurious associations in genome-wide association studies \citep{GenomicControl, eigenstrat, marchini2004, price2010}. 
-In fact, some authors have even cited the ancestral heterogeneity of admixed populations, and the statistical challenges it poses, as one of many reasons why these populations have been historically underrepresented in genome-wide association studies (GWAS) \citep{need2009, bustamante2011, popejoy2016, hindorff2018, manolio2019}.
+In fact, some authors have even cited the ancestral heterogeneity of admixed populations, and the statistical challenges it poses, as one (among many) reason why these populations have been historically underrepresented in genome-wide association studies (GWAS) \citep{need2009, bustamante2011, popejoy2016, hindorff2018, manolio2019}.
 %% why do we need to adjust for it?  (confounding)
 Spurious associations can arise in GWAS in ancestrally heterogeneous populations when global ancestry confounds the association between genotypes and the phenotype of interest (Figure \ref{fig:confounding}). 
 This confounding occurs when the genetic variant being tested differs in frequency across ancestral populations (i.e., global ancestry is associated with genotype) and global ancestry also has an effect on the phenotype via, for example, environmental factors or causal loci elsewhere in the genome that differ in frequency across ancestral groups.
@@ -204,7 +204,8 @@ The above-cited suggestions regarding LD pruning and filtering are not universal
 Furthermore, much of this prior work was conducted in populations of European ancestry, so recommendations on how best to implement principal component-based adjustment for ancestral heterogeneity in admixed populations are lacking. 
 % outline rest of paper
 In this paper, we investigate the impact of LD filtering and pruning choices, as well as choices of the number of principal components to include in analyses, on genome-wide association studies in admixed populations.
-\edit{We conduct simulation studies using whole genome sequence data for African American individuals in the Trans-Omics for Precision Medicine (TOPMed) project and provide analytic results to show that including too many PCs can actually induce spurious associations in GWAS, particularly when those extraneous PCs capture local genomic features rather than genome-wide ancestry.  --- ADD WHI}
+We show that principal components may capture local genomic features, unless careful pre-processing is performed prior to analysis.
+We also conduct simulation studies and provide analytic results to show that including too many PCs can actually induce spurious associations in GWAS, particularly when those extraneous PCs capture local genomic features rather than genome-wide ancestry.
 To conclude, we provide suggestions regarding best practice for appropriately controlling for ancestral heterogeneity in genome-wide association studies in admixed populations.
 
 
