@@ -942,7 +942,14 @@ Proofs and simulations validating these analytic results are available in the Ap
 % explain significance of results and place them in broader context
 % may contain subheadings
 
-Need to address ancestral heterogeneity in admixed populations
+\edit{BORROW FROM DISSERTATION}
+
+\noindent Summary of results
+\begin{itemize}
+\item TBD
+\end{itemize}
+
+\noindent Need to address ancestral heterogeneity in admixed populations
 \begin{itemize}
 \item we observe considerable heterogeneity in global ancestry proportions in admixed populations studied here, as in other studies 
 \item well-established that global ancestry is a potential confounding variable
@@ -958,15 +965,6 @@ Need to address ancestral heterogeneity in admixed populations
 \item while this has been documented before, note that, in contrast to what has been observed in EUR, we see that PCs seem to capture SNPs on more than one chromosome (multiple peaks in SNP loading plots); whereas in EUR we often just see one peak (cite Zou, Prive, other examples?) $\rightarrow$ why? LD patterns in admixed pops differ from those in EUR %% in discussion, note how this differs from what had previously been seen in Europeans (one peak vs multiple peaks, weaker pruning); refer to COPD example in supplement
 \end{itemize}
 
-\noindent\add{for discussion:
-\begin{itemize}
-\item why is this happening? (LD)
-\item how does what we see compare to what's been observed in Europeans?
-\item does LD pruning universally fix the problem (i.e., does it seem to work better in some samples than others)? how many PCs does it help (i.e., what do PCs 5--10 look like)?
-\item why do we think exclusions didn't work? (high LD regions identified in Europeans, patterns of LD differ---more extensive---in admixed populations)
-\end{itemize}
-}
-
 \noindent Spurious associations
 \begin{itemize}
 \item adjusting for these PCs can lead to spurious associations
@@ -978,8 +976,9 @@ Need to address ancestral heterogeneity in admixed populations
 \noindent Impact of LD pruning and removing high LD regions
 \begin{itemize}
 \item after LD pruning, PCs no longer exhibit patterns of being driven by select few SNPs (at least for PCs 2-4)
-\item note that we had to use smaller $r^2$ and wider windows than often recommended in literature for this to be true $\rightarrow$ why? LD patterns in admixed pops differ from those in EUR
+\item note that we had to use smaller $r^2$ than often recommended in literature for this to be true (refer to supplemental figure) $\rightarrow$ why? LD patterns in admixed pops differ from those in EUR 
 \item excluding previously-identified high LD regions doesn't seem to be as effective $\rightarrow$ why? LD patterns in admixed pops differ from those in EUR
+\item mention data-based exclusions approach (add supplemental figure)
 \item note, too, that even strict LD pruning doesn't seem to remove all correlation between SNPs and genotypes (e.g., later PCs in WHI, TOPMed COPDGene)
 \end{itemize}
 
@@ -990,13 +989,14 @@ Need to address ancestral heterogeneity in admixed populations
 \item Consider using global ancestry proportions (although further work is needed to reliably capture sub-continental structure)
 \end{itemize}
 
+%a possible paper to cite: https://www.biorxiv.org/content/10.1101/2022.03.25.485885v1.full
+%%says "Our tests also found PCA robust to large numbers of PCs, far beyond the optimal choice, agreeing with previous anecdotal observations (Price et al., 2006 "PCA corrects for strafication..."; Kang et al., 2010 "Variance component model to account...") in contrast to using too few PCs for which there is a large performance penalty."
 
 
-% GWAS vs admixture mapping
-
-% sequence vs genotype data
-
-% how does this apply to mixed models?
+% future work: 
+%% GWAS vs admixture mapping
+%% sequence vs genotype data
+%% how does this apply to mixed models?
 
 
 \newpage
@@ -1076,7 +1076,7 @@ The authors declare no competing interests.
 % list funding sources
 % add any necessary data-related acknowledgments
 
-K.E.G. was supported by the National Science Foundation Graduate Research Fellowship Program under grant no. DGE-1256082. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
+K.E.G. was supported in part by the National Science Foundation Graduate Research Fellowship Program under grant no. DGE-1256082. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
 
 
 
