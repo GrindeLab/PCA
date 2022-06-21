@@ -10,13 +10,15 @@
 \BOOKMARK [3][-]{subsubsection.2.3.1}{Trait Simulation}{subsection.2.3}% 10
 \BOOKMARK [3][-]{subsubsection.2.3.2}{GWAS Models}{subsection.2.3}% 11
 \BOOKMARK [3][-]{subsubsection.2.3.3}{Spurious Associations}{subsection.2.3}% 12
-\BOOKMARK [2][-]{subsection.2.4}{Data and Software Availability}{section.2}% 13
-\BOOKMARK [1][-]{section.3}{Results}{}% 14
-\BOOKMARK [2][-]{subsection.3.1}{Ancestral heterogeneity in admixed populations}{section.3}% 15
-\BOOKMARK [2][-]{subsection.3.2}{First PC captures global ancestry}{section.3}% 16
-\BOOKMARK [2][-]{subsection.3.3}{Later PCs may capture local genomic features}{section.3}% 17
-\BOOKMARK [2][-]{subsection.3.4}{Impact of LD pruning}{section.3}% 18
-\BOOKMARK [2][-]{subsection.3.5}{Adjusting for PCs that capture local genomic features can induce spurious associations}{section.3}% 19
-\BOOKMARK [2][-]{subsection.3.6}{Factors that influence the rate of spurious associations}{section.3}% 20
-\BOOKMARK [1][-]{section.4}{Discussion}{}% 21
-\BOOKMARK [1][-]{section.5}{Appendix}{}% 22
+\BOOKMARK [1][-]{section.3}{Results}{}% 13
+\BOOKMARK [2][-]{subsection.3.1}{Ancestral heterogeneity in admixed populations}{section.3}% 14
+\BOOKMARK [2][-]{subsection.3.2}{First PC captures global ancestry}{section.3}% 15
+\BOOKMARK [2][-]{subsection.3.3}{Later PCs may capture local genomic features}{section.3}% 16
+\BOOKMARK [2][-]{subsection.3.4}{Impact of LD pruning}{section.3}% 17
+\BOOKMARK [2][-]{subsection.3.5}{Adjusting for PCs that capture local genomic features can induce spurious associations}{section.3}% 18
+\BOOKMARK [2][-]{subsection.3.6}{Factors that influence the rate of spurious associations}{section.3}% 19
+\BOOKMARK [1][-]{section.4}{Discussion}{}% 20
+\BOOKMARK [1][-]{section.5}{Appendices}{}% 21
+\BOOKMARK [2][-]{subsection.5.1}{Theoretical Results}{section.5}% 22
+\BOOKMARK [2][-]{subsection.5.2}{Simulations Validating Theory}{section.5}% 23
+\BOOKMARK [1][-]{section.6}{Supplemental Information}{}% 24

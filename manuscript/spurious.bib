@@ -172,7 +172,7 @@
 @article{eigenstrat,
   title={Principal components analysis corrects for stratification in genome-wide association studies},
   author={Price, Alkes L and Patterson, Nick J and Plenge, Robert M and Weinblatt, Michael E and Shadick, Nancy A and Reich, David},
-  journal={Nature genetics},
+  journal={Nature Genetics},
   volume={38},
   number={8},
   pages={904--909},
@@ -202,6 +202,18 @@
   pages={459--463},
   year={2010},
   publisher={Nature Publishing Group}
+}
+
+% ref 143
+@article{wacholder2002,
+  title={Counterpoint: bias from population stratification is not a major threat to the validity of conclusions from epidemiological studies of common polymorphisms and cancer},
+  author={Wacholder, Sholom and Rothman, Nathaniel and Caporaso, Neil},
+  journal={Cancer Epidemiology Biomarkers \& Prevention},
+  volume={11},
+  number={6},
+  pages={513--520},
+  year={2002},
+  publisher={AACR}
 }
 
 %%% ------ methods to adjust for pop structure -------- %%%
@@ -506,6 +518,22 @@
   year={2011},
   publisher={NIH Public Access}
 }
+
+% don't need to worry about too many
+@article {Yao2022,
+	author = {Yao, Yiqi and Ochoa, Alejandro},
+	title = {Limitations of principal components in quantitative genetic association models for human studies},
+	elocation-id = {2022.03.25.485885},
+	year = {2022},
+	doi = {10.1101/2022.03.25.485885},
+	publisher = {Cold Spring Harbor Laboratory},
+	abstract = {Principal Component Analysis (PCA) and the Linear Mixed-effects Model (LMM), sometimes in combination, are the most common modern models for genetic association. Previous PCA-LMM comparisons give mixed results and unclear guidance, and have several limitations, including not varying the number of principal components (PCs), simulating overly simple population structures, and inconsistent use of real data and power evaluations. In this work, we thoroughly evaluate PCA and LMM both with varying number of PCs in new realistic genotype and complex trait simulations including admixed families, trees, and large real multiethnic human genotype datasets (1000 Genomes Project, the Human Genome Diversity Panel, and Human Origins) with simulated traits. We find that LMM without PCs performs best in all cases, with the largest effects in the family simulation and all real human datasets. We determined that the large gaps in PCA to LMM performance on the real human datasets is due to the high-dimensional family structure stemming from large numbers of distant relatives, and not from the smaller number of highly related pairs. While it was known that PCA fails on family data, here we report a strong effect on association of cryptic family relatedness in several genetically diverse human datasets, a problem that is not avoided with the common practice of pruning high-relatedness individual pairs. Overall, this work better characterizes the severe limitations of PCA compared to LMM in modeling the complex relatedness structures present in real multiethnic human data and its impact in association studies.Competing Interest StatementThe authors have declared no competing interest.PCAprincipal component analysisPCsprincipal componentsLMMlinear mixed-effects modelFESfixed effect sizes (trait model)RCrandom coefficients (trait model)MAFminor allele frequencyWGSwhole genome sequencing.},
+	URL = {https://www.biorxiv.org/content/early/2022/03/27/2022.03.25.485885},
+	eprint = {https://www.biorxiv.org/content/early/2022/03/27/2022.03.25.485885.full.pdf},
+	journal = {bioRxiv},
+	volume={}
+}
+
 
 %%% ------ filtering before PCA -------- %%%
 % ref 68 (QC paper)
@@ -853,3 +881,89 @@
 }
 
 
+%%%%%%% ------- collider bias ---------  %%%%%%%%%%
+
+% definitions paper
+@article{elwert2014,
+  title={Endogenous selection bias: The problem of conditioning on a collider variable},
+  author={Elwert, Felix and Winship, Christopher},
+  journal={Annual Review of Sociology},
+  volume={40},
+  pages={31},
+  year={2014},
+  publisher={NIH Public Access}
+}
+
+% heritable covariates
+@article{aschard2015,
+  title={Adjusting for heritable covariates can bias effect estimates in genome-wide association studies},
+  author={Aschard, Hugues and Vilhj{\'a}lmsson, Bjarni J and Joshi, Amit D and Price, Alkes L and Kraft, Peter},
+  journal={The American Journal of Human Genetics},
+  volume={96},
+  number={2},
+  pages={329--339},
+  year={2015},
+  publisher={Elsevier}
+}
+
+% collider bias in GWAS
+@article{day2016,
+  title={A robust example of collider bias in a genetic association study},
+  author={Day, Felix R and Loh, Po-Ru and Scott, Robert A and Ong, Ken K and Perry, John RB},
+  journal={The American Journal of Human Genetics},
+  volume={98},
+  number={2},
+  pages={392--393},
+  year={2016},
+  publisher={Elsevier}
+}
+
+% recent gen epi paper
+@article{cai2022,
+  title={Adjusting for collider bias in genetic association studies using instrumental variable methods},
+  author={Cai, Siyang and Hartley, April and Mahmoud, Osama and Tilling, Kate and Dudbridge, Frank},
+  journal={Genetic Epidemiology},
+  volume={},
+  number={},
+  pages={},
+  year={2022},
+  publisher={Wiley Online Library}
+}
+
+% another recent gen epi paper
+@article{hemani2022,
+  title={Collider bias from selecting disease samples distorts causal inferences},
+  author={Hemani, Gibran and Tilling, Kate M and Smith, George Davey},
+  journal={Genetic Epidemiology},
+  volume={46},
+  number={3--4},
+  pages={213--215},
+  year={2022},
+  publisher={Wiley-Liss Inc.}
+}
+
+@article{dahl2019,
+  title={Adjusting for principal components of molecular phenotypes induces replicating false positives},
+  author={Dahl, Andy and Guillemot, Vincent and Mefford, Joel and Aschard, Hugues and Zaitlen, Noah},
+  journal={Genetics},
+  volume={211},
+  number={4},
+  pages={1179--1189},
+  year={2019},
+  publisher={Oxford University Press}
+}
+
+%%%%%%% ------- other theory ---------  %%%%%%%%%%
+
+@inproceedings{di2011,
+  title={Power of association tests in the presence of multiple causal variants},
+  author={Di, Yanming and Mi, Gu and Sun, Luna and Dong, Rongrong and Zhu, Hong and Peng, Lili},
+  booktitle={BMC Proceedings},
+  volume={5},
+  number={9},
+  pages={1--5},
+  year={2011},
+  organization={Springer}
+}
+
+%%%%%%% ------- LD in admixed pop ---------  %%%%%%%%%%
