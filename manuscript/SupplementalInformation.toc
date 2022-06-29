@@ -1,0 +1,14 @@
+\contentsline {section}{List of Figures}{2}{section*.2}%
+\contentsline {section}{\numberline {S1}PCs versus Model-Based Admixture Proportions}{4}{section.1}%
+\contentsline {section}{\numberline {S2}Comparison of PCA Pre-Processing Choices}{4}{section.2}%
+\contentsline {section}{\numberline {S3}Investigating PCs in a European American Population}{11}{section.3}%
+\contentsline {section}{\numberline {S4}Theoretical Results}{12}{section.4}%
+\contentsline {subsection}{\numberline {S1}The assumed data-generating mechanism}{12}{subsection.4.1}%
+\contentsline {subsection}{\numberline {S2}Expected effect size estimates}{14}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {S2.1}Unadjusted model}{14}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {S2.2}Admixture proportion adjusted model}{14}{subsubsection.4.2.2}%
+\contentsline {subsubsection}{\numberline {S2.3}Principal component adjusted model}{14}{subsubsection.4.2.3}%
+\contentsline {subsection}{\numberline {S3}Two locus simulations}{14}{subsection.4.3}%
+\contentsline {subsection}{\numberline {S4}Whole genome simulations}{15}{subsection.4.4}%
+\contentsline {section}{\numberline {S5}Supplemental References}{15}{section.5}%
+\contentsline {section}{Bibliography}{15}{section*.3}%
