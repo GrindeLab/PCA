@@ -709,10 +709,11 @@ The peaks in these genotype-PC correlation plots indicate that those principal c
 
 
 \begin{figure}
-\hspace{0.3in} (A) JHS \hspace{2.4in} (B) COPDGene
+%\hspace{0.3in} (A) JHS \hspace{2.4in} (B) COPDGene
 \center
-\includegraphics[width=0.49\textwidth]{figs/JHS/JHS_prune_FALSE_1_0_0.01_snprelate_corr_1}
-\includegraphics[width=0.49\textwidth]{figs/COPD/COPD_prune_FALSE_1_0_0.01_snprelate_corr_1}
+%\includegraphics[width=0.49\textwidth]{figs/JHS/JHS_prune_FALSE_1_0_0.01_snprelate_corr_1}
+%\includegraphics[width=0.49\textwidth]{figs/COPD/COPD_prune_FALSE_1_0_0.01_snprelate_corr_1}
+\includegraphics[width=\textwidth]{figs/pc_geno_corr/topmed_corr}
 \caption{Correlation between naively generated PCs (i.e., PCs that were constructed without any prior LD-based filtering or exclusions) and genotypes in JHS and COPDGene African Americans. Each panel plots the absolute value of the correlation between principal components and genotypes (on the y-axis) versus the position along the genome (x-axis).  Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4) and horizontally according to the sample (A: JHS, B: COPDGene). Peaks in this plot indicate that a variant has a larger \textit{loading}, i.e., a larger contribution to that principal component.}
 \label{fig:corr-TOPMed}
 \end{figure}
@@ -736,7 +737,8 @@ If we use the larger, default $r^2$ threshold, we see improvement for the second
 
 \begin{figure}
 \center
-\includegraphics[width=\textwidth]{figs/pc_geno_corr/pc_geno_corr}
+%\includegraphics[width=\textwidth]{figs/pc_geno_corr/pc_geno_corr}
+\includegraphics[width=\textwidth]{figs/WHI/pc_geno_corr/pc_geno_corr}
 \caption{Correlation between PCs and genotypes in WHI SHARe African Americans with different choices of pre-processing. Each panel plots the absolute value of the correlation between principal components and genotypes (on the y-axis) versus the position along the genome (x-axis).  Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4) and horizontally according to the level of filtering that was applied prior to running PCA (\textit{none}: all SNPs, \textit{exclude}: after excluding regions in Table \ref{tab:highLD}, \textit{prune}: after LD pruning with an $r^2$ threshold of 0.1 and window size of 0.5 Mb, and \textit{both}: after both exclusions and LD pruning).}
 \label{fig:corr-compare}
 \end{figure}
@@ -875,7 +877,7 @@ For the two models that adjust for PCs capturing local genomic features (i.e., t
 Notably, as the size of the causal variant's SNP loading increases from low (Figure \ref{fig:spurious}C), to high (Figure \ref{fig:spurious}D), to the highest on its chromosome (Figure \ref{fig:spurious}E), we see an increasing number of spurious associations for these two approaches.
 This confirms the pattern we saw in Figure \ref{fig:manh}, where a spurious association arose when we adjusted for PCs that were highly correlated with variants in several regions across the genome, and both the causal variant and spurious signal were located in one of those regions. 
 % effect size of causal variant
-Finally, we note that these problems worsen as the effect size of the causal variant increases (see Supplemental Figure \ref{fig:spurious-all-beta}).
+Finally, we note that these problems worsen as the effect size of the causal variant increases.
 
 To better understand the patterns observed in our simulation study, we compare the expected effect size estimates from GWAS models in admixed populations with two ancestral populations using different techniques for adjusting for ancestral heterogeneity.
 As in our simulations, we assume that the trait depends on a single causal variant: $$y_i \stackrel{iid}{\sim} N(\beta_1 g_{i1} + \beta_\pi \pi_i, 1),$$ where $g_{i1}$ represents the number of minor alleles carried by individual $i$ at the causal variant, which we will refer to as \textit{Variant 1}, and $\pi_i$ is the individual's admixture proportion.
@@ -1016,7 +1018,7 @@ Given the similarities in terms of which regions of the genome tend to be captur
 \begin{figure}
 \center
 \includegraphics[width=0.5\textwidth]{figs/confounding_dags/dag_collider.png}
-\caption{Collider bias in GWAS. Suppose that, instead of genome-wide global ancestry ($\pi$), a principal component ($z$) captures the genotype of two variants ($g_1, g_2$). If one of those variants ($g_1$) is associated with the trait, then the PC will be a collider variable---rather than a confounding variable---when testing the association between the other variant ($g_2$) and the trait. Adjusting for the PC will then induce a spurious association between the trait and the neutral variant as a result of collider bias.}
+\caption{Collider bias in GWAS. Suppose that, instead of genome-wide global ancestry ($\pi$), a principal component ($z$) captures the genotype of two variants ($g_1, g_2$). If one of those variants ($g_1$) is associated with the trait, then the PC will be a collider variable---rather than a confounding variable---when testing the association between the other variant ($g_2$) and the trait. Adjusting for the PC can then induce a spurious association between the trait and the neutral variant as a result of collider bias.}
 \label{fig:collider}
 \end{figure}
 
@@ -1029,7 +1031,7 @@ Our findings support this conclusion that the magnitude of collider bias depends
 In contrast, however, we see that this correlation between PCs and genetic variants can be non-trivial in admixed populations (without careful pre-processing prior to running PCA), implying that collider bias is of more concern in this setting than previous authors may have realized.
 We also see that the amount of bias depends on the variance of admixture proportions across a population (denoted $V_\pi$ in Equation \ref{eqn:collider}), which could explain why prior work that has focused on more ancestrally homogenous populations may not have previously identified this issue.
 That said, it is important to raise the question of the magnitude of bias that could be expected in a ``typical" genome-wide association study. 
-The smaller the effect size of the causal variant, the smaller the number of spurious associations that we observed in our simulation study (Supplemental Figure \ref{fig:spurious-all-beta}), and when studying complex traits/diseases we would expect the causal variant effect sizes to be fairly small.
+The smaller the effect size of the causal variant, the smaller the number of spurious associations that we observed in our simulation study (Figure \ref{fig:spurious}), and when studying complex traits/diseases we would expect the causal variant effect sizes to be fairly small.
 However, in these settings we would also expect that there are \textit{multiple} causal variants---not just a single causal variant, as we assumed for the sake of simplicity in our simulations and theoretical work---and then these effects may be aggregated \citep{di2011}. 
 In any case, it is worth considering what steps can be taken to reduce or eliminate concerns about potential collider bias altogether.
 %\edit{\begin{itemize}
@@ -1045,7 +1047,7 @@ However, the motivation for this LD-based filtering has typically been framed in
 Furthermore, we have found that excluding the regions listed in Table \ref{tab:highLD}, without also performing LD pruning, does not actually seem to solve these issues in admixed populations: we still see peaks in the PC-genotype correlation plots and models adjusting for these PCs continue to show elevated rates of spurious associations.
 A more tedious iterative approach of identifying  and removing potentially problematic regions based on our own data also does not prevent PCs from capturing local genomic features within a reasonable number of iterations (Supplemental Figure \ref{fig:corr-compare-exclude}).
 LD pruning, on the other hand, proves to be more successful, at least when looking at the first four principal components.
-However, our results highlight that a stricter threshold (e.g., $r^2$ = 0.1) is needed for LD pruning in admixed populations than is often suggested in the literature ($r^2$ = 0.2): see Supplemental Figures \ref{fig:corr-compare-prune} and \ref{fig:corr-compare-window} for a comparison of different LD pruning $r^2$ threshold and window size choices, respectively.
+However, our results highlight that a stricter threshold (e.g., $r^2$ = 0.1) is needed for LD pruning in admixed populations than is often suggested in the literature ($r^2$ = 0.2): see Supplemental Information Section \ref{sec:comparefilters} for a comparison.
 Given that linkage disequilibrium patterns differ between admixed populations and the European populations upon which much of this prior work was based, %\add{CITE 147, 148}
 it is not surprising that different LD-based filtering techniques are required here.
 %\edit{\begin{itemize}
