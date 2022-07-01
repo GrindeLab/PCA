@@ -3,5 +3,6 @@
 *.blg
 *.log
 *.synctex.gz
+*.gds
 .DS_Store
 manuscript/figs/dags.pptx
