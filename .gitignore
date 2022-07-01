@@ -4,5 +4,6 @@
 *.log
 *.synctex.gz
 *.gds
+*.RData
 .DS_Store
 manuscript/figs/dags.pptx
