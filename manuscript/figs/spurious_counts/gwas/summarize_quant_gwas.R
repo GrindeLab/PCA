@@ -47,11 +47,11 @@ make_plot <- function(type){
   p <- ggplot(data=amap.long,aes(x=beta,y=spur))+
     geom_line(aes(group=covariates,color=`Adjustment technique`,linetype=`LD pruning`),size=1, alpha = 0.7)+
     geom_point(aes(color=`Adjustment technique`,shape=`LD-based exclusions`),size=2)+
-    coord_cartesian(ylim=c(0,3))+
+    coord_cartesian(ylim=c(0,2))+
     ylab('Average spurious associations')+
     xlab(expression(paste('Effect size of causal variant (', beta, ')')))+
     theme_bw()+
-    geom_hline(yintercept=0.05,linetype=3)+
+    #geom_hline(yintercept=0.05,linetype=3)+
     ggtitle(type) +
     guides(color = guide_legend(order = 1), shape = guide_legend(order = 2), linetype = guide_legend(order = 3)) + 
     scale_color_brewer(palette = 'Dark2')
@@ -77,7 +77,7 @@ ggdraw(plot_grid(plot_grid(all_sims, low_high, ncol = 1, align = 'v'),
                  plot_grid(lgnd, peak_none, ncol = 1, align = 'v'),
                  nrow = 1,
                  rel_widths = c(1, 1, 1)))
-ggsave(filename = 'supplement_spurious_allbeta.pdf', dpi = 'print', width = 10, height = 7, units = 'in')
+ggsave(filename = 'spurious_allbeta.pdf', dpi = 'print', width = 10, height = 7, units = 'in')
 
 #ggdraw(plot_grid(plot_grid(low_low, high_none, ncol = 1, align = 'v'),
 #                 plot_grid(low_high, peak_none, ncol = 1, align = 'v'),

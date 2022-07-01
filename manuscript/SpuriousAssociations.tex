@@ -68,23 +68,25 @@ associations in genome-wide association studies in admixed populations
 
 \section*{Authors and Affiliations}
 
-\edit{Please check that your affiliations are correct!}
-
-\noindent Kelsey E. Grinde,$^{1}$* % should I also list UW?
-Alexander P. Reiner,$^{2,3}$
+Kelsey E. Grinde,$^{1}$* % should I also list UW?
+\edit{Alexander P. Reiner,$^{2,3}$
 Brian L. Browning,$^{4}$ 
-Timothy A. Thornton,$^{5,6}$
+Timothy A. Thornton,$^{5,6}$}
 Sharon R. Browning$^{6}$
+\edit{(pending confirmation)}
 
 \begin{enumerate}
 \item Department of Mathematics, Statistics, and Computer Science, Macalester College, Saint Paul, MN, 55105, USA
 \item Public Health Sciences Division, Fred Hutchinson Cancer Research Center, Seattle, WA, 98109, USA
 \item Department of Epidemiology, University of Washington, Seattle, WA, 98195, USA
 \item Division of Medical Genetics, Department of Medicine, University of Washington, Seattle, WA, 98195, USA
-\item Department of Biostatistics, University of Washington, Seattle, WA, 98195, USA
 \item Regeneron Genetics Center, Tarrytown, New York, 10591, USA
+\item Department of Biostatistics, University of Washington, Seattle, WA, 98195, USA
 \item[*] kgrinde@macalester.edu
 \end{enumerate}
+
+\edit{Please check that your affiliations are correct!}
+
 
 
 
@@ -97,15 +99,15 @@ Sharon R. Browning$^{6}$
 % brief background of question, description of results, brief summary of significance of findings
 % do not cite any references
 
-\edit{Current word count: 232 \\Maximum allowed by AJHG: 250}
+\edit{Current word count: 245 \\Maximum allowed by AJHG: 250}
 
 \noindent Principal component analysis (PCA) is widely used to control for population structure in genome-wide association studies (GWAS). 
 It has been shown that the top principal components (PCs) typically reflect population structure, but deciding exactly how many PCs to include in GWAS regression models can be challenging. 
 Often researchers err on the side of including more PCs than may be actually necessary in order to ensure that population structure is fully captured. 
 However, in this paper we show that adjusting for extraneous PCs can actually induce spurious associations.
 In particular, these spurious associations arise when PCs capture multiple local genomic features, such as regions of the genome with atypical linkage disequilibrium (LD) patterns, rather than genome-wide ancestry.
-Investigating three samples of unrelated African American individuals (from the Women's Health Initiative SNP Health Association Resource, Jackson Heart Study, Chronic Obstructive Pulmonary Disease Genetic Epidemiology Study), we show that careful LD pruning prior to running PCA---using stricter thresholds than is often suggested in the literature---can resolve these issues, whereas excluding lists of high LD regions identified in previous studies does not. 
-We also demonstrate that the rate of spurious associations can be appropriately controlled when we simply adjust for either the first PC or a model-based estimate of global ancestry. 
+Investigating three samples of African American individuals---from the Women's Health Initiative SNP Health Association Resource and two Trans-Omics for Precision Medicine Whole Genome Sequence Project contributing studies (Jackson Heart Study and Chronic Obstructive Pulmonary Disease Genetic Epidemiology Study)---we show that careful LD pruning prior to running PCA, using stricter thresholds than is often suggested in the literature, can resolve these issues, whereas excluding lists of high LD regions identified in previous studies does not. 
+We also demonstrate that the rate of spurious associations can be appropriately controlled when we simply adjust for either the first PC or a model-based estimate of genetic ancestry. 
 Our work demonstrates that great care must be taken when using principal components to control for population structure in genome-wide association studies in admixed populations.
 
 
@@ -627,11 +629,19 @@ For all models, the genome-wide significance threshold was set to the $p = 5.0 \
 
 Inferred admixture proportions for three samples of African American individuals are presented in Figure \ref{fig:barplots}. 
 
+%\begin{figure}
+%\center
+%%\includegraphics[width=\textwidth]{figs/barplots/figure1}
+%\includegraphics[width=\textwidth]{figs/barplots/barplots}
+%\caption{Barplots of estimated admixture proportions in (A) WHI SHARe, (B) TOPMed JHS, and (C) TOPMed COPDGene African Americans.}
+%\label{fig:barplots}
+%\end{figure}
+
 \begin{figure}
 \center
 %\includegraphics[width=\textwidth]{figs/barplots/figure1}
-\includegraphics[width=\textwidth]{figs/barplots/barplots}
-\caption{Barplots of estimated admixture proportions in (A) WHI SHARe, (B) TOPMed JHS, and (C) TOPMed COPDGene African Americans.}
+\includegraphics[width=\textwidth]{figs/barplots/barplots_greyscale}
+\caption{Barplots of estimated admixture proportions in (A) WHI SHARe, (B) TOPMed JHS, and (C) TOPMed COPDGene African Americans. Each individual is represented by a narrow vertical bar in the plot, and they are sorted by proportion of African ancestry.}
 \label{fig:barplots}
 \end{figure}
 
@@ -651,7 +661,7 @@ These local ancestry based admixture proportion estimates were highly correlated
 
 In TOPMed samples, we performed unsupervised \texttt{ADMIXTURE} analyses with varying numbers of ancestral populations. 
 Figure \ref{fig:barplots} presents results with $K = 2$.
-Although these analyses were unsupervised, based on prior studies of admixture in African Americans, and in comparison to the distribution of admixture proportions seen here in WHI SHARe, we believe that the ancestral population colored orange (Pop1) in Figure \ref{fig:barplots} corresponds to European ancestry and the population colored in blue (Pop2) corresponds to African ancestry.
+Although these analyses were unsupervised, based on prior studies of admixture in African Americans, and in comparison to the distribution of admixture proportions seen in WHI SHARe, we believe that the ancestral population colored dark gray in Figure \ref{fig:barplots} corresponds to European ancestry and the population colored light gray corresponds to African ancestry.
 
 In all three samples, we observe considerable variability in the relative proportions of African and European ancestry across individuals.
 This ancestral heterogeneity motivates the need to carefully adjust for global ancestry in genome-wide association studies in these, just as in other, admixed samples. 
@@ -837,8 +847,9 @@ This, again, is not surprising, given the high correlation between admixture pro
 %Given the high correlation we observed between model-based admixture proportions and the first principal component (with or without LD-based pruning or exclusions), we see very similar results for these adjustment approaches.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figs/spurious_counts/gwas/supplement_spurious_allbeta}
-\caption{Comparison of the number of spurious associations in genome-wide association studies in WHI SHARe African Americans using different approaches to adjust for ancestral heterogeneity. Panel (A) displays the average number of spurious associations that were observed across all simulation settings. Remaining panels focus on the subset of simulation settings in which the causal variant has (B) a small difference in ancestral allele frequencies, (C) low SNP loadings for each of the first four PCs, (D) a high SNP loading for at least one of the first four PCs, or (D) the highest SNP loading on its chromosome for one of the first four PCs. Within each panel, we compare the number of spurious associations when GWAS models adjust for model-based admixture proportions, 1 PC (with or without LD pruning and/or Table \ref{tab:highLD} exclusions), or 4 PCs (with or without LD pruning and/or Table \ref{tab:highLD} exclusions). Results shown here are for simulated traits with a single causal variant, with effect size ($\beta$) ranging from 0 to 8. \edit{Remove dashed line and cut off y-axis at 2?}}
+%\includegraphics[width=\textwidth]{figs/spurious_counts/gwas/supplement_spurious_allbeta}
+\includegraphics[width=\textwidth]{figs/spurious_counts/gwas/spurious_allbeta}
+\caption{Comparison of the number of spurious associations in genome-wide association studies in WHI SHARe African Americans using different approaches to adjust for ancestral heterogeneity. Panel (A) displays the average number of spurious associations that were observed across all simulation settings. Remaining panels focus on the subset of simulation settings in which the causal variant has (B) a small difference in ancestral allele frequencies, (C) low SNP loadings for each of the first four PCs, (D) a high SNP loading for at least one of the first four PCs, or (D) the highest SNP loading on its chromosome for one of the first four PCs. Within each panel, we compare the number of spurious associations when GWAS models adjust for model-based admixture proportions, 1 PC (with or without LD pruning and/or Table \ref{tab:highLD} exclusions), or 4 PCs (with or without LD pruning and/or Table \ref{tab:highLD} exclusions). Results shown here are for simulated traits with a single causal variant, with effect size ($\beta$) ranging from 0 to 8.}
 \label{fig:spurious}
 \end{figure}
 
