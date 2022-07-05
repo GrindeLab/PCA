@@ -63,14 +63,15 @@
 % each line <= 54 characters (including spaces)
 % convey conceptual significance of paper to broad readership
 
-Adjusting for principal components can induce spurious 
-associations in genome-wide association studies in admixed populations
+Adjusting for too many principal components can induce
+ spurious associations in genome-wide association
+ studies in admixed populations
 
 \section*{Authors and Affiliations}
 
-Kelsey E. Grinde,$^{1}$* % should I also list UW?
-\edit{Alexander P. Reiner,$^{2,3}$
-Brian L. Browning,$^{4}$ 
+Kelsey E. Grinde,$^{1}$* 
+Alexander P. Reiner,$^{2,3}$
+\edit{Brian L. Browning,$^{4}$ 
 Timothy A. Thornton,$^{5,6}$}
 Sharon R. Browning$^{6}$
 \edit{(pending confirmation)}
@@ -123,9 +124,9 @@ Our work demonstrates that great care must be taken when using principal compone
 %Admixed populations such as African Americans and Hispanics/Latinos have historically been vastly underrepresented in genome-wide association studies (GWAS) \cite{need2009, bustamante2011, popejoy2016, morales2018, sirugo2019, martin2019}. 
 Considerable variability in global ancestry---the genome-wide proportion of genetic material inherited from each ancestral population---has been observed in many studies of admixed populations such as African Americans and Hispanics/Latinos \citep{parra1998, tishkoff2009, bryc2010aa, bryc2010hl, conomos2016}.
 It has been widely documented that heterogeneous global ancestry, as with other types of population structure, can lead to spurious associations in genome-wide association studies \citep{GenomicControl, eigenstrat, marchini2004, price2010}. 
-In fact, some authors have even cited the ancestral heterogeneity of admixed populations, and the statistical challenges it poses, as one (among many) reason why these populations have been historically underrepresented in genome-wide association studies (GWAS) \citep{need2009, bustamante2011, popejoy2016, hindorff2018, manolio2019}.
+In fact, some authors have even cited the ancestral heterogeneity of admixed populations, and the statistical challenges it poses, as one reason (among many) why these populations have been historically underrepresented in genome-wide association studies (GWAS) \citep{need2009, bustamante2011, popejoy2016, hindorff2018, manolio2019}.
 %% why do we need to adjust for it?  (confounding)
-Spurious associations can arise in GWAS in ancestrally heterogeneous populations when global ancestry confounds the association between genotypes and the phenotype of interest.% (Figure \ref{fig:confounding}). 
+Spurious associations can arise in GWAS in ancestrally heterogeneous populations when global ancestry confounds the association between genotypes and the phenotype of interest. % (Figure \ref{fig:confounding}). 
 This confounding occurs when the genetic variant being tested differs in frequency across ancestral populations (i.e., global ancestry is associated with genotype) and global ancestry also has an effect on the phenotype via, for example, environmental factors or causal loci elsewhere in the genome that differ in frequency across ancestral groups.
 
 %%%% Figure 1: Confounding DAG %%%
@@ -160,7 +161,7 @@ It is also capable of capturing sub-continental structure \citep{novembre2008}.
 It has been shown that top eigenvectors, or \textit{principal components} (PCs), %$\mathbf{u}_1, \mathbf{u}_2, \dots$ 
 tend to reflect global ancestry \citep{patterson2006, mcvean2009}.
 To adjust for ancestral heterogeneity in genome-wide association studies, researchers must choose some number of PCs %(typically on the order of 1--10 \citep{abegaz2019}
-to include as covariates in our GWAS regression models. 
+to include as covariates in GWAS regression models. 
 
 %% issues & solutions: choosing P
 Determining the number of PCs needed to capture global ancestry is non-trivial. 
@@ -704,7 +705,7 @@ This is evident upon inspection of \textit{SNP loadings}, which represent the co
 Figure \ref{fig:corr-TOPMed} presents the correlation between principal components and genotypes in JHS and COPDGene African Americans when PCs are generated without any prior LD-based pruning or filtering.
 We see that variants across the genome are contributing relatively equally to the first principal component, whereas the second, third, and fourth PCs are driven more-so by variants on a select number of chromosomes.
 In JHS, for example, the second PC is particularly highly correlated with variants on chromosomes 6 and 8, and less so with variants on 2, 3, and 11.
-We see similar patterns, although with peaks on different combinations of chromosomes, in COPDGene (Figure \ref{fig:corr-TOPMed}B) and WHI SHARe African Americans (leftmost column of Figure \ref{fig:corr-compare}).
+We see similar patterns, although with peaks on different combinations of chromosomes, in COPDGene (Figure \ref{fig:corr-TOPMed}B) and WHI SHARe African Americans (Figure \ref{fig:corr-compare}A).
 The peaks in these genotype-PC correlation plots indicate that those principal components are primarily capturing variation at a handful of positions along the genome rather than genome-wide global ancestry.
 
 
@@ -727,9 +728,9 @@ Following these recommendations, we compare the set of principal components base
 
 Figure \ref{fig:corr-compare} illustrates the impact of these pre-processing steps on the correlation between genotypes and PCs in WHI SHARe African Americans. 
 Recall that the leftmost column of Figure \ref{fig:corr-compare} presents results for principal components that were generated without any prior LD-based filtering or pruning, and we see that PCs 2--4 are capturing local genomic features on a select number of chromosomes rather than genome-wide ancestry.
-When we exclude the previously-identified high LD regions reported in Table \ref{tab:highLD} before running PCA (the second column of Figure \ref{fig:corr-compare}), the pattern of \textit{which} SNPs are driving PCs 2--4 changes, but the issue of PCs capturing local genomic features has not been resolved. 
-However, after LD pruning with an $r^2$ threshold of 0.1 and a window size of 0.5 Mb (third column of Figure \ref{fig:corr-compare}), we now see similar patterns with PCs 2--4 as we do with the first principal component: all variants are now contributing relatively equally to each PC. 
-If we then also remove previously-identified high LD regions in addition to performing LD pruning (rightmost column of Figure \ref{fig:corr-compare}), the patterns of correlation between PCs and genotypes are indistinguishable from those with LD pruning alone. 
+When we exclude the previously-identified high LD regions reported in Table \ref{tab:highLD} before running PCA (Figure \ref{fig:corr-compare}B), the pattern of \textit{which} SNPs are driving PCs 2--4 changes, but the issue of PCs capturing local genomic features has not been resolved. 
+However, after LD pruning with an $r^2$ threshold of 0.1 and a window size of 0.5 Mb (Figure \ref{fig:corr-compare}C), we now see similar patterns with PCs 2--4 as we do with the first principal component: all variants are now contributing relatively equally to each PC. 
+If we then also remove previously-identified high LD regions in addition to performing LD pruning (Figure \ref{fig:corr-compare}D), the patterns of correlation between PCs and genotypes are indistinguishable from those with LD pruning alone. 
 Similar patterns are observed in JHS and COPDGene.
 
 Note that the thresholds for LD pruning that we use here ($r^2 < 0.1$) are stricter than the default for many software programs and the threshold used in many studies of European populations ($r^2 < 0.2$).
@@ -1086,7 +1087,7 @@ If further PCs are to be included, then careful pre-processing of data prior to 
 % briefly list what types of data are included in supplemental data (a separate PDF document)
 % e.g., "Supplemental Data include four figures and two tables"
 
-Supplemental Information includes 13 figures, as well as proofs of the theoretical results presented above.
+Supplemental Information includes 13 figures, as well as proofs and simulations validating the theoretical results presented in the main paper.
 
 
 \section{Declaration of Interests}
