@@ -102,14 +102,16 @@ This pattern holds regardless of whether PCs are generated with (Figure \ref{fig
 
 \begin{figure}
 \center
-\includegraphics[width=\textwidth]{figs/pcs_vs_global/pcs_vs_global}
+%\includegraphics[width=\textwidth]{figs/pcs_vs_global/pcs_vs_global}
+\includegraphics[width=\textwidth]{figs/finalfigs/figS1_pcs_vs_global}
 \caption[Scatterplots of estimated admixture proportions versus the first four PCs, without LD-based filtering or pruning.]{Scatterplots of estimated African admixture proportions versus the first four PCs in (A) WHI SHARe, (B) TOPMed JHS, and (C) TOPMed COPDGene African Americans. Here we consider PCs that were generated on the entire set of SNPs (i.e., without any prior LD-based filtering or pruning).}
 \label{fig:pcsvsglob}
 \end{figure}
 
 \begin{figure}
 \center
-\includegraphics[width=0.9\textwidth]{figs/pcs_vs_global/pruned_pcs_vs_global}
+%\includegraphics[width=0.9\textwidth]{figs/pcs_vs_global/pruned_pcs_vs_global}
+\includegraphics[width=0.9\textwidth]{figs/finalfigs/figS2_pruned_pcs_vs_global}
 \caption[Scatterplots of estimated admixture proportions versus the first four PCs, with LD-based filtering and pruning.]{Scatterplots of estimated African admixture proportions versus the first four PCs in (A) WHI SHARe, (B) TOPMed JHS, and (C) TOPMed COPDGene African Americans. Here we consider PCs that were generated after both LD pruning ($r^2 = 0.1$, window size = 0.5 Mb) and filtering previously identified high-LD regions (Table \ref{tab:highLD}).}
 \label{fig:prunedpcsvsglob}
 \end{figure}
@@ -148,21 +150,24 @@ In WHI SHARe data, at least, strict LD pruning is the most effective of the pre-
 
 \begin{figure}
 \center
-\includegraphics[width=\textwidth]{figs/pc_geno_corr/pc_geno_corr_compare_prune}
+%\includegraphics[width=\textwidth]{figs/pc_geno_corr/pc_geno_corr_compare_prune}
+\includegraphics[width=\textwidth]{figs/finalfigs/figS3_pc_geno_corr_compare_prune}
 \caption[Correlation between PCs and genotypes using different LD pruning thresholds.]{Correlation between PCs and genotypes in WHI SHARe African Americans using different LD pruning thresholds. Each panel plots the absolute value (abs) of the correlation between principal components and genotypes on the y-axis versus the position along the genome on the x-axis.  Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4) and horizontally according to what $r^2$ threshold was used when running LD pruning prior to PCA (\textit{none}: no LD pruning, \textit{prune0.2}: LD pruning with an $r^2$ threshold of 0.2 and window size of 0.5 Mb, and \textit{prune0.1}: LD pruning with an $r^2$ threshold of 0.1 and window size of 0.5 Mb).}
 \label{fig:corr-compare-prune}
 \end{figure}
 
 \begin{figure}
 \center
-\includegraphics[width=\textwidth]{figs/pc_geno_corr/pc_geno_corr_compare_window}
+%\includegraphics[width=\textwidth]{figs/pc_geno_corr/pc_geno_corr_compare_window}
+\includegraphics[width=\textwidth]{figs/finalfigs/figS4_pc_geno_corr_compare_window}
 \caption[Correlation between PCs and genotypes using different LD pruning windows.]{Correlation between PCs and genotypes in WHI SHARe African Americans using different LD pruning window sizes. Each panel plots the absolute value (abs) of the correlation between principal components and genotypes on the y-axis versus the position along the genome on the x-axis.  Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4) and horizontally according to what window size was used when running LD pruning prior to PCA (\textit{none}: no LD pruning, \textit{prune0.5}: LD pruning with an $r^2$ threshold of 0.1 and window size of 0.5 Mb, \textit{prune2}: LD pruning with an $r^2$ threshold of 0.1 and window size of 2 Mb, and \textit{prune10}: LD pruning with an $r^2$ threshold of 0.1 and window size of 10 Mb).}
 \label{fig:corr-compare-window}
 \end{figure}
 
 \begin{figure}
 \center
-\includegraphics[width=\textwidth]{figs/pc_geno_corr/pc_geno_corr_compare_exclude}
+%\includegraphics[width=\textwidth]{figs/pc_geno_corr/pc_geno_corr_compare_exclude}
+\includegraphics[width=\textwidth]{figs/finalfigs/figS5_pc_geno_corr_compare_exclude}
 \caption[Correlation between PCs and genotypes using a data-based filtering process.]{Correlation between PCs and genotypes in WHI SHARe African Americans after multiple rounds of data-based exclusions. Each panel plots the absolute value (abs) of the correlation between principal components and genotypes on the y-axis versus the position along the genome on the x-axis.  Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4) and horizontally according to the number of iterations of our procedure for excluding regions highly correlated with PCs in this sample (\textit{none}: no exclusions, \textit{exclude1}: one round of exclusions, \textit{exclude2}: two rounds of exclusions, etc.).}
 \label{fig:corr-compare-exclude}
 \end{figure}
@@ -182,7 +187,8 @@ Thus, particular care must be taken when performing genome-wide association stud
 
 \begin{figure}
 \center
-\includegraphics[width=0.8\textwidth]{figs/COPD/EUR_prune_FALSE_1_0_0.01_snprelate_load_1}
+%\includegraphics[width=0.8\textwidth]{figs/COPD/EUR_prune_FALSE_1_0_0.01_snprelate_load_1}
+\includegraphics[width=0.8\textwidth]{figs/finalfigs/figS6_EUR_prune_FALSE_1_0_0.01_snprelate_load_1}
 \caption[SNP loadings in COPDGene European Americans.]{SNP loadings for naively generated PCs in COPDGene European Americans. Each panel plots the principal component loading (y-axis) versus the position along the genome (x-axis) for each variant. Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4). Unlike in admixed populations, we see a single peak on chromosome 11.}
 \label{fig:corr-Eur}
 \end{figure}
@@ -476,10 +482,8 @@ the 2nd PC was generated according to $z_i = z_1 g_{i1} + z_2 g_{i2} + e_i$ for 
 
 \begin{figure}[!htb]
 \centering
-% ----- switch this before including in dissertation
-\includegraphics[width=0.7\textwidth]{figs/theorysims/sims_barplot}
-%\includegraphics[width=0.5\textwidth]{figs/sims_barplot}
-% ----- switch this before including in dissertation
+%\includegraphics[width=0.7\textwidth]{figs/theorysims/sims_barplot}
+\includegraphics[width=0.7\textwidth]{figs/finalfigs/figS7_sims_barplot}
 \caption{Barplot of simulated admixture proportions.}
 \label{fig:barplot}
 \end{figure}
@@ -494,10 +498,8 @@ We see a departure between the true effect size (0) and the observed and expecte
 
 \begin{figure}[!htb]
 \centering
-% ----- switch this before including in dissertation
-\includegraphics[width=0.55\textwidth]{figs/theorysims/sims_unadjusted}
-%\includegraphics[width=\textwidth]{figs/sims_unadjusted}
-% ----- switch this before including in dissertation
+%\includegraphics[width=0.55\textwidth]{figs/theorysims/sims_unadjusted}
+\includegraphics[width=0.55\textwidth]{figs/finalfigs/figS8_sims_unadjusted}
 \caption[Observed versus expected and true effect sizes from unadjusted GWAS models.]%
 {Comparison of observed, expected, and true effect sizes from unadjusted GWAS models applied to simulated data. Observed effect sizes are represented by the thin solid lines with points (\textcolor{red}{red} with dots = SNP 1, \textcolor{blue}{blue} with triangles = SNP 2). 
 Expected effect sizes from Section \ref{sec:expectedbetas} are represented by the wider and faintly colored solid lines (\textcolor{red}{red} = SNP 1, \textcolor{blue}{blue} = SNP 2).
@@ -515,10 +517,8 @@ This confirms, as our theory suggests, that models that appropriately adjust for
 
 \begin{figure}[!htb]
 \centering
-% ----- switch this before including in dissertation
-\includegraphics[width=0.6\textwidth]{figs/theorysims/sims_pi}
-%\includegraphics[width=\textwidth]{figs/sims_pi}
-% ----- switch this before including in dissertation
+%\includegraphics[width=0.6\textwidth]{figs/theorysims/sims_pi}
+\includegraphics[width=0.6\textwidth]{figs/finalfigs/figS9_sims_pi}
 \caption[Observed versus expected and true effect sizes from admixture proportion adjusted GWAS models.]%
 {Comparison of observed, expected, and true effect sizes from GWAS models adjusting for admixture proportions in simulated data. 
 Observed effect sizes  are represented by the thin solid lines with points (\textcolor{red}{red} with dots = SNP 1, \textcolor{blue}{blue} with triangles = SNP 2). 
@@ -539,10 +539,8 @@ The magnitude of this bias increases with the strength of the relationship betwe
 
 \begin{figure}[!htb]
 \centering
-% ----- switch this before including in dissertation
-\includegraphics[width=0.98\textwidth]{figs/theorysims/sims_pcs_gwas}
-%\includegraphics[width=0.9\textwidth]{figs/sims_pcs_gwas}
-% ----- switch this before including in dissertation
+%\includegraphics[width=0.98\textwidth]{figs/theorysims/sims_pcs_gwas}
+\includegraphics[width=0.98\textwidth]{figs/finalfigs/figS10_sims_pcs_gwas}
 \caption[Observed versus expected and true effect sizes from principal component adjusted GWAS models.]%
 {Comparison of observed, expected, and true effect sizes from GWAS models adjusting for two principal components. 
 The first PC captures global ancestry, but the second PC was generated according to the equation $z_1 g_{i1} + z_2 g_{i2} + N(0, 0.25^2)$, changing the scalars $z_1,z_2$ in each panel.
@@ -581,7 +579,8 @@ These PC-genotype correlation plots clearly show---as we know to be true, by des
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=\textwidth]{figs/fakepcs/fake_pcs_corr_1}
+%\includegraphics[width=\textwidth]{figs/fakepcs/fake_pcs_corr_1}
+\includegraphics[width=\textwidth]{figs/finalfigs/figS11_fake_pcs_corr_1}
 \caption[Correlation between fake PCs and genotypes in TOPMed JHS.]{Correlation between fake PCs (i.e., PCs that were constructed such that the first captures genetic ancestry but the second captures genotype at two variants on chromosomes 6 and 8) in TOPMed JHS African Americans. Each panel plots the absolute value of the correlation between principal components and genotypes (on the y-axis) versus the position along the genome (x-axis).  Panels are organized vertically according to which PC is being investigated (1, 2). Peaks in this plot indicate that a variant has a larger \textit{loading}, i.e., a larger contribution to that principal component.}
 \label{fig:corr-fake}
 \end{figure}
@@ -597,15 +596,18 @@ It is worth noting that the quantile-quantile (QQ) plots and inflation factors f
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=\textwidth]{figs/fakepcs/beta2_1pcs_fake_manh}
-\includegraphics[width=\textwidth]{figs/fakepcs/beta2_2pcs_fake_manh}
+%\includegraphics[width=\textwidth]{figs/fakepcs/beta2_1pcs_fake_manh}
+%\includegraphics[width=\textwidth]{figs/fakepcs/beta2_2pcs_fake_manh}
+\includegraphics[width=\textwidth]{figs/finalfigs/figS12a_beta2_1pcs_fake_manh}
+\includegraphics[width=\textwidth]{figs/finalfigs/figS12b_beta2_2pcs_fake_manh}
 \caption[Manhattan plots for GWAS models adjusting for fake PCs in TOPMed JHS.]{Manhattan plots for GWAS models adjusting for fake PCs (i.e., PCs that were constructed such that the first captures genetic ancestry but the second captures genotype at two variants on chromosomes 6 and 8) in TOPMed JHS African Americans. The top panel presents results from a model adjusting for only the first PC and the bottom panel presents results from a model adjusting for two PCs. In this simulation setting, there is only one causal variant, located on chromosome 8.}
 \label{fig:manh-fake}
 \end{figure}
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=0.48\textwidth]{figs/fakepcs/beta2_1pcs_fake_qq}\includegraphics[width=0.48\textwidth]{figs/fakepcs/beta2_2pcs_fake_qq}
+%\includegraphics[width=0.48\textwidth]{figs/fakepcs/beta2_1pcs_fake_qq}\includegraphics[width=0.48\textwidth]{figs/fakepcs/beta2_2pcs_fake_qq}
+\includegraphics[width=0.48\textwidth]{figs/finalfigs/figS13a_beta2_1pcs_fake_qq}\includegraphics[width=0.48\textwidth]{figs/finalfigs/figS13b_beta2_2pcs_fake_qq}
 \caption[QQ plots for GWAS models adjusting for fake PCs in TOPMed JHS.]{Quantile-quantile (QQ) plots and inflation factors ($\lambda$) for GWAS models adjusting for fake PCs (i.e., PCs that were constructed such that the first captures genetic ancestry but the second captures genotype at two variants on chromosomes 6 and 8) in TOPMed JHS African Americans. The left panel presents results from a model adjusting for only the first PC and the right panel presents results from a model adjusting for two PCs. The two plots are indistinguishable.}
 \label{fig:qq-fake}
 \end{figure}

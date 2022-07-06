@@ -1,0 +1,10 @@
+getobj <- function(Rdat){#
+  obj <- load(Rdat)#
+  eval(parse(text = obj))#
+}
+getwd()
+list.files9)
+list.files()
+list.files('Documents')
+list.files('')
+list.files('../')

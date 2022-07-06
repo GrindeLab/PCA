@@ -640,8 +640,8 @@ Inferred admixture proportions for three samples of African American individuals
 
 \begin{figure}
 \center
-%\includegraphics[width=\textwidth]{figs/barplots/figure1}
-\includegraphics[width=\textwidth]{figs/barplots/barplots_greyscale}
+%\includegraphics[width=\textwidth]{figs/barplots/barplots_greyscale}
+\includegraphics[width=\textwidth]{figs/finalfigs/fig1_barplots_greyscale}
 \caption{Barplots of estimated admixture proportions in (A) WHI SHARe, (B) TOPMed JHS, and (C) TOPMed COPDGene African Americans. Each individual is represented by a narrow vertical bar in the plot, and they are sorted by proportion of African ancestry.}
 \label{fig:barplots}
 \end{figure}
@@ -712,9 +712,8 @@ The peaks in these genotype-PC correlation plots indicate that those principal c
 \begin{figure}
 %\hspace{0.3in} (A) JHS \hspace{2.4in} (B) COPDGene
 \center
-%\includegraphics[width=0.49\textwidth]{figs/JHS/JHS_prune_FALSE_1_0_0.01_snprelate_corr_1}
-%\includegraphics[width=0.49\textwidth]{figs/COPD/COPD_prune_FALSE_1_0_0.01_snprelate_corr_1}
-\includegraphics[width=\textwidth]{figs/pc_geno_corr/topmed_corr}
+%\includegraphics[width=\textwidth]{figs/pc_geno_corr/topmed_corr}
+\includegraphics[width=\textwidth]{figs/finalfigs/fig2_topmed_corr}
 \caption{Correlation between naively generated PCs (i.e., PCs that were constructed without any prior LD-based filtering or exclusions) and genotypes in JHS and COPDGene African Americans. Each panel plots the absolute value of the correlation between principal components and genotypes (on the y-axis) versus the position along the genome (x-axis).  Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4) and horizontally according to the sample (A: JHS, B: COPDGene). Peaks in this plot indicate that a variant has a larger \textit{loading}, i.e., a larger contribution to that principal component.}
 \label{fig:corr-TOPMed}
 \end{figure}
@@ -738,8 +737,8 @@ If we use the larger, default $r^2$ threshold, we see improvement for the second
 
 \begin{figure}
 \center
-%\includegraphics[width=\textwidth]{figs/pc_geno_corr/pc_geno_corr}
-\includegraphics[width=\textwidth]{figs/WHI/pc_geno_corr/pc_geno_corr}
+%\includegraphics[width=\textwidth]{figs/WHI/pc_geno_corr/pc_geno_corr}
+\includegraphics[width=\textwidth]{figs/finalfigs/fig3_pc_geno_corr}
 \caption{Correlation between PCs and genotypes in WHI SHARe African Americans with different choices of pre-processing. Each panel plots the absolute value of the correlation between principal components and genotypes (on the y-axis) versus the position along the genome (x-axis).  Panels are organized vertically according to which PC is being investigated (1, 2, 3, 4) and horizontally according to the level of filtering that was applied prior to running PCA (\textit{none}: all SNPs, \textit{exclude}: after excluding regions in Table \ref{tab:highLD}, \textit{prune}: after LD pruning with an $r^2$ threshold of 0.1 and window size of 0.5 Mb, and \textit{both}: after both exclusions and LD pruning).}
 \label{fig:corr-compare}
 \end{figure}
@@ -833,7 +832,8 @@ Likewise, no spurious association arises if we adjust for model-based admixture 
 Note that the causal variant, on chromosome 4, and the spurious signal, on chromosome 6, are both located in regions of the genome that are highly correlated with the PCs that were generated without any prior LD pruning (Figure \ref{fig:corr-compare}).
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figs/manhattan/WHI_manh_gwas_70}
+%\includegraphics[width=\textwidth]{figs/manhattan/WHI_manh_gwas_70}
+\includegraphics[width=\textwidth]{figs/finalfigs/fig4_WHI_manh_gwas_70}
 \caption{Manhattan plots from genome-wide association studies in WHI SHARe African Americans using different approaches to adjust for ancestral heterogeneity. In this example, the simulated trait depends only on the genotype at a single variant on chromosome 4. Panels present results using different adjustment approaches: (A) no adjustment; (B) one PC, with PCs calculated using all variants; (C) four PCs, with PCs calculated using all variants; (D) model-based admixture proportion estimates; (E) one PC, with PCs calculated after LD pruning ($r^2 < 0.1$, window size = 0.5 Mb) and Table \ref{tab:highLD} exclusions; and (F) four PCs, with PCs calculated after LD pruning and exclusions. The horizontal dashed line in all panels represents the genome-wide significance threshold of $5 \times 10^{-8}$.}
 \label{fig:manh}
 \end{figure}
@@ -850,8 +850,8 @@ This, again, is not surprising, given the high correlation between admixture pro
 %Given the high correlation we observed between model-based admixture proportions and the first principal component (with or without LD-based pruning or exclusions), we see very similar results for these adjustment approaches.
 
 \begin{figure}
-%\includegraphics[width=\textwidth]{figs/spurious_counts/gwas/supplement_spurious_allbeta}
-\includegraphics[width=\textwidth]{figs/spurious_counts/gwas/spurious_allbeta}
+%\includegraphics[width=\textwidth]{figs/spurious_counts/gwas/spurious_allbeta}
+\includegraphics[width=\textwidth]{figs/finalfigs/fig5_spurious_allbeta}
 \caption{Comparison of the number of spurious associations in genome-wide association studies in WHI SHARe African Americans using different approaches to adjust for ancestral heterogeneity. Panel (A) displays the average number of spurious associations that were observed across all simulation settings. Remaining panels focus on the subset of simulation settings in which the causal variant has (B) a small difference in ancestral allele frequencies, (C) low SNP loadings for each of the first four PCs, (D) a high SNP loading for at least one of the first four PCs, or (D) the highest SNP loading on its chromosome for one of the first four PCs. Within each panel, we compare the number of spurious associations when GWAS models adjust for model-based admixture proportions, 1 PC (with or without LD pruning and/or Table \ref{tab:highLD} exclusions), or 4 PCs (with or without LD pruning and/or Table \ref{tab:highLD} exclusions). Results shown here are for simulated traits with a single causal variant, with effect size ($\beta$) ranging from 0 to 8.}
 \label{fig:spurious}
 \end{figure}
@@ -914,8 +914,10 @@ These biased effect size estimates at neutral variants will translate into spuri
 These results are summarized in Figure \ref{fig:confoundingdags} and underscore the importance of adjusting for ancestral heterogeneity even when global ancestry does not have a direct effect on the trait.
 
 \begin{figure}
-\includegraphics[width=0.45\textwidth]{figs/confounding_dags/dag_gwas_1_v2.png}\hspace{0.1in}
-\includegraphics[width=0.55\textwidth]{figs/confounding_dags/dag_gwas_2_v2.png}
+%\includegraphics[width=0.45\textwidth]{figs/confounding_dags/dag_gwas_1_v2.png}\hspace{0.1in}
+%\includegraphics[width=0.55\textwidth]{figs/confounding_dags/dag_gwas_2_v2.png}
+\includegraphics[width=0.45\textwidth]{figs/finalfigs/fig6a_dag_gwas_1_v2.png}\hspace{0.1in}
+\includegraphics[width=0.55\textwidth]{figs/finalfigs/fig6b_dag_gwas_2_v2.png}
 \caption{Directed acyclic graphs (DAGs) summarizing the conditions for confounding by global ancestry in GWAS. On the left, we see that global ancestry confounds the association at the causal variant (Variant 1) if there is ancestral heterogeneity in the population ($V_\pi > 0$), the causal variant has different allele frequencies in the ancestral populations ($p_{11} \neq p_{10}$), and global ancestry has a direct effect on the trait ($\beta_\pi \neq 0$). On the right, we see that global ancestry can confound the association at an unlinked neutral variant (Variant 2) even if global ancestry does not have a direct effect on the trait ($\beta_\pi = 0$), provided that there is ancestral heterogeneity ($V_\pi > 0$) and both the causal variant and the variant being tested have different allele frequencies in the ancestral population ($p_{11} \neq p_{10}, p_{21} \neq p_{20}$).}
 \label{fig:confoundingdags}
 \end{figure}
@@ -1018,7 +1020,8 @@ Given the similarities in terms of which regions of the genome tend to be captur
 
 \begin{figure}
 \center
-\includegraphics[width=0.5\textwidth]{figs/confounding_dags/dag_collider.png}
+%\includegraphics[width=0.5\textwidth]{figs/confounding_dags/dag_collider.png}
+\includegraphics[width=0.5\textwidth]{figs/finalfigs/fig7_dag_collider.png}
 \caption{Collider bias in GWAS. Suppose that, instead of genome-wide global ancestry ($\pi$), a principal component ($z$) captures the genotype of two variants ($g_1, g_2$). If one of those variants ($g_1$) is associated with the trait, then the PC will be a collider variable---rather than a confounding variable---when testing the association between the other variant ($g_2$) and the trait. Adjusting for the PC can then induce a spurious association between the trait and the neutral variant as a result of collider bias.}
 \label{fig:collider}
 \end{figure}
