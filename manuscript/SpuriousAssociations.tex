@@ -100,7 +100,7 @@ Sharon R. Browning$^{6}$
 % brief background of question, description of results, brief summary of significance of findings
 % do not cite any references
 
-\edit{Current word count: 245 \\Maximum allowed by AJHG: 250}
+\edit{Current word count: 246 \\Maximum allowed by AJHG: 250}
 
 \noindent Principal component analysis (PCA) is widely used to control for population structure in genome-wide association studies (GWAS). 
 It has been shown that the top principal components (PCs) typically reflect population structure, but deciding exactly how many PCs to include in GWAS regression models can be challenging. 
@@ -166,7 +166,7 @@ to include as covariates in GWAS regression models.
 %% issues & solutions: choosing P
 Determining the number of PCs needed to capture global ancestry is non-trivial. 
 Numerous techniques have been proposed, including formal significance tests based on Tracy-Widom theory \citep{patterson2006, eigenstrat}, examining inflation factors \citep{reed2015, conomos2016} and/or the proportion of variance explained by each PC \citep{raska2012, reed2015, conomos2016}, comparing PCs to self-reported race/ethnicity \citep{conomos2016}, and keeping PCs that are significantly associated with the trait \citep{reiner2012, daya2019}.
-Typically, the number of PCs selected is on the order of one to ten \citep{abegaz2019}, but in practice it is not uncommon to see applications in which more many more PCs are used---more than may actually be necessary to capture global ancestry. 
+Typically, the number of PCs selected is on the order of one to ten \citep{abegaz2019}, but in practice it is not uncommon to see applications in which many more PCs are used---more than may actually be necessary to capture global ancestry. 
 Prior work has suggested that including higher-order PCs can provide the safeguard of removing ``virtually all stratification" \citep{mathieson2012} at the cost of perhaps only ``subtle" decreases in power \citep{liu2011}.
 %using the same number of PCs as had been used  to prior work in distinct study populations to justify the choice of 10 PCs \citep{liu2012, reed2015}
 
@@ -284,7 +284,7 @@ We consider two approaches to inferring genetic ancestry in these admixed sample
 \subsubsection{Model-Based Approaches}
 
 In WHI SHARe African Americans, we inferred both local and global genetic ancestry using model-based ancestry inference techniques. 
-Local ancestry inference was performed using \texttt{RFMix} \citep{rfmix} and a reference panel including individuals of European and African decent from the International HapMap Project (HapMap) \citep{hapmap}: see Grinde et al. \cite{steam} for more details.
+Local ancestry inference was performed using \texttt{RFMix} \citep{rfmix} and a reference panel including individuals of European and African descent from the International HapMap Project (HapMap) \citep{hapmap}: see Grinde et al. \cite{steam} for more details.
 We then calculated global ancestry proportions via the genome-wide average local ancestry $\hat\pi_{ik} = \frac{1}{2m}\sum_{j=1}^m a_{ijk},$ where $a_{ijk}$ is the inferred number of alleles (0, 1, or 2) inherited by individual $i$ at variant $j$ from ancestral population $k$.
 We also compared these \texttt{RFMix}-based global ancestry estimates to results from supervised and unsupervised \texttt{ADMIXTURE}  \citep{admixture} analyses with two ancestral populations ($K = 2$).
 The supervised analysis used the same HapMap reference panel as was used to infer local ancestry using \texttt{RFMix}.
