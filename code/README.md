@@ -1,6 +1,6 @@
 # Code Example
 
-Here we provide an overview of the steps taken to run PCA in whole genome sequence data.
+Here we provide an overview of the steps taken to run PCA in whole genome sequence data, using our analysis of TOPMed COPDGene data as an example.
 This code leans heavily on the University of Washington Genetic Analysis Center's TOPMed Analysis Pipeline: https://github.com/UW-GAC/analysis_pipeline.
 
 The analysis can be broken into five steps:
@@ -8,7 +8,7 @@ The analysis can be broken into five steps:
 1. Filter
 2. Convert VCF to GDS
 3. Find unrelated samples
-4. Run ADMIXTURE
+4. Optional: run ADMIXTURE 
 5. Run PCA
 
 ## Setup
@@ -22,10 +22,19 @@ You may also need to install or update various R packages (e.g., gdsfmt, SNPRela
 
 ## Filter
 
-## Step 2: VCF to GDS
+We used `bcftools` to restrict our analyses to biallelic single nucleotide variants. 
 
-## Step 3: Unrelated
+- `step1_filter.sh`
 
-## Step 4: ADMIXTURE
 
-## Step 5: PCA
+## Convert VCF to GDS
+
+We then converted the filtered VCF file produced by `bcftools` to GDS format so that we could use the TOPMed Analysis Pipeline for the remaining steps. 
+
+- `step2_vcf2gds.sh`
+
+## Find Unrelated Samples
+
+## Optional: Run ADMIXTURE
+
+## Run PCA
