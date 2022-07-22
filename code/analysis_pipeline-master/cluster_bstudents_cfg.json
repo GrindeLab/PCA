@@ -1,0 +1,44 @@
+{
+    "name": "UW_Cluster_config",
+    "version": "3",
+    "debug": 0,
+    "configuration": {
+        "memory_limits": {
+            "aggregate_list":16000,
+            "assoc_aggregate":40000,
+            "assoc_combine":8000,
+            "assoc_plots":32000,
+            "assoc_report":2000,
+            "assoc_single":32000,
+            "assoc_window":20000,
+            "cleanup":1000,
+            "combine_variants":8000,
+            "find_unrelated":8000,
+            "grm":15000,
+            "grm_combine":4000,
+            "ibd_king":32000,
+            "kinship_plots":12000,
+            "ld_pruning":64000,
+            "null_model":64000,
+            "pca_byrel":20000,
+            "pca_corr":20000,
+            "pca_loadings":20000,
+            "pca_corr_plots":32000,
+            "snprelate_loadings_plots":32000,
+            "pca_plots":20000,
+            "pcrelate":64000
+        },
+        "submit_cmd": "qsub",
+        "submit_opts": {
+            "-cwd":"",
+            "-N":"",
+            "-j":"y",
+            "-q":"b-students.q",
+            "-S":"/bin/sh",
+            "-terse":"",
+            "-v":"R_LIBS=/projects/topmed/working_code/analysis_pipeline/R_library"
+        },
+        "parallel_env": "local"
+    }
+}
+
