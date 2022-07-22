@@ -77,8 +77,8 @@ Sharon R. Browning$^{6}$
 \edit{(middle authors are listed alphabetically by last name)}
 
 \begin{enumerate}
-\item Department of Mathematics, Statistics, and Computer Science, Macalester College, Saint Paul, MN, 55105, USA %confirmed
-\item Division of Medical Genetics, Department of Medicine, University of Washington, Seattle, WA, 98195, USA %confirmed
+\item Department of Mathematics, Statistics, and Computer Science, Macalester College, Saint Paul, MN, 55105, USA 
+\item Division of Medical Genetics, Department of Medicine, University of Washington, Seattle, WA, 98195, USA 
 \item Public Health Sciences Division, Fred Hutchinson Cancer Research Center, Seattle, WA, 98109, USA
 \item Department of Epidemiology, University of Washington, Seattle, WA, 98195, USA
 \item Regeneron Genetics Center, Tarrytown, New York, 10591, USA
@@ -86,7 +86,7 @@ Sharon R. Browning$^{6}$
 \item[*] kgrinde@macalester.edu
 \end{enumerate}
 
-\noindent\edit{Please confirm that your affiliations are correct!}
+\noindent\edit{Please confirm that your affiliations are correct!} % KG, BB, SB
 
 
 
@@ -102,17 +102,17 @@ Sharon R. Browning$^{6}$
 % brief background of question, description of results, brief summary of significance of findings
 % do not cite any references
 
-\edit{Current word count: 246 \\Maximum allowed by AJHG: 250}
+\edit{Current word count: 244 \\Maximum allowed by AJHG: 250}
 
 \noindent Principal component analysis (PCA) is widely used to control for population structure in genome-wide association studies (GWAS). 
 The top principal components (PCs) typically reflect population structure, but deciding exactly how many PCs to include in regression models can be challenging. 
 Often researchers err on the side of including more PCs than may be necessary to ensure that population structure is fully captured. 
 In this paper, we show that adjusting for extraneous PCs can induce spurious associations.
 Spurious associations can arise when PCs are correlated with multiple local genomic features, such as regions of the genome with atypical linkage disequilibrium (LD), rather than genome-wide ancestry. 
-We investigate the performance of PCA in samples of African American individuals from the Women's Health Initiative SNP Health Association Resource and two Trans-Omics for Precision Medicine Whole Genome Sequencing Project contributing studies (Jackson Heart Study and Genetic Epidemiology of Chronic Obstructive Pulmonary Disease Study).
+We investigate the performance of PCA in samples of African American individuals from the Women's Health Initiative SNP Health Association Resource and two Trans-Omics for Precision Medicine Whole Genome Sequencing Project studies (the Jackson Heart Study and the Genetic Epidemiology of Chronic Obstructive Pulmonary Disease Study).
 In all three samples, problems arise unless careful pre-processing is performed prior to running PCA.
-Specifically, we show that LD pruning, using stricter thresholds than is often suggested in the literature, can resolve these issues, whereas excluding high LD regions identified in previous studies does not. 
-We also demonstrate that the rate of spurious associations is controlled when we simply adjust for the first PC or an estimate of genome-wide ancestry proportions. 
+We show that LD pruning, using stricter thresholds than is often suggested in the literature, can resolve these issues, whereas excluding high LD regions identified in previous studies does not. 
+We also demonstrate that the rate of spurious associations is controlled when we simply adjust for the first PC or estimated genome-wide ancestry proportions. 
 Our work demonstrates that great care must be taken when using principal components to control for population structure in genome-wide association studies in admixed populations.
 
 
@@ -152,7 +152,7 @@ This fixed effects adjustment for global ancestry is used extensively in publish
 
 % summarize model-based approaches (SKIP --- don't want to emphasize as much)
 Model-based approaches for global ancestry inference (e.g., \texttt{frappe} \citep{tang2005}, \texttt{STRUCTURE} \cite{structure}, \texttt{ADMIXTURE} \citep{admixture}, \texttt{RFMix} \citep{rfmix}) model the probability of observed genotypes given unobserved ancestry and allele frequencies in each ancestral population. 
-Most often, these approaches are used to estimate global ancestry proportions, also known as admixture proportions, which can then be included as covariates in GWAS models to adjust for ancestral heterogeneity.
+These approaches are used to estimate global ancestry proportions, also known as admixture proportions, which can then be included as covariates in GWAS models to adjust for ancestral heterogeneity.
 One of the challenges of using these model-based approaches to infer global ancestry is that the total number of ancestral populations usually needs to be pre-specified. 
 In addition, many of these approaches are supervised, requiring reference panel data from each ancestral population of interest to estimate allele frequencies.
 Furthermore, ancestry inference is typically conducted at a continental level (e.g., African versus European) so finer levels of population structure could be missed, although some recent efforts have considered global ancestry inference on a sub-continental scale \citep{finestructure, durand2014}.
@@ -168,7 +168,7 @@ To adjust for ancestral heterogeneity in genome-wide association studies, resear
 to include as covariates in GWAS regression models. 
 %% issues & solutions: choosing P
 Determining this number of PCs needed to capture global ancestry is non-trivial. 
-Numerous techniques have been proposed, including formal significance tests based on Tracy-Widom theory \citep{eigenstrat, patterson2006}, examining inflation factors \citep{conomos2016, reed2015} and/or the proportion of variance explained by each PC \citep{conomos2016, reed2015, raska2012}, comparing PCs to self-reported race/ethnicity \citep{conomos2016}, and keeping PCs that are significantly associated with the trait \citep{reiner2012, daya2019}.
+Numerous techniques have been proposed, including formal significance tests based on Tracy-Widom theory \citep{eigenstrat, patterson2006}, examining inflation factors \citep{conomos2016, reed2015} or the proportion of variance explained by each PC \citep{conomos2016, reed2015, raska2012}, comparing PCs to self-reported race/ethnicity \citep{conomos2016}, and keeping PCs that are significantly associated with the trait \citep{reiner2012, daya2019}.
 Typically, the number of PCs selected is on the order of one to ten \citep{abegaz2019}, but in practice it is common to see applications in which many more PCs are used---more than may be necessary to capture global ancestry. 
 Prior work has suggested that including higher-order PCs can provide the safeguard of removing ``virtually all stratification" \citep{mathieson2012} at the cost of perhaps only ``subtle" decreases in power \citep{liu2011}.
 %using the same number of PCs as had been used  to prior work in distinct study populations to justify the choice of 10 PCs \citep{liu2012, reed2015}
@@ -260,18 +260,19 @@ We used the iterative procedure suggested by Conomos et al. \cite{conomos2016rel
 The TOPMed Whole Genome Sequencing Project is an ongoing project sponsored by the National Heart, Lung, and Blood Institute.
 The goal of this project is to collect and analyze whole-genome sequences, other omics data, and extensive phenotypic information for over 100,000 individuals from diverse backgrounds. 
 Data are periodically released on dbGaP for analysis by the broader scientific community. 
-Our analysis uses data from \textit{freeze 4}, released in 2017, and \textit{freeze 5b}, released in 2018.
+Our analysis uses data from freeze 4, released in 2017, and freeze 5b, released in 2018.
 These two freezes include samples from a large number of contributing studies.
 We focus on two of these studies: the Jackson Heart Study (JHS) (accession number: phs000964) and the Genetic Epidemiology of Chronic Obstructive Pulmonary Disease Study (COPDGene) (accession number: phs000951).
-In total, the freeze 4 JHS dataset includes 3,406 African American individuals and the freeze 5b COPDGene dataset includes 8,742 African American and European American individuals.
 % sequencing
 For TOPMed freezes 4 and 5b, high coverage ($\approx$ 30X) whole genome sequencing was performed by several sequencing centers.
-Variant discovery and genotype calling was performed by the TOPMed Informatics Resources Center (IRC) using the \texttt{GotCloud} pipeline \citep{jun2015}.
-
+%Variant discovery and genotype calling was performed by the TOPMed Informatics Resources Center (IRC) using the \texttt{GotCloud} pipeline \citep{jun2015}.
 % QC
-Quality control (QC) was performed by the sequencing centers, IRC, and TOPMed Data Coordinating Center, and only those samples and variants that passed these stages of QC are included in the Variant Call Format (VCF) files downloaded from dbGaP.
+%Quality control (QC) was performed by the sequencing centers, IRC, and TOPMed Data Coordinating Center, and only those samples and variants that passed these stages of QC are included in the Variant Call Format (VCF) files downloaded from dbGaP.
 % references
 Details on TOPMed sequencing and QC methods are available in Taliun et al. \citep{taliun2021} and on the TOPMed website: \href{https://topmed.nhlbi.nih.gov/data-sets}{https://topmed.nhlbi.nih.gov/data-sets}.
+% sample sizes
+In total, the downloaded freeze 4 JHS dataset includes 2,777 African American individuals and the freeze 5b COPDGene dataset includes 8,476 African American and European American individuals consented for biomedical research.
+
 %% filters applied universally
 Prior to genetic ancestry inference, we performed two additional stages of variant- and sample-level filtering.
 % bcftools filters from Joe
@@ -281,7 +282,7 @@ To identify a subset of mutually unrelated individuals (kinship threshold = 0.04
 In addition to inferring relatedness using the procedure proposed by Conomos et al. \cite{conomos2016related}, this pipeline also includes code to perform PCA, association testing, and other tasks in whole genome sequence data: more details can be found at \href{https://github.com/UW-GAC/analysis_pipeline}{https://github.com/UW-GAC/analysis\_pipeline}.
 %which implements the Conomos et al. iterative procedure \cite{conomos2016related} on sequence data, to restrict our analyses to a subset of mutually unrelated individuals (kinship threshold = 0.044). 
 %\edit{Will this confuse people? Is saying we used the TOPMed pipeline enough? Perhaps skip?:} Note that this procedure of identifying related individuals involves an initial step of LD pruning and filtering, as recommend by the TOPMed Analysis Pipeline.
-After filtering, 2,777 and 8,476 samples and 77,136,850 and 135,522,041 variants remained in JHS and COPDGene, respectively.
+After filtering, 1,928 and 8,406 unrelated samples and 77,136,850 and 135,522,041 variants remained in JHS and COPDGene, respectively.
 
 
 \subsection{Genetic Ancestry Inference}
@@ -302,14 +303,14 @@ We proceed with using only the \texttt{RFMix}-based admixture proportion estimat
 In TOPMed JHS and COPDGene samples, we inferred global ancestry via unsupervised \texttt{ADMIXTURE} analyses with both two and three ancestral populations (i.e., $K = 2$ and $K = 3$). 
 % did not do supervised or RFMix because more time-intensive
 We also used these inferred global ancestry proportions to identify subsets of admixed individuals.
-Although JHS is known to focus on African Americans, we identified a number of individuals in the sample with an estimated European ancestry proportion of 100\%.
+Although JHS is known to focus on African Americans, we identified 40 individuals in the sample with an estimated European ancestry proportion of 100\%.
 These individuals were excluded from further analyses, leaving a total of 1,888 unrelated admixed samples. 
 The COPDGene study, by design, includes both African American and European American individuals.
 Self-identified race/ethnicity information was not available from dbGaP, so we used inferred admixture proportions to identify and restrict our attention to individuals with at least 29.5\% African ancestry.
 % although these analyses were unsupervised, we inferred which ancestral population corresonded to African ancestry based on observed ancestry proportions
 The choice of threshold follows from the results reported by Parker et al. \cite{parker2014}, showing that the self-identified African American individuals in the COPDGene study have inferred proportions of African ancestry ranging from 29.5\% and above.
 (We are not suggesting that this same threshold be universally applied to identify African American individuals in other samples.)
-After filtering, 2,676 unrelated admixed individuals remain in COPDGene. 
+After filtering, 2,676 individuals remain in COPDGene. 
 
 
 
@@ -664,7 +665,7 @@ In all three samples, we observe considerable variability in the relative propor
 \center
 %\includegraphics[width=\textwidth]{figs/barplots/barplots_greyscale}
 \includegraphics[width=\textwidth]{figs/finalfigs/fig1_barplots_greyscale}
-\caption{Barplots of estimated admixture proportions in (A) WHI SHARe, (B) TOPMed JHS, and (C) TOPMed COPDGene African Americans. Each individual is represented by a narrow vertical bar in the plot. The individuals are sorted by their estimated proportion of African ancestry.}
+\caption{Estimated admixture proportions in three samples of unrelated African American individuals. Each individual is represented by a narrow vertical bar in the plot, and the individuals are sorted by their estimated proportion of African ancestry. The admixture proportions shown here were estimated using \texttt{RFMix} in WHI SHARe (A) and an unsupervised \texttt{ADMIXTURE} analysis in TOPMed JHS (B) and COPDGene (C).}
 \label{fig:barplots}
 \end{figure}
 
@@ -731,7 +732,7 @@ Panel A presents results for principal components that were generated without an
 When we exclude the previously-identified high LD regions reported in Table \ref{tab:highLD} before running PCA (Figure \ref{fig:corr-compare}B), the pattern of \textit{which} SNPs are driving PCs 2--4 changes, but the issue of PCs capturing local genomic features has not been resolved. 
 However, after LD pruning with an $r^2$ threshold of 0.1 and a window size of 0.5 Mb (Figure \ref{fig:corr-compare}C), we now see similar patterns with PCs 2--4 as we do with the first principal component: all variants are now contributing relatively equally to each PC. 
 If we then also remove previously-identified high LD regions in addition to performing LD pruning (Figure \ref{fig:corr-compare}D), the patterns of correlation between PCs and genotypes are indistinguishable from those with LD pruning alone. 
-Similar patterns are observed in JHS and COPDGene (data not shown).
+\edit{Similar patterns are observed in JHS and COPDGene (data not shown). --- may want to change this if I add point about LD pruning not always working to Discussion.}
 
 Note that the thresholds for LD pruning that we use here ($r^2 < 0.1$) are stricter than the default for many software programs and the threshold used in many studies of European populations ($r^2 < 0.2$).
 If we use the larger $r^2$ threshold, we see improvement for the second and third principal components, but the fourth continues to capture local genomic features (Supplemental Figure \ref{fig:corr-compare-prune}). 
@@ -835,7 +836,7 @@ Note that the causal variant, on chromosome 4, and the spurious signal, on chrom
 \begin{figure}
 %\includegraphics[width=\textwidth]{figs/manhattan/WHI_manh_gwas_70}
 \includegraphics[width=\textwidth]{figs/finalfigs/fig4_WHI_manh_gwas_70}
-\caption{Manhattan plots from genome-wide association studies in WHI SHARe African Americans using different approaches to adjust for ancestral heterogeneity. In this example, the simulated trait depends only on the genotype at a single variant on chromosome 4. Panels present results using different adjustment approaches: (A) no adjustment; (B) one PC, with PCs calculated using all variants; (C) four PCs, with PCs calculated using all variants; (D) estimated admixture proportions; (E) one PC, with PCs calculated after LD pruning ($r^2 < 0.1$, window size = 0.5 Mb) and Table \ref{tab:highLD} exclusions; and (F) four PCs, with PCs calculated after LD pruning and exclusions. The horizontal dashed line in all panels represents the genome-wide significance threshold of $5 \times 10^{-8}$.}
+\caption{Manhattan plots from genome-wide association studies in WHI SHARe African Americans using different approaches to adjust for ancestral heterogeneity. In this example, the simulated trait depends only on the genotype at a single variant on chromosome 4. Panels present results using different adjustment approaches: (A) no adjustment; (B) one PC, with PCs calculated using all variants; (C) four PCs, with PCs calculated using all variants; (D) estimated admixture proportions; (E) one PC, with PCs calculated after LD pruning ($r^2 < 0.1$, window size = 0.5 Mb) and Table \ref{tab:highLD} exclusions; and (F) four PCs, with PCs calculated after LD pruning and exclusions. The horizontal dashed line in all panels represents the genome-wide significance threshold of $5 \times 10^{-8}$. \edit{ADD SHORT TITLES TO FIGURE ITSELF}}
 \label{fig:manh}
 \end{figure}
 
@@ -844,7 +845,7 @@ In Figure \ref{fig:spurious}, we see that adjusting for PCs that capture local g
 Comparing models that make some sort of adjustment for ancestral heterogeneity, we observe the most spurious associations when GWAS models adjust for four principal components without any prior LD-based pruning or exclusions (represented by the orange solid line with circles in Figure \ref{fig:spurious}).
 Excluding the high LD regions from Table \ref{tab:highLD} prior to running PCA (the orange solid line with triangles) reduces the number of observed spurious associations slightly, but not to the levels of the other approaches.
 Given what we saw in Figure \ref{fig:corr-compare}, this is not surprising: even with these exclusions, PCs 2--4 still capture local genomic features---unless those exclusions are also combined with strict LD pruning.
-On the other hand, when models include PCs that do not capture local genomic features, the rate of spurious associations drops. 
+On the other hand, when models only include PCs that do not capture local genomic features, the rate of spurious associations drops. 
 This includes models that adjust for just the first PC (the green lines in Figure \ref{fig:spurious}) and models that include four PCs, but only after strict LD pruning (the orange dashed lines).
 Models that adjust for estimated admixture proportions (the purple solid line) perform nearly identically to models that adjust for the first PC.
 This, again, is not surprising, given the high correlation between admixture proportions and the first PC observed in this sample (Supplemental Figures \ref{fig:pcsvsglob} and \ref{fig:prunedpcsvsglob}).
@@ -853,7 +854,7 @@ This, again, is not surprising, given the high correlation between admixture pro
 \begin{figure}
 %\includegraphics[width=\textwidth]{figs/spurious_counts/gwas/spurious_allbeta}
 \includegraphics[width=\textwidth]{figs/finalfigs/fig5_spurious_allbeta}
-\caption{Comparison of the number of spurious associations in genome-wide association studies in WHI SHARe African Americans using different approaches to adjust for ancestral heterogeneity. Panel (A) displays the average number of spurious associations that were observed across all simulation settings. Remaining panels focus on the subset of simulation settings in which the causal variant has (B) a small difference in ancestral allele frequencies, (C) low SNP loadings for each of the first four PCs, (D) a high SNP loading for at least one of the first four PCs, or (D) the highest SNP loading on its chromosome for one of the first four PCs. Within each panel, we compare the number of spurious associations when GWAS models adjust for estimated admixture proportions, 1 PC (with or without LD pruning and/or Table \ref{tab:highLD} exclusions), or 4 PCs (with or without LD pruning and/or Table \ref{tab:highLD} exclusions). Results shown here are for simulated traits with a single causal variant, with effect size ($\beta$) ranging from 0 to 8.}
+\caption{Comparison of the number of spurious associations in genome-wide association studies in WHI SHARe African Americans using different approaches to adjust for ancestral heterogeneity. Panel (A) displays the average number of spurious associations that were observed across all simulation settings. Remaining panels focus on the subset of simulation settings in which the causal variant has (B) a small difference in ancestral allele frequencies, (C) low SNP loadings for each of the first four PCs, (D) a high SNP loading for at least one of the first four PCs, or (D) the highest SNP loading on its chromosome for one of the first four PCs. Within each panel, we compare the number of spurious associations when GWAS models adjust for estimated admixture proportions, 1 PC (with or without LD pruning and/or Table \ref{tab:highLD} exclusions), or 4 PCs (with or without LD pruning and/or Table \ref{tab:highLD} exclusions). Results shown here are for simulated traits with a single causal variant, with effect size ($\beta$) ranging from 0 to 8. \edit{LEGEND COULD REMOVE WINDOW=0.5Mb}}
 \label{fig:spurious}
 \end{figure}
 
@@ -976,8 +977,8 @@ See Sections \ref{sec:theory} and \ref{sec:topmedsims} of the Supplemental Infor
 %These results are particularly concerning given the wide-spread use of PCA to control for ancestral heterogeneity in GWAS.
 
 %\noindent Need to address ancestral heterogeneity in admixed populations
-We observe considerable variability in global ancestry proportions across all three of the admixed populations studied in this paper: the Women's Health Initiative SNP Health Association Resource (WHI SHARe), Trans-Omics for Precision Medicine Jackson Heart Study (TOPMed JHS), and TOPMed Genetic Epidemiology of Chronic Obstructive Pulmonary Disease Study (COPDGene) African Americans.
-It is widely understood that adjusting for this ancestral heterogeneity in genome-wide association studies is needed in order to control for potential confounding by global ancestry---and the spurious associations that can arise as a result. %but the conditions under which this confounding may arise are not fully understood.
+We observe considerable variability in global ancestry proportions across all three admixed populations studied in this paper: the Women's Health Initiative SNP Health Association Resource (WHI SHARe), Trans-Omics for Precision Medicine Jackson Heart Study (TOPMed JHS), and TOPMed Genetic Epidemiology of Chronic Obstructive Pulmonary Disease Study (COPDGene) African Americans.
+It is widely understood that adjusting for this ancestral heterogeneity in genome-wide association studies is needed in order to control for potential confounding by global ancestry and the spurious associations that can arise as a result. %but the conditions under which this confounding may arise are not fully understood.
 As we've shown above, this confounding can occur even when global ancestry does not have a direct effect on the trait itself, provided that there is a causal variant elsewhere in the genome that has different allele frequencies across the ancestral populations of interest. % (Figure \ref{fig:confoundingdags}).
 Although this fact has been recognized previously \citep{wacholder2002}, it is sometimes overlooked. 
 Our theoretical work (Equation \ref{eqn:unadjusted}) identifies the factors that impact the magnitude of the bias incurred by GWAS models that fail to adjust for global ancestry. 
@@ -1012,7 +1013,7 @@ If a PC is correlated with the genotype of multiple variants, and at least one o
 Adjusting for collider variables can induce a spurious association between variables that are otherwise unlinked \citep{elwert2014}.
 This is precisely what we see above.
 Our theoretical work (Equation \ref{eqn:collider}) shows that GWAS models adjusting for an extraneous PC will yield biased estimates of variant effect sizes, with the magnitude of that bias increasing with the effect size of the causal variant, the strength of the correlation between the PC and the variants it captures, and the amount of ancestral heterogeneity within the population.
-When that bias is large enough, it can lead to a spurious associations---as our simulations show.
+When that bias is large enough, it can lead to a spurious association---as our simulations show.
 Given the similarities in terms of which regions of the genome tend to be correlated with PCs across different admixed populations (see Figures \ref{fig:corr-TOPMed} and \ref{fig:corr-compare}, for example), it is possible that these spurious associations may even replicate across studies.  
 %\edit{\begin{itemize}
 %\item adjusting for these PCs can lead to spurious associations
@@ -1122,11 +1123,19 @@ Supplemental Information includes 13 figures, as well as proofs and simulations 
 The WHI program is funded by the National Heart, Lung, and Blood Institute, National Institutes of Health, U.S. Department of Health and Human Services through contracts HHSN268201600018C, HHSN268201600001C, HHSN268201600002C, HHSN268201600003C, and HHSN268201600004C. The authors thank the WHI investigators and staff for their dedication, and the study participants for making the program
 possible. A listing of WHI investigators can be found at \href{https://www.whi.org/doc/WHIInvestigator-Long-List.pdf}{https://www.whi.org/doc/WHIInvestigator-Long-List.pdf}.
 
-% NSF GRFP
-\noindent K.E.G. was supported in part by the National Science Foundation Graduate Research Fellowship Program under grant no. DGE-1256082. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
-
 % TOPMed
-\noindent \edit{Sharon will add TOPMed acknowledgements and grant information. If there is anything else you would like me to add, please let me know.}
+Molecular data for the Trans-Omics in Precision Medicine (TOPMed) program was supported by the National Heart, Lung, and Blood Institute (NHLBI). 
+Core support including centralized genomic-read mapping and genotype calling along with variant quality metrics and filtering were provided by the TOPMed Informatics Research Center (3R01HL-117626-02S1; contract HHSN268201800002I). 
+Core support including phenotype harmonization, data management, sample identity QC, and general program coordination were provided by the TOPMed Data Coordinating Center (R01HL-120393; U01HL-120393; contract HHSN268201800001I). 
+We gratefully acknowledge the studies and participants who provided biological samples and data for TOPMed. 
+The Jackson Heart Study is supported and conducted in collaboration with Jackson State University (HHSN268201300049C and HHSN268201300050C), Tougaloo College (HHSN268201300048C), and the University of Mississippi Medical Center (HHSN268201300046C and HHSN268201300047C) contracts from NHLBI and the National Institute for Minority Health and Health Disparities (NIMHD); genome sequencing was funded by HHSN268201100037C. 
+The COPDGene study was supported by NIH grants U01 HL089856 and U01 HL089897. The COPDGene project is also supported by the COPD Foundation through contributions made by an Industry Advisory Board comprised of Pfizer, AstraZeneca, Boehringer Ingelheim, Novartis, and Sunovion.
+
+% grants
+K.E.G. was supported in part by the National Science Foundation Graduate Research Fellowship Program under grant no. DGE-1256082. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
+S.R.B. and B.L.B. were supported by the National Human Genome Research Institute of the National Institutes of Health under award number HG010869. The content is solely the responsibility of the authors and does not necessarily represent the official views of the National Institutes of Health.
+
+\noindent \edit{If there is anything else you would like me to add, please let me know.}
 
 
 
