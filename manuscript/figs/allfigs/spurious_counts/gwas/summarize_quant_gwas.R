@@ -5,7 +5,7 @@ library(RColorBrewer)
 library(gridExtra)
 library(cowplot)
 #setwd('P:/Documents/Research/Dissertation/Admixture Mapping/Simulation Results/Spurious Associations/gwas/')
-setwd("/Users/kgrinde/Documents/GitHub/PCA/manuscript/figs/spurious_counts/gwas")
+setwd("/Users/kgrinde/Documents/GitHub/PCA/manuscript/figs/allfigs/spurious_counts/gwas")
 
 #### updates for manuscript ####
 ## focus on: 
@@ -31,7 +31,7 @@ make_plot <- function(type){
   amap <- read.csv(fname)
   amap <- amap %>%
     mutate(`LD-based exclusions` = recode(exclusions, none = 'None', lit = 'Regions with high/extended LD'),
-           `LD pruning` = recode(pruning, none = 'None', `0.1` = 'r^2 < 0.1, window = 0.5 Mb'),
+           `LD pruning` = recode(pruning, none = 'None', `0.1` = 'r^2 < 0.1'),
            `Adjustment technique` = recode(pcs, pi = 'Model-based admixture prop.', `1` = '1 PC', `4` = '4 PCs', none = 'None'))
   
   amap$covariates <- with(amap,paste(pcs,exclusions,pruning,sep='_'))

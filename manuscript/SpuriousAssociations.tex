@@ -684,9 +684,18 @@ In all three samples, we observe considerable variability in the relative propor
 
 In an African American population, we might expect that only one principal component is needed to capture ancestral heterogeneity, at least with respect to differences in the relative proportion of African and European continental ancestry. 
 Comparing estimated admixture proportions to principal components in WHI SHARe, JHS, and COPDGene confirms this hypothesis. 
-In all three samples of African Americans, the first principal component is highly correlated with the inferred proportion of African ancestry (Pearson correlation $> \edit{???}$), while later PCs show very little correlation with genome-wide continental ancestry (Pearson correlation $< \edit{???}$).  %(see Supplemental Figure \ref{fig:pcsvsglob}).
+In all three samples of African Americans, the first principal component is highly correlated with the inferred proportion of African ancestry (Pearson correlation: 0.993--0.998), while later PCs show very little correlation with genome-wide continental ancestry (Pearson correlation: -0.015--0.034).  %(see Supplemental Figure \ref{fig:pcsvsglob}).
 We observe similar patterns of correlation between PCs and inferred admixture proportions regardless of the type of LD filtering (or lack thereof) performed prior to running PCA.
-See Supplemental Information Section \ref{sec:pcsvspi} for more discussion. 
+See Supplemental Figures \ref{fig:pcsvsglob} and \ref{fig:prunedpcsvsglob} for more detail. 
+
+% correlation
+%\begin{tabular}{l|rrrr}
+%& PC1 & PC2 & PC3 & PC4 \\
+%\hline
+%WHI & 0.998 & 0.00181 & -0.000432 & 0.00118 \\
+%JHS & 0.996 & 0.00266 & 0.0338 & 0.00782 \\
+%COPD & 0.993 & 0.00291 & 0.00409 & -0.0105 
+%\end{tabular}
 
 
 \subsection{Later PCs may capture local genomic features}
@@ -836,7 +845,7 @@ Note that the causal variant, on chromosome 4, and the spurious signal, on chrom
 \begin{figure}
 %\includegraphics[width=\textwidth]{figs/manhattan/WHI_manh_gwas_70}
 \includegraphics[width=\textwidth]{figs/finalfigs/fig4_WHI_manh_gwas_70}
-\caption{Manhattan plots from genome-wide association studies in WHI SHARe African Americans using different approaches to adjust for ancestral heterogeneity. In this example, the simulated trait depends only on the genotype at a single variant on chromosome 4. Panels present results using different adjustment approaches: (A) no adjustment; (B) one PC, with PCs calculated using all variants; (C) four PCs, with PCs calculated using all variants; (D) estimated admixture proportions; (E) one PC, with PCs calculated after LD pruning ($r^2 < 0.1$, window size = 0.5 Mb) and Table \ref{tab:highLD} exclusions; and (F) four PCs, with PCs calculated after LD pruning and exclusions. The horizontal dashed line in all panels represents the genome-wide significance threshold of $5 \times 10^{-8}$. \edit{ADD SHORT TITLES TO FIGURE ITSELF}}
+\caption{Manhattan plots from genome-wide association studies in WHI SHARe African Americans using different approaches to adjust for ancestral heterogeneity. In this example, the simulated trait depends only on the genotype at a single variant on chromosome 4. Panels present results using different adjustment approaches: (A) no adjustment; (B) one PC, with PCs calculated using all variants; (C) four PCs, with PCs calculated using all variants; (D) estimated admixture proportions; (E) one PC, with PCs calculated after LD pruning ($r^2 < 0.1$, window size = 0.5 Mb) and Table \ref{tab:highLD} exclusions; and (F) four PCs, with PCs calculated after LD pruning and exclusions. The horizontal dashed line in all panels represents the genome-wide significance threshold of $5 \times 10^{-8}$.}
 \label{fig:manh}
 \end{figure}
 
@@ -854,7 +863,7 @@ This, again, is not surprising, given the high correlation between admixture pro
 \begin{figure}
 %\includegraphics[width=\textwidth]{figs/spurious_counts/gwas/spurious_allbeta}
 \includegraphics[width=\textwidth]{figs/finalfigs/fig5_spurious_allbeta}
-\caption{Comparison of the number of spurious associations in genome-wide association studies in WHI SHARe African Americans using different approaches to adjust for ancestral heterogeneity. Panel (A) displays the average number of spurious associations that were observed across all simulation settings. Remaining panels focus on the subset of simulation settings in which the causal variant has (B) a small difference in ancestral allele frequencies, (C) low SNP loadings for each of the first four PCs, (D) a high SNP loading for at least one of the first four PCs, or (D) the highest SNP loading on its chromosome for one of the first four PCs. Within each panel, we compare the number of spurious associations when GWAS models adjust for estimated admixture proportions, 1 PC (with or without LD pruning and/or Table \ref{tab:highLD} exclusions), or 4 PCs (with or without LD pruning and/or Table \ref{tab:highLD} exclusions). Results shown here are for simulated traits with a single causal variant, with effect size ($\beta$) ranging from 0 to 8. \edit{LEGEND COULD REMOVE WINDOW=0.5Mb}}
+\caption{Comparison of the number of spurious associations in genome-wide association studies in WHI SHARe African Americans using different approaches to adjust for ancestral heterogeneity. Panel (A) displays the average number of spurious associations that were observed across all simulation settings. Remaining panels focus on the subset of simulation settings in which the causal variant has (B) a small difference in ancestral allele frequencies, (C) low SNP loadings for each of the first four PCs, (D) a high SNP loading for at least one of the first four PCs, or (D) the highest SNP loading on its chromosome for one of the first four PCs. Within each panel, we compare the number of spurious associations when GWAS models adjust for estimated admixture proportions, 1 PC (with or without LD pruning and/or Table \ref{tab:highLD} exclusions), or 4 PCs (with or without LD pruning and/or Table \ref{tab:highLD} exclusions). Results shown here are for simulated traits with a single causal variant, with effect size ($\beta$) ranging from 0 to 8.}
 \label{fig:spurious}
 \end{figure}
 
