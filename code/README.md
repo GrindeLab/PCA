@@ -166,23 +166,74 @@ You will need to update:
 
 See the [`ADMIXTURE` documentation](https://dalexander.github.io/admixture/) for more options.
 
-
-### Optional: filtering
-
-Based on the estimated admixture proportions procued by Step 4d (using K = 2), we next created a vector containing the IDs of individuals we hypothesized to be African American.
+Based on the estimated admixture proportions produced by this step (using K = 2), we next created a vector containing the IDs of individuals we hypothesized to be African American.
 We saved this vector as `admixture_proportions/AA_admixture_unsup_K2.RData` so that we could restrict later analyses to this subset only.
 This step may not be necessary for your own dataset.
  
 
 ## Run PCA
 
-To conclude, we again used the TOPMed Analysis Pipeline to run PCA (with and without LD pruning and filtering) and check SNP loadings. 
-This step consisted of the following:
+At last we are ready to run PCA.
+We again used the TOPMed Analysis Pipeline, which also provides scripts to perform LD pruning and check SNP loadings.
 
-- create `.config` files for TOPMed Analysis Pipeline: `step5a_create_config.sh`
-- run PCA (and LD pruning and filtering) using SNPRelate: `step5b_snprelate.sh`
-- calculate SNP loadings for each set of PCs: `step5c_snp_loadings.sh`
-- plot SNP loadings: `step5d_plot_snp_loadings.sh`
+### `step5a_create_config.sh`
 
+First, we create `.config` files for LD pruning, calculating SNP loadings, and plotting SNP loadings.
+
+#### `create_config.R`
+
+The `create_config.R` script creates configuration files for LD pruning. 
+We considered different combinations of four criteria:
+
+- `excl`: `TRUE` (excluding high LD regions identified in the literature) or `FALSE` (no exclusions)
+- `r2`: `1` (no LD pruning), `0.2` ($r^2$ threshold of 0.2), `0.1` ($r^2$ threshold of 0.1, `0.05` ($r^2$ threshold of 0.05)
+- `win`: `0` (no LD pruning), `0.5` (window size of 0.5 Mb), `10` (window size of 10 Mb)
+- `maf`: `0` (no filtering based on minor allele frequency), `0.01` (keep only variants with a MAF > 0.01)
+
+Lines 3--14 set up a function that will create configuration files for different choices of filtering/pruning criteria. 
+You will need to update this function to change:
+
+- the input GDS (line 5)
+- the genome bulid (line 6)
+- the list of samples to include, such as only those admixed individuals identified in Step 4d (line 7)
+
+Lines 17--35 then create configuration files using different combinations of filtering and pruning criteria.
+You may update this to implement only the pre-processing you feel is appropriate for your dataset.
+
+
+#### `create_config_loadings.R` and `create_config_plot_loadings.R`
+
+These scripts create configuration files to calculate (`create_config_loadings.R`) and plot (`create_config_plot_loadings.R`) SNP loadings for sets of PCs after different combinations of filtering and pruning.
+Update lines 13--31 depending on the pre-processing choices you made in `create_config.R`.
+
+
+### `step5b_snprelate.sh`
+
+Next, we use the `SNPRelate` package to run LD pruning, filtering, and principal component analysis.
+
+You will need to update the cluster file (line 19) and then run this script on each of the PCA configuration files you created in Step 5a.
+
+
+### `step5c_snp_loadings.sh`
+
+After PCs have been calculated, we assess the contribution of each variant to each PC by examining SNP loadings.
+
+You will need to update:
+
+- the location of the R library (`-v R_LIBS=`)
+- the name of the queue (`-q`)
+
+Then, run this script on each of the SNP Loadings configuration files you created in Step 5a.
+
+
+### `step5d_plot_snp_loadings.sh`
+
+Finally, we plot these SNP loadings to investigate whether any PCs are capturing local genomic features rather than genome-wide ancestry.
+
+Like Step 5c, you will need to update the location of the R library (`-v R_LIBS=`) and the name of the queue (`-q`), then run the script on the loading plot config files you created in Step 5a.
+
+Carefully examine these plots to see if any of the PCs you are planning to include in GWAS models are highly correlated with SNPs on multiple chromosomes. 
+If so, you may be at risk of inducing spurious associations due to collider bias. 
+Consider using fewer PCs, an alternative measure of global ancestry (e.g., `ADMIXTURE` proportions), or re-run PCA with stricter LD pruning (smaller $r^2$ threshold and/or larger window size) and re-examine the resulting SNP loading plots.
 
 
