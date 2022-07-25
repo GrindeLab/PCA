@@ -1,7 +1,7 @@
 # Code Example
 
-Here we provide an overview of the steps taken to run PCA in whole genome sequence data, using our analysis of TOPMed COPDGene data as an example.
-This code leans heavily on the University of Washington Genetic Analysis Center's TOPMed Analysis Pipeline: https://github.com/UW-GAC/analysis_pipeline.
+Here we provide an overview of the steps taken to run PCA in whole genome sequence data, using our analysis of TOPMed COPDGene data ([dbGaP accession: phs000951](https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=phs000951.v5.p5)) as an example.
+Our code leans heavily on the University of Washington Genetic Analysis Center's TOPMed Analysis Pipeline: https://github.com/UW-GAC/analysis_pipeline.
 
 The analysis can be broken into five steps:
 
@@ -16,15 +16,28 @@ The analysis can be broken into five steps:
 Before you begin, you will need to download/install the following:
 
 - the TOPMed Analysis Pipeline (and its associated R packages and software) --- see https://github.com/UW-GAC/analysis_pipeline
-- ADMIXTURE (if you want to estimate admixture proportions as well as running PCA; otherwise skip this) --- https://dalexander.github.io/admixture/ 
+- ADMIXTURE (if you want to estimate admixture proportions as well as running PCA; otherwise skip this) --- see https://dalexander.github.io/admixture/ 
 
 You may also need to install or update various R packages (e.g., gdsfmt, SNPRelate, SeqArray, argparser, SeqVarTools, dplyr, tidyr, ggplot2, RColorBrewer) although much of this should be taken care of by running the `install_packages.R` script provided in the TOPMed Analysis Pipeline. 
 
 ## Filter
 
-First, we used `bcftools` to restrict our analyses to biallelic single nucleotide variants: 
+First, we used `bcftools` to filter the original VCF files (one per chromosome): see `step1_filter.sh`
 
-- `step1_filter.sh`
+Our filters keep variants that:
+
+- are biallelic SNPs (`-m2 -M2 -v snps`)
+- pass filtering (`-f PASS`)
+- have a minor allele count of at least 1 (`-c 1:minor`)
+
+If running this step on your own dataset, the `filters.sh` script can/should be modified to:
+
+- update the name of the VCF files (see `invcf` on line 5)
+- update the name of the output VCF (see `outvcf` on line 6) 
+- add/remove filters
+
+Note that `bcftools` will need to be installed prior to running this step. 
+If you installed all of the software associated with the TOPMed Analysis Pipeline, you should have done this already.
 
 
 ## Convert VCF to GDS
