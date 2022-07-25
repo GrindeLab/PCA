@@ -46,7 +46,7 @@ If running this step on your own dataset, you can/should:
 
 - update the location of the TOPMed Analaysis Pipeline directory (see `pipeline` on line 2)
 - update the VCF to GDS configuration file (see `config/vcf2gds.config`) with the desired output prefix, input VCF file name, and output GDS file name 
-- create your own cluster file (e.g., `cluster_bstudents_cfg.json`) and then update the `--cluster_file` option in the shell script accordingly
+- create your own cluster file (e.g., `cluster_bstudents_cfg.json`) and then update the `--cluster_file` option in the shell script (line 5) accordingly
 
 See the TOPMed Analysis Pipeline documentation ([Basic outline](https://github.com/UW-GAC/analysis_pipeline#basic-outline) and [Conversion to GDS](https://github.com/UW-GAC/analysis_pipeline#conversion-to-gds)) for more details. 
 
@@ -55,11 +55,18 @@ See the TOPMed Analysis Pipeline documentation ([Basic outline](https://github.c
 
 Next, we used two rounds of the iterative procedure proposed by [Conomos et al.](https://www.sciencedirect.com/science/article/pii/S0002929715004930) to identify a subset of mutually unrelated individuals.
 This procedure is implemented by the TOPMed Analysis Pipeline and is split into multiple sub-steps.
+See the [Relatedness and Population structure](https://github.com/UW-GAC/analysis_pipeline#relatedness-and-population-structure) section of the TOPMed Analaysis Pipeline documentation for more details.
 
 
 ### `step3a_king.sh`
 
 Run `KING` to get initial kinship estimates.
+
+When running this step on your own dataset, you can/should update:
+
+- the location of the TOPMed Analaysis Pipeline directory (see `pipeline` on line 2)
+- the configuration file (`config/king.config`)
+- the name of the `--cluster file` (line 5)
 
 *Note that `KING` will need to be installed prior to running this step.
 If you installed all of the software associated with the TOPMed Analysis Pipeline, you should have done this already.*
@@ -67,18 +74,39 @@ If you installed all of the software associated with the TOPMed Analysis Pipelin
 
 ### `step3b_pcair_1.sh`
 
-- run PC-AiR to find unrelated samples: `step3b_pcair_1.sh`
+Run `PC-AiR` to find unrelated samples.
+
+As above, you will need to update:
+
+- the location of the pipeline (line 2)
+- the configuration file (`config/pcair_round1.config`)
+- the cluster file (line 5)
+
 
 ### `step3c_pcrelate_1.sh`
 
-- run PCRelate to update kinship estimates: `step3c_pcrelate_1.sh`
+Run `PCRelate` to update kinship estimates.
+
+Remember to update:
+
+- the location of the pipeline (line 2)
+- the configuration file (`config/pcrelate_round1.config`)
+- the cluster file (line 5)
 
 ### `step3d_pcair_2.sh`
 
-- run PC-AiR again to find unrelated samples: `step3d_pcair_2.sh`
+Run `PC-AiR` again to update list of unrelated samples.
+
+Remember to update:
+
+- the location of the pipeline (line 2)
+- the configuration file (`config/pcair_round2.config`)
+- the cluster file (line 5)
+
+### Etc.
 
 You could continue this process, iterating between PC-AiR and PCRelate, but we stopped after just two rounds.
-See Conomos et al. for recommendations.
+See [Conomos et al.](https://www.sciencedirect.com/science/article/pii/S0002929715004930) for recommendations.
 
 
 ## Optional: Run ADMIXTURE
