@@ -5,24 +5,37 @@ Our code leans heavily on the University of Washington Genetic Analysis Center's
 
 The analysis can be broken into five steps:
 
-1. Filter
+1. Filter variants
 2. Convert VCF to GDS
 3. Find unrelated samples
 4. Optional: run ADMIXTURE 
-5. Run PCA
+5. Run PCA (after LD pruning) and inspect SNP loadings
 
 ## Setup
 
-Before you begin, you will need to download/install the following:
+### TOPMed Analysis Pipeline
 
-- the TOPMed Analysis Pipeline, including all associated R packages and software --- see https://github.com/UW-GAC/analysis_pipeline
-- ADMIXTURE (if you want to estimate admixture proportions as well as running PCA; otherwise skip this) --- see https://dalexander.github.io/admixture/ 
+Before you begin, you will need to download/install the TOPMed Analysis Pipeline, including all associated R packages and software --- see https://github.com/UW-GAC/analysis_pipeline
+
+The code in our `analysis-pipeline-master` directory is taken directly from Version 2.2.0 of this pipeline, with the exception of two files that we created (`cluster_bstudents_cfg.json` and `ld_pruning_myregions.R`). 
+A newer version of the pipeline may now be available.
+In general, we recommend using the latest version --- just note that updates may be needed to the process outlined below depending on what changes have been made to the analysis pipeline.
+
+
+### `ADMIXTURE`
+
+If you want to estimate admixture proportions in addition to running PCA, you should download a program such as [`ADMIXTURE`](https://dalexander.github.io/admixture/) or [`RFMix`](https://github.com/slowkoni/rfmix). 
+We used an unsupervised `ADMIXTURE` analysis in our analysis of TOPMed COPDGene samples.
+
+
+### R Pacakges
 
 You may also need to install or update various R packages (e.g., gdsfmt, SNPRelate, SeqArray, argparser, SeqVarTools, dplyr, tidyr, ggplot2, RColorBrewer) although much of this should be taken care of by running the `install_packages.R` script provided in the TOPMed Analysis Pipeline. 
 
+
 ## Filter: `step1_filter.sh`
 
-First, we used `bcftools` to filter the original VCF files (one per chromosome) to keep variants that:
+First, we use `bcftools` to filter the original VCF files (one per chromosome) to keep variants that:
 
 - are biallelic SNPs (`-m2 -M2 -v snps`)
 - pass filtering (`-f PASS`)
@@ -32,7 +45,7 @@ If running this step on your own dataset, the `filters.sh` script can/should be 
 
 - update the name of the VCF files (see `invcf` on line 5)
 - update the name of the output VCF (see `outvcf` on line 6) 
-- add/remove filters (see the `bcftools` documentation)
+- add or remove filters (see the `bcftools` documentation)
 
 *Note that `bcftools` will need to be installed prior to running this step. 
 If you installed all of the software associated with the TOPMed Analysis Pipeline, you should have done this already.*
@@ -40,7 +53,7 @@ If you installed all of the software associated with the TOPMed Analysis Pipelin
 
 ## Convert VCF to GDS: `step2_vcf2gds.sh`
 
-We then converted the filtered VCF file produced by Step 1 to GDS format, which is required by the TOPMed Analysis Pipeline.
+We then convert the filtered VCF file produced by Step 1 to GDS format, which is required by the TOPMed Analysis Pipeline.
 
 If running this step on your own dataset, you can/should:
 
@@ -53,7 +66,7 @@ See the TOPMed Analysis Pipeline documentation ([Basic outline](https://github.c
 
 ## Find Unrelated Samples
 
-Next, we used two rounds of the iterative procedure proposed by [Conomos et al.](https://www.sciencedirect.com/science/article/pii/S0002929715004930) to identify a subset of mutually unrelated individuals.
+Next, we use the iterative procedure proposed by [Conomos et al.](https://www.sciencedirect.com/science/article/pii/S0002929715004930) to identify a subset of mutually unrelated individuals.
 This procedure is implemented by the TOPMed Analysis Pipeline and is split into multiple sub-steps.
 See the [Relatedness and Population structure](https://github.com/UW-GAC/analysis_pipeline#relatedness-and-population-structure) section of the TOPMed Analaysis Pipeline documentation for more details.
 
@@ -105,7 +118,7 @@ Remember to update:
 
 ### Etc.
 
-You could continue this process, iterating between PC-AiR and PCRelate, but we stopped after just two rounds.
+You could continue this process, iterating between PC-AiR and PCRelate, but two rounds is often sufficient.
 See [Conomos et al.](https://www.sciencedirect.com/science/article/pii/S0002929715004930) for recommendations.
 
 
@@ -173,14 +186,13 @@ This step may not be necessary for your own dataset.
 
 ## Run PCA
 
-At last we are ready to run PCA.
-We again used the TOPMed Analysis Pipeline, which also provides scripts to perform LD pruning and check SNP loadings.
+At last, we are ready to run PCA.
+We again use the TOPMed Analysis Pipeline, which additionally provides scripts to perform LD pruning and check SNP loadings.
+
 
 ### `step5a_create_config.sh`
 
 First, we create `.config` files for LD pruning, calculating SNP loadings, and plotting SNP loadings.
-
-#### `create_config.R`
 
 The `create_config.R` script creates configuration files for LD pruning. 
 We considered different combinations of four criteria:
@@ -201,15 +213,13 @@ Lines 17--35 then create configuration files using different combinations of fil
 You may update this to implement only the pre-processing you feel is appropriate for your dataset.
 
 
-#### `create_config_loadings.R` and `create_config_plot_loadings.R`
-
-These scripts create configuration files to calculate (`create_config_loadings.R`) and plot (`create_config_plot_loadings.R`) SNP loadings for sets of PCs after different combinations of filtering and pruning.
+Two other scripts create configuration files to calculate (`create_config_loadings.R`) and plot (`create_config_plot_loadings.R`) SNP loadings for sets of PCs after different combinations of filtering and pruning.
 Update lines 13--31 depending on the pre-processing choices you made in `create_config.R`.
 
 
 ### `step5b_snprelate.sh`
 
-Next, we use the `SNPRelate` package to run LD pruning, filtering, and principal component analysis.
+Next, we use the `SNPRelate` package to implement pre-processing (LD pruning and filtering) and then run principal component analysis.
 
 You will need to update the cluster file (line 19) and then run this script on each of the PCA configuration files you created in Step 5a.
 
