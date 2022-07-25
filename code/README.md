@@ -15,16 +15,14 @@ The analysis can be broken into five steps:
 
 Before you begin, you will need to download/install the following:
 
-- the TOPMed Analysis Pipeline (and its associated R packages and software) --- see https://github.com/UW-GAC/analysis_pipeline
+- the TOPMed Analysis Pipeline, including all associated R packages and software --- see https://github.com/UW-GAC/analysis_pipeline
 - ADMIXTURE (if you want to estimate admixture proportions as well as running PCA; otherwise skip this) --- see https://dalexander.github.io/admixture/ 
 
 You may also need to install or update various R packages (e.g., gdsfmt, SNPRelate, SeqArray, argparser, SeqVarTools, dplyr, tidyr, ggplot2, RColorBrewer) although much of this should be taken care of by running the `install_packages.R` script provided in the TOPMed Analysis Pipeline. 
 
-## Filter
+## `step1_filter.sh`
 
-First, we used `bcftools` to filter the original VCF files (one per chromosome): see `step1_filter.sh`
-
-Our filters keep variants that:
+First, we used `bcftools` to filter the original VCF files (one per chromosome) to keep variants that:
 
 - are biallelic SNPs (`-m2 -M2 -v snps`)
 - pass filtering (`-f PASS`)
@@ -34,10 +32,10 @@ If running this step on your own dataset, the `filters.sh` script can/should be 
 
 - update the name of the VCF files (see `invcf` on line 5)
 - update the name of the output VCF (see `outvcf` on line 6) 
-- add/remove filters
+- add/remove filters (see the `bcftools` documentation)
 
-Note that `bcftools` will need to be installed prior to running this step. 
-If you installed all of the software associated with the TOPMed Analysis Pipeline, you should have done this already.
+*Note that `bcftools` will need to be installed prior to running this step. 
+If you installed all of the software associated with the TOPMed Analysis Pipeline, you should have done this already.*
 
 
 ## Convert VCF to GDS
