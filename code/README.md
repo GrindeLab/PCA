@@ -112,16 +112,66 @@ See [Conomos et al.](https://www.sciencedirect.com/science/article/pii/S00029297
 ## Optional: Run ADMIXTURE
 
 The COPDGene study includes both African Americans and European Americans, but self-identified race/ethnicity information was not provided with our dbGaP download.
-To identify and restrict our analyses to African American samples only, we performed an unsupervised ADMIXTURE analysis.
-This step could be skipped depending on the dataset you are working with, so we provide just a brief overview of the steps here:
+To identify and restrict our analyses to African American samples only, we performed an unsupervised `ADMIXTURE` analysis.
+Even if you are not interested in filtering individuals, you may also want to run `ADMIXTURE` so you can compare estimated global ancestry proportions to PCs.
+Since this step is optional, we provide just a brief overview here.
+See the `ADMIXTURE` documentation for more details.
 
-- run LD pruning on each chromosome: `step4a_ld_pruning.sh`
-- combine list of LD-pruned variants into a single file: `step4b_combine_variants.sh`
-- convert to PLINK format: `step4c_gds2bed.sh`
-- run ADMIXTURE: `step4d_admixture.sh`
+### `step4a_ld_pruning.sh`
 
-Based on these estimated admixture proportions (using K = 2), we created a vector containing the IDs of individuals we hypothesized to be African American.
+Run LD pruning on each chromosome.
+
+You will need to update: 
+
+- the location of the R library (`-v R_LIBS=`)
+- the name of the queue (`-q`)
+- the configuration file (`config/admixture_ld_pruning.config`)
+
+Note that this step uses a customized version of the TOPMed Analysis Pipeline's LD pruning code so that we can filter additional high LD regions identified in an extensive literature review. 
+See our `analysis_pipeline-master/R/ld_pruning_myregions.R` (and feel free to modify further if there are additional regions you would like to exclude).
+
+### `step4b_combine_variants.sh` 
+
+Step 4a creates separate lists of LD pruned variants per chromosome. 
+Next, we combine these lists into a single file.
+
+You will need to update: 
+
+- the location of the R library (`-v R_LIBS=`)
+- the name of the queue (`-q`)
+- the configuration file (`config/admixture_combine_variants.config`)
+
+### `step4c_gds2bed.sh`
+
+The `ADMIXTURE` program requires that data be stored in PLINK format (rather than GDS). 
+Our next step is to make this conversion.
+
+You will need to update:
+
+- the intput GDS (line 3)
+- the list of unrelated samples from Step 3d (line 4)
+- the list of LD-pruned variants from Step 4b (line 5)
+- the output BED file (line 6)
+- the name of the queue (`-q` on line 9)
+
+### `step4d_admixture.sh`
+
+Finally, we are ready to run `ADMIXTURE`.
+
+You will need to update:
+
+- the number of ancestral populations (line 3)
+- the input BED file from Step 4c (line 4)
+- the location of the ADMIXTURE program (line 6)
+
+See the [`ADMIXTURE` documentation](https://dalexander.github.io/admixture/) for more options.
+
+
+### Optional: filtering
+
+Based on the estimated admixture proportions procued by Step 4d (using K = 2), we next created a vector containing the IDs of individuals we hypothesized to be African American.
 We saved this vector as `admixture_proportions/AA_admixture_unsup_K2.RData` so that we could restrict later analyses to this subset only.
+This step may not be necessary for your own dataset.
  
 
 ## Run PCA
