@@ -20,7 +20,7 @@ Before you begin, you will need to download/install the following:
 
 You may also need to install or update various R packages (e.g., gdsfmt, SNPRelate, SeqArray, argparser, SeqVarTools, dplyr, tidyr, ggplot2, RColorBrewer) although much of this should be taken care of by running the `install_packages.R` script provided in the TOPMed Analysis Pipeline. 
 
-## `step1_filter.sh`
+## Filter: `step1_filter.sh`
 
 First, we used `bcftools` to filter the original VCF files (one per chromosome) to keep variants that:
 
@@ -38,21 +38,43 @@ If running this step on your own dataset, the `filters.sh` script can/should be 
 If you installed all of the software associated with the TOPMed Analysis Pipeline, you should have done this already.*
 
 
-## Convert VCF to GDS
+## Convert VCF to GDS: `step2_vcf2gds.sh`
 
-We then converted the filtered VCF file produced by `bcftools` to GDS format (required by the TOPMed Analysis Pipeline): 
+We then converted the filtered VCF file produced by Step 1 to GDS format, which is required by the TOPMed Analysis Pipeline.
 
-- `step2_vcf2gds.sh`
+If running this step on your own dataset, you can/should:
+
+- update the location of the TOPMed Analaysis Pipeline directory (see `pipeline` on line 2)
+- update the VCF to GDS configuration file (see `config/vcf2gds.config`) with the desired output prefix, input VCF file name, and output GDS file name 
+- create your own cluster file (e.g., `cluster_bstudents_cfg.json`) and then update the `--cluster_file` option in the shell script accordingly
+
+See the TOPMed Analysis Pipeline documentation ([Basic outline](https://github.com/UW-GAC/analysis_pipeline#basic-outline) and [Conversion to GDS](https://github.com/UW-GAC/analysis_pipeline#conversion-to-gds)) for more details. 
+
 
 ## Find Unrelated Samples
 
 Next, we used two rounds of the iterative procedure proposed by [Conomos et al.](https://www.sciencedirect.com/science/article/pii/S0002929715004930) to identify a subset of mutually unrelated individuals.
-This procedure is implemented by the TOPMed Analysis Pipeline.
-For us, the process looked like this:
- 
-- run KING to get initial kinship estimates: `step3a_king.sh`
+This procedure is implemented by the TOPMed Analysis Pipeline and is split into multiple sub-steps.
+
+
+### `step3a_king.sh`
+
+Run `KING` to get initial kinship estimates.
+
+*Note that `KING` will need to be installed prior to running this step.
+If you installed all of the software associated with the TOPMed Analysis Pipeline, you should have done this already.*
+
+
+### `step3b_pcair_1.sh`
+
 - run PC-AiR to find unrelated samples: `step3b_pcair_1.sh`
+
+### `step3c_pcrelate_1.sh`
+
 - run PCRelate to update kinship estimates: `step3c_pcrelate_1.sh`
+
+### `step3d_pcair_2.sh`
+
 - run PC-AiR again to find unrelated samples: `step3d_pcair_2.sh`
 
 You could continue this process, iterating between PC-AiR and PCRelate, but we stopped after just two rounds.
