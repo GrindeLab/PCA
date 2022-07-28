@@ -3,8 +3,13 @@
 *.blg
 *.log
 *.synctex.gz
+*.lof
+*.lot
+*.out
+*.toc
 *.gds
 *.RData
+*.docx
 .DS_Store
 manuscript/figs/dags.pptx
 manuscript/figs/WHI/PC_geno_corr/.Rapp.history
