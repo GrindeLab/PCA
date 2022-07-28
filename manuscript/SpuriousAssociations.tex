@@ -53,7 +53,7 @@
 
 \textit{American Journal of Human Genetics}
 
-\noindent\edit{Other ideas: \textit{PLoS Genetics}, \textit{Genetic Epidemiology}}  %, \textit{Nature Genetics}
+%\noindent\edit{Other ideas: \textit{PLoS Genetics}, \textit{Genetic Epidemiology}}  %, \textit{Nature Genetics}
 
 
 
@@ -72,9 +72,9 @@ Adjusting for principal components can induce spurious
 Kelsey E. Grinde,$^{1}$* 
 Brian L. Browning,$^{2}$ 
 Alexander P. Reiner,$^{3,4}$
-Timothy A. Thornton,$^{5,6}$
+Timothy A. Thornton,$^{5,6}$ % awaiting confirmation
 Sharon R. Browning$^{6}$
-\edit{(middle authors are listed alphabetically by last name)}
+%\edit{(middle authors are listed alphabetically by last name)}
 
 \begin{enumerate}
 \item Department of Mathematics, Statistics, and Computer Science, Macalester College, Saint Paul, MN, 55105, USA 
@@ -86,7 +86,7 @@ Sharon R. Browning$^{6}$
 \item[*] kgrinde@macalester.edu
 \end{enumerate}
 
-\noindent\edit{Please confirm that your affiliations are correct!} % KG, BB, SB
+%\noindent\edit{Please confirm that your affiliations are correct!} % KG, BB, SB
 
 
 
@@ -102,17 +102,16 @@ Sharon R. Browning$^{6}$
 % brief background of question, description of results, brief summary of significance of findings
 % do not cite any references
 
-\edit{Current word count: 244 \\Maximum allowed by AJHG: 250}
+%\edit{Current word count: 246 \\Maximum allowed by AJHG: 250}
 
 \noindent Principal component analysis (PCA) is widely used to control for population structure in genome-wide association studies (GWAS). 
-The top principal components (PCs) typically reflect population structure, but deciding exactly how many PCs to include in regression models can be challenging. 
+The top principal components (PCs) typically reflect population structure, but deciding how many PCs to include in regression models can be challenging. 
 Often researchers err on the side of including more PCs than may be necessary to ensure that population structure is fully captured. 
-In this paper, we show that adjusting for extraneous PCs can induce spurious associations.
-Spurious associations can arise when PCs are correlated with multiple local genomic features, such as regions of the genome with atypical linkage disequilibrium (LD), rather than genome-wide ancestry. 
-We investigate the performance of PCA in samples of African American individuals from the Women's Health Initiative SNP Health Association Resource and two Trans-Omics for Precision Medicine Whole Genome Sequencing Project studies (the Jackson Heart Study and the Genetic Epidemiology of Chronic Obstructive Pulmonary Disease Study).
-In all three samples, problems arise unless careful pre-processing is performed prior to running PCA.
-We show that LD pruning, using stricter thresholds than is often suggested in the literature, can resolve these issues, whereas excluding high LD regions identified in previous studies does not. 
-We also demonstrate that the rate of spurious associations is controlled when we simply adjust for the first PC or estimated genome-wide ancestry proportions. 
+In this paper, we show that adjusting for extraneous PCs can induce spurious associations, particularly when models include PCs that capture multiple local genomic features (e.g., regions of the genome with atypical linkage disequilibrium (LD)) rather than genome-wide ancestry. 
+We investigate the performance of PCA in African American samples from the Women's Health Initiative SNP Health Association Resource and two Trans-Omics for Precision Medicine Whole Genome Sequencing Project studies (the Jackson Heart Study and the Genetic Epidemiology of Chronic Obstructive Pulmonary Disease Study).
+We see that PCs are highly correlated with genetic variants across multiple chromosomes, and models adjusting for these PCs yield elevated rates of spurious associations.
+LD pruning, using stricter thresholds than is often suggested in the literature, can resolve these issues, whereas excluding high LD regions identified in previous studies does not. 
+We also show that the rate of spurious associations is controlled when we simply adjust for the first PC or estimated genome-wide ancestry proportions. 
 Our work demonstrates that great care must be taken when using principal components to control for population structure in genome-wide association studies in admixed populations.
 
 
@@ -132,7 +131,7 @@ Heterogeneous global ancestry, as with other types of population structure, can 
 In fact, some authors have cited the ancestral heterogeneity of admixed populations, and the statistical challenges it poses, as one reason why these populations have been historically underrepresented in genome-wide association studies (GWAS) \citep{need2009, bustamante2011, popejoy2016, hindorff2018, manolio2019}.
 %% why do we need to adjust for it?  (confounding)
 Spurious associations can arise in GWAS in ancestrally heterogeneous populations when global ancestry confounds the association between genotypes and the phenotype of interest. % (Figure \ref{fig:confounding}). 
-This confounding occurs when the genetic variant being tested differs in frequency across ancestral populations (i.e., global ancestry is associated with genotype) and global ancestry also has an effect on the phenotype via, for example, environmental factors or causal loci elsewhere in the genome that differ in frequency across ancestral groups.
+This confounding occurs when the genetic variant being tested differs in frequency across ancestral populations (i.e., global ancestry is associated with genotype) and global ancestry also is correlated with the phenotype of interest via, for example, environmental factors or causal loci elsewhere in the genome that differ in frequency across ancestral groups.
 
 %%%% Figure 1: Confounding DAG %%%
 %\begin{figure}
@@ -182,40 +181,77 @@ A list of these previously-identified high LD regions and references that recomm
 %after first removing regions of the genome that are known to have high or long-range LD (see Table \ref{tab:highLD}) \citep{wellcome2007,  fellay2007, novembre2008, price2008, anderson2010, weale2010, raska2012, conomos2016} and/or performing LD pruning (i.e., using a program such as \texttt{PLINK} \citep{plink} to remove variants that are in high LD) \citep{wellcome2007, fellay2007, novembre2008, yu2008, nelson2008, anderson2010, weale2010, laurie2010, abdellaoui2013, zhang2013, conomos2015, reed2015, galinsky2016, conomos2016, daya2019}. 
 
 
+%\begin{table}
+%\center
+%\begin{tabular}{crrl}
+%Chr & Start (bp) & End (bp) & References \\
+%\hline
+%1   & 48000000     & 52060567   &    \citep{weale2010, price2008, anderson2010} \\
+%2   & 85941853     & 100500000   &    \citep{weale2010, price2008, anderson2010} \\
+%2   & 129600000   & 140000000   &    \citep{conomos2016, novembre2008, raska2012, weale2010, price2008,   prive2018} \\
+%2   & 182882739    & 190000000   &    \citep{weale2010, price2008, anderson2010} \\
+%3   & 47500000     & 50000000    &  \citep{weale2010, price2008, anderson2010} \\
+%3   & 83500000     & 87000000    &   \citep{weale2010, price2008, anderson2010} \\
+%3   & 89000000     &   97500000   &    \citep{weale2010, price2008} \\
+%3   & 163100000    &   164900000   &    \citep{prive2018} \\
+%5   & 44000000     &   51500000    &   \citep{fellay2007, weale2010, price2008, anderson2010} \\
+%5   & 98000000     &  100500000   &    \citep{weale2010, price2008} \\
+%5   & 129000000    &   132000000   &    \citep{weale2010, price2008, anderson2010} \\
+%5   & 135500000    &   138500000   &   \citep{weale2010, price2008} \\
+%6   &  23800000     &   39000000   &    \citep{conomos2016, fellay2007, novembre2008, raska2012, weale2010,  price2008, anderson2010, prive2018} \\
+%6   &  57000000     &   64000000   &    \citep{weale2010, price2008, anderson2010}  \\
+%6   & 140000000    &   142500000   &    \citep{weale2010, price2008, anderson2010}  \\
+%7   &  55000000     &   66193285   &    \citep{weale2010, price2008, anderson2010}  \\
+%8   &   6300000      &  13500000   &    \citep{conomos2016, fellay2007, novembre2008, raska2012, weale2010, tian2008,  price2008, anderson2010,  prive2018} \\
+%8   &  43000000    &    50000000   &    \citep{weale2010, price2008, anderson2010}  \\
+%8   & 112000000    &   115000000    &  \citep{weale2010, price2008, anderson2010} \\
+%10  &  37000000    &    43000000   &   \citep{weale2010, price2008, anderson2010}  \\
+%11   & 45000000    &    57000000   &    \citep{fellay2007, weale2010, price2008} \\
+%11   & 87500000    &    90500000   &    \citep{weale2010, price2008, anderson2010}  \\
+%12   & 33000000    &    40000000   &    \citep{weale2010, price2008, anderson2010} \\
+%12   & 109500000   &    112021663   &    \citep{weale2010, price2008} \\
+%14   & 46600000    &    47500000   &    \citep{prive2018} \\
+%17   & 37800000    &    42000000    &   \citep{conomos2016, novembre2008} \\
+%20   & 32000000   &     34500000    &   \citep{weale2010, price2008, anderson2010}  \\
+%\end{tabular}
+%\caption{Regions of the genome with high, long-range, or otherwise unusual linkage disequilibrium that are often recommended for exclusion prior to running PCA. Start and end physical (base pair) positions are provided with respect to genome build 36. This list is also available for download in builds 36, 37, and 38 at \href{github.com/kegrinde/PCA}{https://github.com/kegrinde/PCA/}.}
+%\label{tab:highLD}
+%\end{table}
+
 \begin{table}
 \center
 \begin{tabular}{crrl}
 Chr & Start (bp) & End (bp) & References \\
 \hline
-1   & 48000000     & 52060567   &    \citep{weale2010, price2008, anderson2010} \\
-2   & 85941853     & 100500000   &    \citep{weale2010, price2008, anderson2010} \\
-2   & 129600000   & 140000000   &    \citep{conomos2016, novembre2008, raska2012, weale2010, price2008,   prive2018} \\
-2   & 182882739    & 190000000   &    \citep{weale2010, price2008, anderson2010} \\
-3   & 47500000     & 50000000    &  \citep{weale2010, price2008, anderson2010} \\
-3   & 83500000     & 87000000    &   \citep{weale2010, price2008, anderson2010} \\
-3   & 89000000     &   97500000   &    \citep{weale2010, price2008} \\
-3   & 163100000    &   164900000   &    \citep{prive2018} \\
-5   & 44000000     &   51500000    &   \citep{fellay2007, weale2010, price2008, anderson2010} \\
-5   & 98000000     &  100500000   &    \citep{weale2010, price2008} \\
-5   & 129000000    &   132000000   &    \citep{weale2010, price2008, anderson2010} \\
-5   & 135500000    &   138500000   &   \citep{weale2010, price2008} \\
-6   &  23800000     &   39000000   &    \citep{conomos2016, fellay2007, novembre2008, raska2012, weale2010,  price2008, anderson2010, prive2018} \\
-6   &  57000000     &   64000000   &    \citep{weale2010, price2008, anderson2010}  \\
-6   & 140000000    &   142500000   &    \citep{weale2010, price2008, anderson2010}  \\
-7   &  55000000     &   66193285   &    \citep{weale2010, price2008, anderson2010}  \\
-8   &   6300000      &  13500000   &    \citep{conomos2016, fellay2007, novembre2008, raska2012, weale2010, tian2008,  price2008, anderson2010,  prive2018} \\
-8   &  43000000    &    50000000   &    \citep{weale2010, price2008, anderson2010}  \\
-8   & 112000000    &   115000000    &  \citep{weale2010, price2008, anderson2010} \\
-10  &  37000000    &    43000000   &   \citep{weale2010, price2008, anderson2010}  \\
-11   & 45000000    &    57000000   &    \citep{fellay2007, weale2010, price2008} \\
-11   & 87500000    &    90500000   &    \citep{weale2010, price2008, anderson2010}  \\
-12   & 33000000    &    40000000   &    \citep{weale2010, price2008, anderson2010} \\
-12   & 109500000   &    112021663   &    \citep{weale2010, price2008} \\
-14   & 46600000    &    47500000   &    \citep{prive2018} \\
-17   & 37800000    &    42000000    &   \citep{conomos2016, novembre2008} \\
-20   & 32000000   &     34500000    &   \citep{weale2010, price2008, anderson2010}  \\
+1   & 47761741     & 51822307   &    \citep{weale2010, price2008, anderson2010} \\
+%2   & 85941853     & 100500000   &    \citep{weale2010, price2008, anderson2010} \\
+2   & 129125957   & 139525961   &    \citep{conomos2016, novembre2008, raska2012, weale2010, price2008,   prive2018} \\
+2   & 182309767    & 189427029   &    \citep{weale2010, price2008, anderson2010} \\
+3   & 47483506     & 49987563    &  \citep{weale2010, price2008, anderson2010} \\
+3   & 83368159     & 86868160    &   \citep{weale2010, price2008, anderson2010} \\
+%3   & 89000000     &   97500000   &    \citep{weale2010, price2008} \\
+3   & 161899518    &   163699518   &    \citep{prive2018} \\
+%5   & 44000000     &   51500000    &   \citep{fellay2007, weale2010, price2008, anderson2010} \\
+5   & 98636396     &  101136397   &    \citep{weale2010, price2008} \\
+5   & 129636408    &   132636409   &    \citep{weale2010, price2008, anderson2010} \\
+5   & 136136412    &   139136412   &   \citep{weale2010, price2008} \\
+6   &  23691793     &   38924246   &    \citep{conomos2016, fellay2007, novembre2008, raska2012, weale2010,  price2008, anderson2010, prive2018} \\
+%6   &  57000000     &   64000000   &    \citep{weale2010, price2008, anderson2010}  \\
+6   & 139637170    &   142137170   &    \citep{weale2010, price2008, anderson2010}  \\
+%7   &  55000000     &   66193285   &    \citep{weale2010, price2008, anderson2010}  \\
+8   &   6455071      &  13598120   &    \citep{conomos2016, fellay2007, novembre2008, raska2012, weale2010, tian2008,  price2008, anderson2010,  prive2018} \\
+%8   &  43000000    &    50000000   &    \citep{weale2010, price2008, anderson2010}  \\
+8   & 110918595    &   113918595    &  \citep{weale2010, price2008, anderson2010} \\
+%10  &  37000000    &    43000000   &   \citep{weale2010, price2008, anderson2010}  \\
+%11   & 45000000    &    57000000   &    \citep{fellay2007, weale2010, price2008} \\
+11   & 88127184    &    91127184   &    \citep{weale2010, price2008, anderson2010}  \\
+%12   & 33000000    &    40000000   &    \citep{weale2010, price2008, anderson2010} \\
+12   & 110577812   &    113099475   &    \citep{weale2010, price2008} \\
+14   & 47061047    &    47961047   &    \citep{prive2018} \\
+17   & 42394456    &    46567318    &   \citep{conomos2016, novembre2008} \\
+20   & 33948533   &     36438183    &   \citep{weale2010, price2008, anderson2010}  \\
 \end{tabular}
-\caption{Regions of the genome with high, long-range, or otherwise unusual linkage disequilibrium that are often recommended for exclusion prior to running PCA. Start and end physical (base pair) positions are provided with respect to genome build 36. This list is also available for download in builds 36, 37, and 38 at \href{github.com/kegrinde/PCA}{https://github.com/kegrinde/PCA/}.}
+\caption{Regions of the genome with high, long-range, or otherwise unusual linkage disequilibrium that are often recommended for exclusion prior to running PCA. Start and end physical (base pair) positions are provided with respect to genome build 38. This list is also available for download in builds 36, 37, and 38 at \href{github.com/kegrinde/PCA}{https://github.com/kegrinde/PCA/}.}
 \label{tab:highLD}
 \end{table}
 
@@ -238,22 +274,23 @@ To conclude, we provide suggestions regarding best practices for  controlling fo
 
 \subsection{Data and Quality Control}
 
-Our analyses focus on genotype and sequence data from three samples of unrelated African American individuals.
+Our analyses focus on array-based and whole genome sequence-based genotype data from three samples of African American individuals.
 In particular, we consider genotype data from the Women's Health Initiative SNP Health Association Resource (WHI SHARe), as well as whole genome sequencing data from two contributing studies to the Trans-Omics for Precision Medicine (TOPMed) Whole Genome Sequencing Project: the Jackson Heart Study (JHS) and the Genetic Epidemiology of Chronic Obstructive Pulmonary Disease Study (COPDGene).
-We performed quality control and identified subsets of unrelated African American individuals prior to running any further analyses.
+We performed quality control and identified subsets of unrelated African American individuals prior to running any further analyses---details are provided below.
 
 \subsubsection{WHI SHARe Genotype Data}
 
-The Women's Health Initiative (WHI) is a long-term study of the health of women in the United States.
-In total, 161,808 postmenopausal women aged 50--79 years old were recruited to participate in this study.
+The Women's Health Initiative (WHI) is a long-term study of the health of post-menopausal women residing in the United States.
+In total, 161,808 women aged 50--79 years old were recruited to participate in this study.
 Additional details of the study design and cohort characteristics can be found elsewhere \cite{whi}.
-The WHI study includes 12,151 self-identified African American women who consented to genetic research, a subsample of which were selected for genotyping using the Affymetrix Genome-Wide Human SNP Array 6.0.
+The WHI SHARe study includes 12,151 self-identified African American women who consented to genetic research, a subsample of which were selected for genotyping using the Affymetrix Genome-Wide Human SNP Array 6.0.
 This array contains 906,000 single nucleotide polymorphisms (SNPs) and more than 946,000 probes for detection of copy number variants. 
-In our analyses, we focus only on the SNP data.
+In our analyses, we focus only on the SNP data. 
+We did not impute WHI genotypes beyond filling in sporadic missing genotypes---see Grinde et al. \cite{steam} for more details.
 
 The genotype data were processed for quality control.
 After filtering on call rate, concordance rates for blinded and unblinded duplicates, and sex discrepancy, there were 871,309 SNPs with a missing genotyping rate of 0.2\% and 8,421 African American women \cite{reiner2012}.
-We used the iterative procedure suggested by Conomos et al. \cite{conomos2016related} to identify a subset of 8,064 mutually unrelated individuals, using a kinship threshold of 0.044 (i.e., excluding first-, second-, and third-degree relatives).
+We also used the iterative procedure suggested by Conomos et al. \cite{conomos2016related} to identify a subset of 8,064 mutually unrelated individuals, using a kinship threshold of 0.044 (i.e., excluding first-, second-, and third-degree relatives).
 
 \subsubsection{TOPMed Whole Genome Sequence Data}
 
@@ -264,7 +301,7 @@ Our analysis uses data from freeze 4, released in 2017, and freeze 5b, released 
 These two freezes include samples from a large number of contributing studies.
 We focus on two of these studies: the Jackson Heart Study (JHS) (accession number: phs000964) and the Genetic Epidemiology of Chronic Obstructive Pulmonary Disease Study (COPDGene) (accession number: phs000951).
 % sequencing
-For TOPMed freezes 4 and 5b, high coverage ($\approx$ 30X) whole genome sequencing was performed by several sequencing centers.
+High coverage ($\approx$ 30X) whole genome sequencing was performed by the University of Washington (UW) Northwest Genomics Center for JHS (freeze 4) and by a combination of the UW Northwest Genomics Center and the Broad Institute of MIT and Harvard for freeze 5b COPDGene.
 %Variant discovery and genotype calling was performed by the TOPMed Informatics Resources Center (IRC) using the \texttt{GotCloud} pipeline \citep{jun2015}.
 % QC
 %Quality control (QC) was performed by the sequencing centers, IRC, and TOPMed Data Coordinating Center, and only those samples and variants that passed these stages of QC are included in the Variant Call Format (VCF) files downloaded from dbGaP.
@@ -278,11 +315,11 @@ Prior to genetic ancestry inference, we performed two additional stages of varia
 % bcftools filters from Joe
 We used \texttt{bcftools} \citep{bcftools} to restrict our analyses to biallelic single nucleotide variants (SNVs). 
 % relatives 
-To identify a subset of mutually unrelated individuals (kinship threshold = 0.044), we used the University of Washington Genetic Analysis Center (UW GAC) TOPMed analysis pipeline.
+To identify a subset of mutually unrelated individuals (kinship threshold = 0.044), we used the UW Genetic Analysis Center (GAC) TOPMed analysis pipeline.
 In addition to inferring relatedness using the procedure proposed by Conomos et al. \cite{conomos2016related}, this pipeline also includes code to perform PCA, association testing, and other tasks in whole genome sequence data: more details can be found at \href{https://github.com/UW-GAC/analysis_pipeline}{https://github.com/UW-GAC/analysis\_pipeline}.
 %which implements the Conomos et al. iterative procedure \cite{conomos2016related} on sequence data, to restrict our analyses to a subset of mutually unrelated individuals (kinship threshold = 0.044). 
-%\edit{Will this confuse people? Is saying we used the TOPMed pipeline enough? Perhaps skip?:} Note that this procedure of identifying related individuals involves an initial step of LD pruning and filtering, as recommend by the TOPMed Analysis Pipeline.
-After filtering, 1,928 and 8,406 unrelated samples and 77,136,850 and 135,522,041 variants remained in JHS and COPDGene, respectively.
+%(Will this confuse people? Is saying we used the TOPMed pipeline enough? Perhaps skip?:) Note that this procedure of identifying related individuals involves an initial step of LD pruning and filtering, as recommend by the TOPMed Analysis Pipeline.
+After variant filtering and removal of related individuals, 1,928 and 8,406 unrelated samples and 77,136,850 and 135,522,041 variants remained in JHS and COPDGene, respectively.
 
 
 \subsection{Genetic Ancestry Inference}
@@ -300,10 +337,10 @@ The supervised analysis used the same HapMap reference panel as was used to infe
 All three sets of admixture proportions were highly correlated (pairwise Pearson correlation $>$ 0.998). 
 We proceed with using only the \texttt{RFMix}-based admixture proportion estimates for the remainder of our analyses.
 
-In TOPMed JHS and COPDGene samples, we inferred global ancestry via unsupervised \texttt{ADMIXTURE} analyses with both two and three ancestral populations (i.e., $K = 2$ and $K = 3$). 
+In TOPMed JHS and COPDGene samples, we inferred global ancestry via unsupervised \texttt{ADMIXTURE} analyses with both two ancestral populations. 
 % did not do supervised or RFMix because more time-intensive
 We also used these inferred global ancestry proportions to identify subsets of admixed individuals.
-Although JHS is known to focus on African Americans, we identified 40 individuals in the sample with an estimated European ancestry proportion of 100\%.
+Although JHS recruited only self-identified African Americans, we did identify 40 individuals in the sample with an estimated European ancestry proportion of 100\%.
 These individuals were excluded from further analyses, leaving a total of 1,888 unrelated admixed samples. 
 The COPDGene study, by design, includes both African American and European American individuals.
 Self-identified race/ethnicity information was not available from dbGaP, so we used inferred admixture proportions to identify and restrict our attention to individuals with at least 29.5\% African ancestry.
@@ -311,18 +348,19 @@ Self-identified race/ethnicity information was not available from dbGaP, so we u
 The choice of threshold follows from the results reported by Parker et al. \cite{parker2014}, showing that the self-identified African American individuals in the COPDGene study have inferred proportions of African ancestry ranging from 29.5\% and above.
 (We are not suggesting that this same threshold be universally applied to identify African American individuals in other samples.)
 After filtering, 2,676 individuals remain in COPDGene. 
+The remainder of our TOPMed analyses included only these subsets of unrelated admixed individuals.
 
 
 
 \subsubsection{Principal Component Analysis}
 
 %% mathematical details of PCA (moved from intro)
-To infer global ancestry using PCA, we perform a singular value decomposition of the matrix of standardized genotypes (i.e., $\mathbf{X} = \mathbf{U}\mathbf{D}\mathbf{V}^T$) or, equivalently, an eigenvalue decomposition of the genetic relationship matrix (i.e., $\mathbf{X}\mathbf{X}^T = \mathbf{U}\mathbf{D}^2\mathbf{U}^T$), where $\mathbf{X}$ is the $n \times m$ matrix of standardized genotypes for $n$ individuals at $m$ single nucleotide variants.
+To infer global ancestry using PCA, we performed a singular value decomposition of the matrix of standardized genotypes (i.e., $\mathbf{X} = \mathbf{U}\mathbf{D}\mathbf{V}^T$) or, equivalently, an eigenvalue decomposition of the genetic relationship matrix (i.e., $\mathbf{X}\mathbf{X}^T = \mathbf{U}\mathbf{D}^2\mathbf{U}^T$), where $\mathbf{X}$ is the $n \times m$ matrix of standardized genotypes for $n$ individuals at $m$ single nucleotide variants.
 One or more of the top eigenvectors, or principal components, $\mathbf{u}_1, \mathbf{u}_2, \dots$, typically reflect global ancestry.
 
 %% PCA in WHI
 We ran PCA on the WHI SHARe genotype data using \texttt{SNPRelate} \citep{snprelate}. 
-First, we applied PCA to the set of all 551,025 SNPs with available genotypes.
+First, we applied PCA to the same set of 551,025 SNPs used to estimate global ancestry proportions.
 %We refer to these PCs as the \textit{naively generated PCs}.
 We then applied PCA to subsets of SNPs based on the following pre-processing criteria: excluding SNPs falling into regions of the genome that have been cited in the literature as potentially problematic for PCA (Table \ref{tab:highLD}), LD pruning, or both literature-based exclusions and LD pruning.
 To perform LD pruning, two parameters must be specified: $r^2$ threshold and window size. 
@@ -620,8 +658,8 @@ For all models, the genome-wide significance threshold was set to the $p = 5.0 \
 %At the variant level, it is common to perform filtering based on minor allele frequency \add{find references}, as prior work has shown that methods such as \texttt{EIGENSTRAT} can perform poorly when applied to rare variants \citep{kirk2016}.
 %
 %Other variant-level filters have been recommended to address the sensitivity of model-based and PCA approaches to the presence of linkage disequilibrium (LD).
-%This can include \textit{LD pruning}, using a program such as \texttt{PLINK} \add{CITE} to remove variants that are ``highly" correlated (e.g., pairwise-correlation $r^2 > 0.2$) with nearby variants (e.g., within a window of size \edit{??}) \add{\citep{admixture}, ADD MORE}, and/or excluding regions of the genome that are known to have extensive, long-ranging, or otherwise unusual patterns of LD \add{CITE}. 
-%A list of previously-identified high LD regions is provided in Appendix \edit{??}. 
+%This can include \textit{LD pruning}, using a program such as \texttt{PLINK} \add{CITE} to remove variants that are ``highly" correlated (e.g., pairwise-correlation $r^2 > 0.2$) with nearby variants (e.g., within a window of size ??) \add{\citep{admixture}, ADD MORE}, and/or excluding regions of the genome that are known to have extensive, long-ranging, or otherwise unusual patterns of LD \add{CITE}. 
+%A list of previously-identified high LD regions is provided in Appendix ??. 
 %\add{say something about how not everyone does this, it's not always clear which parameters should be used, and/or much of this work has been performed in European pop and not clear what should be done in admixed pop}
 
 
@@ -648,8 +686,8 @@ These local ancestry based admixture proportion estimates were highly correlated
 %supADM   &    0.9983740   &   0.9999973  &    1.0000000  &       0.9985835 \\
 %supPrunedADM  &   0.9970080  &    0.9985752  &    0.9985835      &   1.0000000\\
 %\end{tabular}
-In TOPMed samples, we performed unsupervised \texttt{ADMIXTURE} analyses with varying numbers of ancestral populations. 
-Figures \ref{fig:barplots}B and \ref{fig:barplots}C present results with $K = 2$.
+In TOPMed samples, we performed unsupervised \texttt{ADMIXTURE} analyses with two ancestral populations. 
+Figures \ref{fig:barplots}B and \ref{fig:barplots}C present results for unrelated African American individuals in JHS and COPDGene, respectively.
 Although these analyses were unsupervised, based on prior studies of admixture in African Americans and the distribution of admixture proportions seen in WHI SHARe, we believe that the ancestral population colored dark gray in Figure \ref{fig:barplots} corresponds to European ancestry and the population colored light gray corresponds to African ancestry.
 In all three samples, we observe considerable variability in the relative proportions of African and European ancestry across individuals, showing the need to adjust for global ancestry in genome-wide association studies in these admixed samples. 
 
@@ -669,7 +707,7 @@ In all three samples, we observe considerable variability in the relative propor
 \label{fig:barplots}
 \end{figure}
 
-%\edit{
+%\add{
 %\begin{itemize}
 %\item Add WHI SHARe Hispanic Americans? (check with Tim)
 %\item Possible supplemental figure: JHS and COPDGene with K = 3 (and/or K = 4 for COPDGene)
@@ -741,7 +779,7 @@ Panel A presents results for principal components that were generated without an
 When we exclude the previously-identified high LD regions reported in Table \ref{tab:highLD} before running PCA (Figure \ref{fig:corr-compare}B), the pattern of \textit{which} SNPs are driving PCs 2--4 changes, but the issue of PCs capturing local genomic features has not been resolved. 
 However, after LD pruning with an $r^2$ threshold of 0.1 and a window size of 0.5 Mb (Figure \ref{fig:corr-compare}C), we now see similar patterns with PCs 2--4 as we do with the first principal component: all variants are now contributing relatively equally to each PC. 
 If we then also remove previously-identified high LD regions in addition to performing LD pruning (Figure \ref{fig:corr-compare}D), the patterns of correlation between PCs and genotypes are indistinguishable from those with LD pruning alone. 
-%\edit{Similar patterns are observed in JHS and COPDGene (data not shown).}
+%Similar patterns are observed in JHS and COPDGene (data not shown).
 
 Note that the thresholds for LD pruning that we use here ($r^2 < 0.1$) are stricter than the default for many software programs and the threshold used in many studies of European populations ($r^2 < 0.2$).
 If we use the larger $r^2$ threshold, we see improvement for the second and third principal components, but the fourth continues to capture local genomic features (Supplemental Figure \ref{fig:corr-compare-prune}). 
@@ -975,11 +1013,9 @@ See Sections \ref{sec:theory} and \ref{sec:topmedsims} of the Supplemental Infor
 % explain significance of results and place them in broader context
 % may contain subheadings
 
-%\edit{(See dissertation: \href{https://digital.lib.washington.edu/researchworks/handle/1773/44730}{https://digital.lib.washington.edu/researchworks/handle/1773/44730})}
-
 % summary of major takeaways
 %In this paper, we compare widely-used approaches for adjusting for ancestral heterogeneity in genome-wide association studies in admixed populations.
-%\edit{Our work above reiterates the importance of adjusting for ancestral heterogeneity in genome-wide association studies in admixed populations and the need for careful consideration of the techniques used to make such an adjustment.
+%\add{Our work above reiterates the importance of adjusting for ancestral heterogeneity in genome-wide association studies in admixed populations and the need for careful consideration of the techniques used to make such an adjustment.
 %Through theoretical work, simulation studies, and analysis of three admixed populations (WHI SHARe, TOPMed JHS, and TOPMed COPDGene African Americans) ...
 %Highlights X important takeaways.}
 %Of particular note, we have shown that approaches based on principal component analysis (PCA) can actually \textit{induce} spurious associations unless careful pre-processing is conducted prior to running PCA. 
@@ -1024,7 +1060,7 @@ This is precisely what we see above.
 Our theoretical work (Equation \ref{eqn:collider}) shows that GWAS models adjusting for an extraneous PC will yield biased estimates of variant effect sizes, with the magnitude of that bias increasing with the effect size of the causal variant, the strength of the correlation between the PC and the variants it captures, and the amount of ancestral heterogeneity within the population.
 When that bias is large enough, it can lead to a spurious association---as our simulations show.
 Given the similarities in terms of which regions of the genome tend to be correlated with PCs across different admixed populations (see Figures \ref{fig:corr-TOPMed} and \ref{fig:corr-compare}, for example), it is possible that these spurious associations may even replicate across studies.  
-%\edit{\begin{itemize}
+%\add{\begin{itemize}
 %\item adjusting for these PCs can lead to spurious associations
 %\item this is due to a phenomenon known as collider bias
 %\item what do theory and sims tell us about when/how likely a spurious association is to occur? 
@@ -1054,7 +1090,7 @@ That said, it is important to raise the question of the magnitude of bias that c
 The smaller the effect size of the causal variant, the smaller the number of spurious associations that we observed in our simulation study (Figure \ref{fig:spurious}), and when studying complex traits/diseases we would expect the causal variant effect sizes to be fairly small.
 However, in these settings we would also expect that there are \textit{multiple} causal variants---not just a single causal variant, as we assumed for the sake of simplicity in our simulations and theoretical work---and then these effects may be aggregated \citep{di2011}. 
 In any case, it is worth considering what steps can be taken to reduce or eliminate concerns about potential collider bias altogether.
-%\edit{\begin{itemize}
+%\add{\begin{itemize}
 %\item summarize gene expression paper (dissertation ref 146)
 %\item explain why more concerning in admixed pops (connect to theory)
 %\item limitation: what's a realistic effect size, multiple causal variants
@@ -1072,7 +1108,7 @@ Given that linkage disequilibrium patterns differ between admixed populations an
 it is not surprising that different LD-based filtering techniques are required here.
 In any sample, it is important to check SNP loadings or the correlation between PCs and genotypes: even after LD pruning, if a causal variant remains associated with a PC and sample size is sufficiently large, a spurious association can arise.  
 In some situations, it may be necessary to consider even stricter LD pruning (e.g., smaller $r^2$ threshold, larger window size).
-%\edit{\begin{itemize}
+%\add{\begin{itemize}
 %\item after LD pruning, PCs no longer exhibit patterns of being driven by select few SNPs (at least for PCs 2-4)
 %\item note that we had to use smaller $r^2$ than often recommended in literature for this to be true (refer to supplemental figure) $\rightarrow$ why? LD patterns in admixed pops differ from those in EUR 
 %\item excluding previously-identified high LD regions doesn't seem to be as effective $\rightarrow$ why? LD patterns in admixed pops differ from those in EUR
@@ -1116,7 +1152,7 @@ Supplemental Information includes 13 figures, as well as proofs and simulations 
 
 %We ask that you and all authors disclose any personal financial interests (examples include stocks or shares in companies with interests related to the submitted work or consulting fees from companies that could have interests related to the work), professional affiliations, advisory positions, board memberships, or patent holdings that are related to the subject matter of the contribution. As a guideline, you need to declare an interest for (1) any affiliation associated with a payment or financial benefit exceeding \$10,000 p.a. or 5\% ownership of a company or (2) research funding by a company with related interests. You do not need to disclose diversified mutual funds, 401ks, or investment trusts. 
 %More info here: https://www.cell.com/declaration-of-interests.
-\edit{If you have anything to disclose (see \href{https://www.cell.com/declaration-of-interests}{https://www.cell.com/declaration-of-interests}), please let me know.}
+%\edit{If you have anything to disclose (see \href{https://www.cell.com/declaration-of-interests}{https://www.cell.com/declaration-of-interests}), please let me know.}
 
 \noindent The authors declare no competing interests.
 
@@ -1145,7 +1181,7 @@ The COPDGene study was supported by NIH grants U01 HL089856 and U01 HL089897. Th
 K.E.G. was supported in part by the National Science Foundation Graduate Research Fellowship Program under grant no. DGE-1256082. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
 S.R.B. and B.L.B. were supported by the National Human Genome Research Institute of the National Institutes of Health under award number HG010869. The content is solely the responsibility of the authors and does not necessarily represent the official views of the National Institutes of Health.
 
-\noindent \edit{If there is anything else you would like me to add, please let me know.}
+%\noindent \edit{If there is anything else you would like me to add, please let me know.}
 
 
 
@@ -1170,7 +1206,7 @@ All software packages used throughout this paper are freely available online:
 
 %Data: 
 %\begin{itemize}
-%\item WHI Data: \edit{TBD}
+%\item WHI Data: \add{TBD}
 %\item TOPMed Sequence Data: \href{https://www.ncbi.nlm.nih.gov/gap/}{https://www.ncbi.nlm.nih.gov/gap/}
 %\end{itemize}
 
@@ -1192,8 +1228,7 @@ All software packages used throughout this paper are freely available online:
 \item \href{https://github.com/kegrinde/PCA}{https://github.com/kegrinde/PCA}.
 \end{itemize}
 
-\noindent \edit{The GitHub repository is currently private, but I'll make it public once the paper is submitted. If anyone would like to see the repository before I submit, let me know and I'll add you as a collaborator.}
-%\noindent \edit{GitHub Repo will include: lists of regions to exclude, code for LD pruning, excluding, and plotting loadings}
+%\noindent \add{GitHub Repo will include: lists of regions to exclude, code for LD pruning, excluding, and plotting loadings}
 
 
 \newpage
@@ -1247,7 +1282,7 @@ All software packages used throughout this paper are freely available online:
 \newpage
 %\section{Figure Titles and Legends}
 %
-%\edit{for AJHG submission, will need to move all figures here}
+%\add{for AJHG submission, will need to move all figures here}
 
 % brief title describing entire figure without citing specific panels
 % subsequent description of each panel
@@ -1267,7 +1302,7 @@ All software packages used throughout this paper are freely available online:
 
 %\section{Tables}
 %
-%\edit{for AJHG submission, will need to move all tables here}
+%\add{for AJHG submission, will need to move all tables here}
 
 
 %Include tables in the submitted manuscript after the figure titles and legends. Tables should not be saved as figures, i.e., as .jpg or .tif files. All tables intended for print should be incorporated into the end of the manuscript Word file. Tables should not be uploaded individually.
