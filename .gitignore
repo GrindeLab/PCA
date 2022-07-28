@@ -10,8 +10,7 @@
 *.gds
 *.RData
 *.docx
-.DS_Store
-manuscript/figs/dags.pptx
-manuscript/figs/WHI/PC_geno_corr/.Rapp.history
+*.DS_Store
+writing/
 writing/manuscript/figs/allfigs/
 writing/manuscript/edits/
