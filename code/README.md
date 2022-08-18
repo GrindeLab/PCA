@@ -28,7 +28,7 @@ If you want to estimate admixture proportions in addition to running PCA, you sh
 We used an unsupervised `ADMIXTURE` analysis in our analysis of TOPMed COPDGene samples.
 
 
-### R Pacakges
+### R Packages
 
 You may also need to install or update various R packages (e.g., gdsfmt, SNPRelate, SeqArray, argparser, SeqVarTools, dplyr, tidyr, ggplot2, RColorBrewer) although much of this should be taken care of by running the `install_packages.R` script provided in the TOPMed Analysis Pipeline. 
 
