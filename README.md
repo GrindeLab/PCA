@@ -2,9 +2,9 @@
 
 This repository contains code and other resources associated with the manuscript:
 
-Grinde, K., Browning, B., Reiner, A., Thornton, T., Browning, S. "Adjusting for principal components can induce spurious associations in genome-wide association studies in admixed populations." *In preparation.*
+Grinde, K., Browning, B., Reiner, A., Thornton, T., Browning, S. "Adjusting for principal components can induce spurious associations in genome-wide association studies in admixed populations." In Revision at *PLOS Genetics*.
 
-If you use any of these resources, please cite our paper.
+If you use any of these resources, please cite our preprint: https://www.biorxiv.org/content/10.1101/2024.04.02.587682v1.
 
 Of particular interest may be the following directories:
 
