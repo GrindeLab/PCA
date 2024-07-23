@@ -1,0 +1,123 @@
+---
+title: "Correlation vs Loadings"
+author: "K. Grinde"
+date: "July 2023"
+format: 
+  html:
+    toc: true
+    embed-resources: true
+---
+
+# Set Up
+
+## Load Packages
+
+```{r}
+#| message: false
+library(gdsfmt) # for working with GDS files
+library(SNPRelate) # for PCA, LD pruning, etc.
+library(GENESIS) # for example data, mixed models, etc.
+library(dplyr) # for data cleaning 
+library(ggplot2) # for plotting
+library(gridExtra) # for multi-panel plot
+```
+
+## Load Example Data
+
+We'll use an example dataset from the `GENESIS` package: 
+
+```{r}
+# open example file
+gdsfile <- system.file("extdata", "HapMap_ASW_MXL_geno.gds", package="GENESIS")
+gds <- snpgdsOpen(gdsfile)
+gds
+```
+
+```{r}
+# check which chromosomes are represented
+table(read.gdsn(index.gdsn(gds,'snp.chromosome')))
+```
+
+The file contains a subset of 173 admixed individuals from HapMap `ASW` (African ancestry in Southwest USA) and `MXL` (Mexican ancestry in Los Angeles, California) populations. Genotype information is restricted to 20000 SNPs on Chromosome 1 for ease of analysis/computation. 
+
+# PCA
+
+```{r}
+pca <- snpgdsPCA(gds)
+```
+
+## Correlation
+
+```{r}
+# get correlation between SNPs and top 5 PCs
+pca.corr <- snpgdsPCACorr(pca, gds, eig.which=1:4)
+```
+
+## Loadings
+
+```{r}
+pca.load <- snpgdsPCASNPLoading(pca, gds)
+```
+
+## Comparison
+
+```{r}
+# create data frame to store correlations
+dat <- data.frame(snp.id = pca.corr$snp.id,
+                  corr1 = pca.corr$snpcorr[1,],
+                  corr2 = pca.corr$snpcorr[2,],
+                  corr3 = pca.corr$snpcorr[3,],
+                  corr4 = pca.corr$snpcorr[4,])
+
+# data frame to store loadings
+dat2 <- data.frame(snp.id = pca.load$snp.id,
+                   load1 = pca.load$snploading[1,],
+                   load2 = pca.load$snploading[2,],
+                   load3 = pca.load$snploading[3,],
+                   load4 = pca.load$snploading[4,])
+
+# combine
+plot.dat <- left_join(dat, dat2, by = 'snp.id')
+```
+
+```{r}
+# create plot for each pc
+p1 <- plot.dat %>%
+  ggplot(aes(x = corr1, y = load1)) + 
+  geom_point() + 
+  labs(x = 'correlation', y = 'loadings') + 
+  ggtitle('PC1')
+p2 <- plot.dat %>%
+  ggplot(aes(x = corr2, y = load2)) + 
+  geom_point() + 
+  labs(x = 'correlation', y = 'loadings') + 
+  ggtitle('PC2')
+p3 <- plot.dat %>%
+  ggplot(aes(x = corr3, y = load3)) + 
+  geom_point() + 
+  labs(x = 'correlation', y = 'loadings') + 
+  ggtitle('PC3')
+p4 <- plot.dat %>%
+  ggplot(aes(x = corr4, y = load4)) + 
+  geom_point() + 
+  labs(x = 'correlation', y = 'loadings') + 
+  ggtitle('PC4')
+
+# combine into single image
+grid.arrange(p1, p2, p3, p4, nrow = 2)
+```
+
+
+# Clean Up
+
+```{r}
+# close gds file
+snpgdsClose(gds)
+```
+
+
+# Session Info
+
+```{r}
+sessionInfo()
+```
