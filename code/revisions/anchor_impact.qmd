@@ -1,0 +1,502 @@
+---
+title: "Impact of Anchoring"
+author: "K. Grinde"
+date: "August 2024"
+format: 
+  html:
+    toc: true
+    embed-resources: true
+    code-fold: true
+    code-summary: "Show the code"
+---
+
+# Setup
+
+## Packages
+
+```{r}
+#| message: false
+library(GENESIS) # for example data, mixed models, etc.
+library(SNPRelate) # for PCA, LD pruning, etc.
+library(SeqArray) # working with gds files
+library(SeqVarTools) # for PC-Relate setup
+library(Biobase) # working with sample annotation files
+library(dplyr) # tidyverse data tools
+library(tidyr) # tidyverse data tools
+library(ggplot2) # plotting
+library(GGally) # plotting
+library(RColorBrewer) # plotting (color schemes)
+library(gridExtra) # plotting (multiple panels)
+#devtools::install_github('UW-GAC/analysis_pipeline/TopmedPipeline')
+library(TopmedPipeline)
+```
+
+## Data
+
+Download a subset of 1000 Genomes data [here](https://github.com/UW-GAC/analysis_pipeline/tree/master/testdata)
+
+```{r}
+# genotypes
+gdsfmt::showfile.gds(closeall=TRUE) # make sure files are not already open
+gdsfile <- '../../data/1KG_phase3_subset.gds'
+gds <- seqOpen(gdsfile)
+
+# sample annotation
+annotfile <- '../../data/1KG_phase3_subset_annot.RData'
+annot <- getobj(annotfile)
+#head(pData(annot))
+```
+
+## Identify Admixed Individuals
+
+We'll focus on the "ASW" population (African Ancestry in Southwest US).
+The anchored analysis will include CEU (Northern European from Utah) and YRI (Yoruba) as the reference individuals. 
+
+```{r}
+get_ids <- function(annot, popid){
+  pData(annot) %>%
+    filter(Population == popid) %>%
+    pull(sample.id)
+}
+asw.ids <- get_ids(annot, 'ASW') # African Ancestry in Southwest US
+ceu.ids <- get_ids(annot, 'CEU')
+yri.ids <- get_ids(annot, 'YRI')
+anchor.ids <- c(asw.ids, ceu.ids, yri.ids) # for anchored analysis
+```
+
+# Admixed Only Analysis
+
+```{r}
+#### find unrelated samples ####
+## step 1: LD pruning ####
+set.seed(100)
+snpset <- snpgdsLDpruning(gds, sample.id = asw.ids, 
+                          method = 'corr', slide.max.bp=10e6, ld.threshold = sqrt(0.1))
+#sapply(snpset, length)
+pruned <- unlist(snpset, use.names = FALSE)
+
+## step 2: KING ####
+king <- snpgdsIBDKING(gds, sample.id = asw.ids, snp.id = pruned)
+kingMat <- king$kinship
+colnames(kingMat) <- rownames(kingMat) <- king$sample.id
+
+# extract pairwise kinship estimates and IBS0 to plot
+kinship <- snpgdsIBDSelection(king)
+
+# plot
+ggplot(kinship, aes(IBS0, kinship)) +
+  geom_hline(yintercept=2^(-seq(3,9,2)/2), linetype="dashed", color="grey") +
+  geom_point(alpha=0.5) +
+  ylab("kinship estimate") +
+  theme_bw()
+
+## step 3: PC-AiR ####
+# partition samples into related and unrelated
+sampset <- pcairPartition(kinobj=kingMat, kin.thresh=2^(-9/2),
+                          divobj=kingMat, div.thresh=-2^(-9/2))
+sapply(sampset, length)
+
+# run PCA on unrelated
+pca.unrel <- snpgdsPCA(gds, sample.id=sampset$unrels, snp.id=pruned)
+
+# project values for relatives
+snp.load <- snpgdsPCASNPLoading(pca.unrel, gdsobj=gds)
+samp.load <- snpgdsPCASampLoading(snp.load, gdsobj=gds, sample.id=sampset$rels)
+
+# combine unrelated and related PCs and order as in ASW ID list
+pcs <- rbind(pca.unrel$eigenvect, samp.load$eigenvect)
+rownames(pcs) <- c(pca.unrel$sample.id, samp.load$sample.id)
+samp.ord <- match(asw.ids, rownames(pcs))
+pcs <- pcs[samp.ord,]
+
+## step 3b: determine which PCs are ancestry-informative ####
+## (make a parallel coordinates plot)
+
+# merge data with sample annotation info
+pc.df <- as.data.frame(pcs)
+names(pc.df) <- 1:ncol(pcs)
+pc.df$sample.id <- row.names(pcs)
+pc.df <- left_join(pc.df, pData(annot), by='sample.id')
+
+# plot
+pop.cols <- setNames(brewer.pal(12, "Paired"),
+                     c("ACB", "ASW", "CEU", "GBR", "CHB", "JPT", "CLM", "MXL", "LWK", "YRI", "GIH", "PUR"))
+ggparcoord(pc.df, columns=1:12, groupColumn="Population", scale="uniminmax") +
+  scale_color_manual(values=pop.cols) +
+  xlab("PC") + ylab("")
+
+  
+p1 <- ggplot(pc.df, aes(`1`, `2`, color = Population)) + 
+  geom_point() + 
+  scale_color_manual(values = pop.cols) + 
+  labs(x = 'PC1', y = 'PC2')
+p2 <- ggplot(pc.df, aes(`3`, `4`, color = Population)) + 
+  geom_point() + 
+  scale_color_manual(values = pop.cols) + 
+  labs(x = 'PC3', y = 'PC4')
+p3 <- ggplot(pc.df, aes(`5`, `6`, color = Population)) + 
+  geom_point() + 
+  scale_color_manual(values = pop.cols) + 
+  labs(x = 'PC5', y = 'PC6')
+grid.arrange(p1,p2,p3)
+
+## step 4: PC-Relate ####
+# SeqVarIterator setup
+seqResetFilter(gds)
+seqData <- SeqVarData(gds)
+seqSetFilter(seqData, variant.id = pruned, sample.id = asw.ids)
+iterator <- SeqVarBlockIterator(seqData, verbose = F)
+
+# run pcrelate
+pcrel <- pcrelate(iterator, pcs = pcs[,1:2], training.set = sampset$unrels,
+                  sample.include = asw.ids)
+#names(pcrel)
+
+# make kinship matrix from PC-Relate results
+pcrelMat <- pcrelateToMatrix(pcrel, scaleKin=1, verbose=FALSE)
+
+# run PC-AiR again
+seqResetFilter(seqData, verbose=FALSE)
+pca <- pcair(seqData,
+             kinobj=pcrelMat, kin.thresh=2^(-9/2),
+             divobj=kingMat, div.thresh=-2^(-9/2),
+             sample.include=asw.ids, snp.include=pruned,
+             verbose=FALSE)
+#names(pca)
+
+# plot
+pcs <- pca$vectors
+pc.df <- as.data.frame(pcs)
+names(pc.df) <- paste0("PC", 1:ncol(pcs))
+pc.df$sample.id <- row.names(pcs)
+pc.df <- left_join(pc.df, pData(annot), by="sample.id")
+
+ggplot(pc.df, aes(PC1, PC2, color=Population)) + geom_point() +
+  scale_color_manual(values=pop.cols)
+
+# use revised PCs to get new kinship estimates
+seqSetFilter(seqData, variant.id=pruned)
+iterator <- SeqVarBlockIterator(seqData, verbose=FALSE)
+pcrel <- pcrelate(iterator, pcs=pcs[,1:2], training.set=pca$unrels, 
+                  sample.include=asw.ids)
+
+# plot new kinship estimates
+kinship <- pcrel$kinBtwn
+
+ggplot(kinship, aes(k0, kin)) +
+  geom_hline(yintercept=2^(-seq(3,9,2)/2), linetype="dashed", color="grey") +
+  geom_point(alpha=0.5) +
+  ylab("kinship estimate") +
+  theme_bw()
+
+# get new partition
+pcrelMat <- pcrelateToMatrix(pcrel, scaleKin=1, verbose=FALSE)
+sampset2 <- pcairPartition(kinobj=pcrelMat, kin.thresh=2^(-9/2),
+                           divobj=kingMat, div.thresh=-2^(-9/2))
+asw.unrel.ids <- sampset2$unrels
+
+
+#### run "naive" PCA ####
+pca.naive <- snpgdsPCA(gds, sample.id = asw.unrel.ids)
+
+# calculate SNP loadings
+snp.load <- snpgdsPCASNPLoading(pca.naive, gdsobj=gds)
+
+# plot set-up
+snp.load.df <- as.data.frame(cbind(snp.load$snp.id,
+                                   t(snp.load$snploading)))
+names(snp.load.df) <- c('snp.id', paste('PC',1:32,sep=''))
+missing <- !(readex.gdsn(index.gdsn(gds, 'variant.id')) %in% snp.load$snp.id)
+snp.annot <- data.frame(snp.id = readex.gdsn(index.gdsn(gds, 'variant.id')),
+                        chr = readex.gdsn(index.gdsn(gds, 'chromosome')),
+                        pos = readex.gdsn(index.gdsn(gds, 'position')),
+                        stringsAsFactors = F)
+snp.load.df <- left_join(snp.load.df, snp.annot, by = 'snp.id')
+snp.load.df.long <- snp.load.df %>%
+  pivot_longer(cols=PC1:PC32, names_to = 'PC') %>%
+  mutate(PC = factor(PC, levels = paste0("PC", 1:32))) %>%
+  mutate(chr = factor(chr, levels = c(1:22, "X")))
+
+# set up color scheme
+chr <- levels(snp.load.df.long$chr)
+cmap <- setNames(rep_len(brewer.pal(8, "Dark2"), length(chr)), chr)
+
+# plot first 4 PCs page
+n_pcs <- length(unique(snp.load.df.long$PC))
+n_plots <- ceiling(n_pcs/as.integer(4)) # change 4 depending on how many plots per page you want
+bins <- as.integer(cut(1:n_pcs, n_plots))
+i <- 1
+bin <- paste0("PC", which(bins == i))
+dat <- filter(snp.load.df.long, PC %in% bin)
+ggplot(dat, aes(chr, value, group=interaction(chr, pos), color=chr)) +
+  geom_point(position=position_dodge(0.8)) +
+  facet_wrap(~PC, scales="free", ncol=1) +
+  scale_color_manual(values=cmap, breaks=names(cmap)) +
+  #ylim(0,1) +
+  ylim(-0.05,0.05)+
+  theme_bw() +
+  theme(legend.position="none") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+  xlab("chromosome") + ylab("loading")
+```
+
+# Anchored Analysis
+
+```{r}
+## step 1: LD pruning ####
+set.seed(100)
+snpset.anchored <- snpgdsLDpruning(gds, sample.id = c(asw.ids, ceu.ids, yri.ids), 
+                          method = 'corr', slide.max.bp=10e6, ld.threshold = sqrt(0.1))
+pruned.anchored <- unlist(snpset.anchored, use.names = FALSE)
+
+## step 2: KING ####
+king.anchored <- snpgdsIBDKING(gds, sample.id = c(asw.ids, ceu.ids, yri.ids), 
+                               snp.id = pruned.anchored)
+kingMat.anchored <- king.anchored$kinship
+colnames(kingMat.anchored) <- rownames(kingMat.anchored) <- king.anchored$sample.id
+
+# extract pairwise kinship estimates and IBS0 to plot
+kinship.anchored <- snpgdsIBDSelection(king.anchored)
+
+# plot
+ggplot(kinship.anchored, aes(IBS0, kinship)) +
+  geom_hline(yintercept=2^(-seq(3,9,2)/2), linetype="dashed", color="grey") +
+  geom_point(alpha=0.5) +
+  ylab("kinship estimate") +
+  theme_bw()
+
+## step 3: PC-AiR ####
+# partition samples into related and unrelated
+sampset.anchored <- pcairPartition(kinobj=kingMat.anchored, 
+                                   kin.thresh=2^(-9/2),
+                                   divobj=kingMat.anchored, 
+                                   div.thresh=-2^(-9/2))
+sapply(sampset.anchored, length)
+
+# run PCA on unrelated
+pca.unrel.anchored <- snpgdsPCA(gds, 
+                                sample.id=sampset.anchored$unrels, 
+                                snp.id=pruned.anchored)
+
+# project values for relatives
+snp.load.anchored <- snpgdsPCASNPLoading(pca.unrel.anchored, 
+                                         gdsobj=gds)
+samp.load.anchored <- snpgdsPCASampLoading(snp.load.anchored, 
+                                  gdsobj=gds, 
+                                  sample.id=sampset.anchored$rels)
+
+# combine unrelated and related PCs and order as in ASW ID list
+pcs.anchored <- rbind(pca.unrel.anchored$eigenvect, 
+                      samp.load.anchored$eigenvect)
+rownames(pcs.anchored) <- c(pca.unrel.anchored$sample.id, 
+                            samp.load.anchored$sample.id)
+samp.ord <- match(c(asw.ids, ceu.ids, yri.ids), 
+                  rownames(pcs.anchored))
+pcs.anchored <- pcs.anchored[samp.ord,]
+
+## step 3b: determine which PCs are ancestry-informative ####
+## (make a parallel coordinates plot)
+
+# merge data with sample annotation info
+pc.df.anchored <- as.data.frame(pcs.anchored)
+names(pc.df.anchored) <- 1:ncol(pcs.anchored)
+pc.df.anchored$sample.id <- row.names(pcs.anchored)
+pc.df.anchored <- left_join(pc.df.anchored, pData(annot), by='sample.id')
+
+# plot
+ggparcoord(pc.df.anchored, 
+           columns=1:12, 
+           groupColumn="Population", 
+           scale="uniminmax") +
+  scale_color_manual(values=pop.cols) +
+  xlab("PC") + ylab("")
+
+
+p1 <- ggplot(pc.df.anchored, aes(`1`, `2`, color = Population)) + 
+  geom_point() + 
+  scale_color_manual(values = pop.cols) + 
+  labs(x = 'PC1', y = 'PC2')
+p2 <- ggplot(pc.df.anchored, aes(`3`, `4`, color = Population)) + 
+  geom_point() + 
+  scale_color_manual(values = pop.cols) + 
+  labs(x = 'PC3', y = 'PC4')
+p3 <- ggplot(pc.df.anchored, aes(`5`, `6`, color = Population)) + 
+  geom_point() + 
+  scale_color_manual(values = pop.cols) + 
+  labs(x = 'PC5', y = 'PC6')
+grid.arrange(p1,p2,p3)
+
+## step 4: PC-Relate ####
+# SeqVarIterator setup
+seqResetFilter(gds)
+seqData <- SeqVarData(gds)
+seqSetFilter(seqData, variant.id = pruned.anchored, 
+             sample.id = c(asw.ids, ceu.ids, yri.ids))
+iterator <- SeqVarBlockIterator(seqData, verbose = F)
+
+# run pcrelate
+pcrel.anchored <- pcrelate(iterator, pcs = pcs.anchored[,1:2], 
+                           training.set = sampset.anchored$unrels,
+                  sample.include = c(asw.ids, ceu.ids, yri.ids))
+#names(pcrel)
+
+# make kinship matrix from PC-Relate results
+pcrelMat.anchored <- pcrelateToMatrix(pcrel.anchored, 
+                                      scaleKin=1, verbose=FALSE)
+
+# run PC-AiR again
+seqResetFilter(seqData, verbose=FALSE)
+pca.anchored <- pcair(seqData,
+             kinobj=pcrelMat.anchored, kin.thresh=2^(-9/2),
+             divobj=kingMat.anchored, div.thresh=-2^(-9/2),
+             sample.include=c(asw.ids, ceu.ids, yri.ids), 
+             snp.include=pruned.anchored,
+             verbose=FALSE)
+#names(pca)
+
+# plot
+pcs.anchored <- pca.anchored$vectors
+pc.df.anchored <- as.data.frame(pcs.anchored)
+names(pc.df.anchored) <- paste0("PC", 1:ncol(pcs.anchored))
+pc.df.anchored$sample.id <- row.names(pcs.anchored)
+pc.df.anchored <- left_join(pc.df.anchored, pData(annot), 
+                            by="sample.id")
+
+ggplot(pc.df.anchored, aes(PC1, PC2, color=Population)) + 
+  geom_point() +
+  scale_color_manual(values=pop.cols)
+
+# use revised PCs to get new kinship estimates
+seqSetFilter(seqData, variant.id=pruned.anchored)
+iterator <- SeqVarBlockIterator(seqData, verbose=FALSE)
+pcrel.anchored <- pcrelate(iterator, pcs=pcs.anchored[,1:2], 
+                           training.set=pca.anchored$unrels, 
+                  sample.include=c(asw.ids, ceu.ids, yri.ids))
+
+# plot new kinship estimates
+kinship.anchored <- pcrel.anchored$kinBtwn
+
+ggplot(kinship.anchored, aes(k0, kin)) +
+  geom_hline(yintercept=2^(-seq(3,9,2)/2), linetype="dashed", color="grey") +
+  geom_point(alpha=0.5) +
+  ylab("kinship estimate") +
+  theme_bw()
+
+# get new partition
+pcrelMat.anchored <- pcrelateToMatrix(pcrel.anchored, scaleKin=1, verbose=FALSE)
+sampset2.anchored <- pcairPartition(kinobj=pcrelMat.anchored, 
+                                    kin.thresh=2^(-9/2),
+                           divobj=kingMat.anchored, div.thresh=-2^(-9/2))
+unrel.ids.anchored <- sampset2.anchored$unrels
+
+#### run "naive" PCA ####
+pca.naive.anchored <- snpgdsPCA(gds, sample.id = unrel.ids.anchored)
+
+# calculate SNP loadings
+snp.load.anchored <- snpgdsPCASNPLoading(pca.naive.anchored, gdsobj=gds)
+
+# plot set-up
+snp.load.df.anchored <- as.data.frame(cbind(snp.load.anchored$snp.id,
+                                   t(snp.load.anchored$snploading)))
+names(snp.load.df.anchored) <- c('snp.id', paste('PC',1:32,sep=''))
+missing <- !(readex.gdsn(index.gdsn(gds, 'variant.id')) %in% snp.load.anchored$snp.id)
+snp.annot.anchored <- data.frame(snp.id = readex.gdsn(index.gdsn(gds, 'variant.id')),
+                        chr = readex.gdsn(index.gdsn(gds, 'chromosome')),
+                        pos = readex.gdsn(index.gdsn(gds, 'position')),
+                        stringsAsFactors = F)
+snp.load.df.anchored <- left_join(snp.load.df.anchored, snp.annot.anchored, by = 'snp.id')
+snp.load.df.long.anchored <- snp.load.df.anchored %>%
+  pivot_longer(cols=PC1:PC32, names_to = 'PC') %>%
+  mutate(PC = factor(PC, levels = paste0("PC", 1:32))) %>%
+  mutate(chr = factor(chr, levels = c(1:22, "X")))
+
+# set up color scheme
+chr <- levels(snp.load.df.long.anchored$chr)
+cmap <- setNames(rep_len(brewer.pal(8, "Dark2"), length(chr)), chr)
+
+# plot first 4 PCs page
+n_pcs.anchored <- length(unique(snp.load.df.long.anchored$PC))
+n_plots.anchored <- ceiling(n_pcs.anchored/as.integer(4)) # change 4 depending on how many plots per page you want
+bins.anchored <- as.integer(cut(1:n_pcs.anchored, n_plots.anchored))
+i <- 1
+bin <- paste0("PC", which(bins == i))
+dat.anchored <- filter(snp.load.df.long.anchored, PC %in% bin)
+ggplot(dat.anchored, aes(chr, value, group=interaction(chr, pos), color=chr)) +
+  geom_point(position=position_dodge(0.8)) +
+  facet_wrap(~PC, scales="free", ncol=1) +
+  scale_color_manual(values=cmap, breaks=names(cmap)) +
+  #ylim(0,1) +
+  ylim(-0.05,0.05)+
+  theme_bw() +
+  theme(legend.position="none") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+  xlab("chromosome") + ylab("loading")
+```
+
+# Compare Results
+
+Compare pruned variants: 
+
+```{r}
+#| code-fold: false
+# compare to ASW only analysis
+length(pruned)
+length(pruned.anchored) 
+```
+
+Compare SNP loadings: 
+
+```{r}
+#| code-fold: false
+dim(snp.load.df.anchored)
+dim(snp.load.df)
+
+snp.load.overlap <- full_join(snp.load.df.anchored,
+                              snp.load.df,
+                              by = 'snp.id')
+snp.load.overlap %>%
+  select(PC1.x, PC1.y) %>%
+  cor(use = 'complete.obs')
+
+snp.load.overlap %>%
+  select(PC2.x, PC2.y) %>%
+  cor(use = 'complete.obs')
+
+snp.load.overlap %>%
+  select(PC3.x, PC3.y) %>%
+  cor(use = 'complete.obs')
+
+snp.load.overlap %>%
+  select(PC4.x, PC4.y) %>%
+  cor(use = 'complete.obs')
+
+snp.load.overlap %>%
+  select(PC1.x, PC1.y, PC2.x, PC2.y, PC3.x, PC3.y, PC4.x, PC4.y) %>%
+  cor(use = 'complete.obs')
+```
+
+Compare PC scores: 
+
+```{r}
+tmp.anchored <- as.data.frame(pca.naive.anchored$eigenvect) %>% mutate(sample.id = pca.naive.anchored$sample.id)
+tmp <- as.data.frame(pca.naive$eigenvect) %>% mutate(sample.id = pca.naive$sample.id)
+pcs.combined <- tmp %>%
+  left_join(tmp.anchored, by = 'sample.id')
+
+pcs.combined %>% 
+  select(V1.x, V1.y) %>%
+  cor(use = 'complete.obs')
+
+pcs.combined %>% 
+  select(V2.x, V2.y) %>%
+  cor(use = 'complete.obs')
+
+pcs.combined %>% 
+  select(V3.x, V3.y) %>%
+  cor(use = 'complete.obs')
+
+pcs.combined %>% 
+  select(V4.x, V4.y) %>%
+  cor(use = 'complete.obs')
+
+```
