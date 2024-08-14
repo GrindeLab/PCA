@@ -1,0 +1,93 @@
+---
+title: "Compare PC-SNP Correlations"
+author: "K. Grinde"
+date: "August 1, 2024"
+format: 
+  html:
+    toc: true
+    embed-resources: true
+---
+
+## Packages
+
+```{r}
+library(tools)
+library(dplyr)
+library(ggplot2)
+library(GGally)
+```
+
+## Load Results
+
+```{r}
+# helper function
+getobj <- function(Rdata) {
+  if (tolower(file_ext(Rdata)) == "rds") {
+    return(readRDS(Rdata))
+  }
+  objname <- load(Rdata)
+  if (length(objname) > 1) {
+    warning(paste("Multiple objects stored in file", Rdata,
+                  "\nReturning only the first object"))
+  }
+  return(get(objname))
+}
+
+# load correlation for each panel
+tmpdir <- '/Users/kgrinde/Desktop/PCA/pca_geno_corr/'
+panA <- getobj(paste0(tmpdir, 
+                      'pca_snprelate_prune_1_0.5_corr.RData'))
+panB <- getobj(paste0(tmpdir,
+                      'pca_snprelate_exclude_lit_prune_1_0.5_corr.RData'))
+panC <- getobj(paste0(tmpdir,
+                      'pca_snprelate_prune_0.1_0.5_corr.RData'))
+panD <- getobj(paste0(tmpdir,
+                      'pca_snprelate_exclude_lit_prune_0.1_0.5_corr.RData'))
+```
+
+## Compare PC1 Results
+
+```{r}
+PC1 <- data.frame(A = abs(panA$snpcorr[1,]),
+                  B = abs(panB$snpcorr[1,]),
+                  C = abs(panC$snpcorr[1,]),
+                  D = abs(panD$snpcorr[1,]))
+cor(PC1)
+min(cor(PC1))
+```
+
+## Repeat for PC2
+
+```{r}
+PC2 <- data.frame(A = abs(panA$snpcorr[2,]),
+                  B = abs(panB$snpcorr[2,]),
+                  C = abs(panC$snpcorr[2,]),
+                  D = abs(panD$snpcorr[2,]))
+cor(PC2)
+min(abs(cor(PC2)))
+```
+
+
+## Compare Panels C and D
+
+```{r}
+CD <- data.frame(C1 = abs(panC$snpcorr[1,]),
+                 C2 = abs(panC$snpcorr[2,]),
+                 C3 = abs(panC$snpcorr[3,]),
+                 C4 = abs(panC$snpcorr[4,]),
+                 D1 = abs(panD$snpcorr[1,]),
+                 D2 = abs(panD$snpcorr[2,]),
+                 D3 = abs(panD$snpcorr[3,]),
+                 D4 = abs(panD$snpcorr[4,]))
+cor(CD)
+```
+
+
+```{r}
+diffCD <- data.frame(diff1 = abs(panC$snpcorr[1,]) - abs(panD$snpcorr[1,]),
+                     diff2 = abs(panC$snpcorr[2,]) - abs(panD$snpcorr[2,]),
+                     diff3 = abs(panC$snpcorr[3,]) - abs(panD$snpcorr[3,]),
+                     diff4 = abs(panC$snpcorr[4,]) - abs(panD$snpcorr[4,]))
+
+summary(diffCD)
+```
