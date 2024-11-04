@@ -1,0 +1,212 @@
+---
+title: "LD Exploration"
+author: "K. Grinde"
+date: "October 16, 2024"
+format: 
+  html:
+    toc: true
+    embed-resources: true
+    code-fold: true
+---
+
+# Set Up
+
+## Load Packages
+
+```{r}
+#| message: false
+library(tidyverse)
+library(MASS)
+library(reshape2)
+```
+
+## Session Info
+
+```{r}
+#| collapse: true
+#| code-fold: true
+sessionInfo()
+```
+
+
+
+# Generating Toy Data
+
+## Example 1: No LD
+
+```{r}
+N <- 100
+P <- 10
+MU <- rep(0, times = P)
+SIGMA1 <- diag(1, nrow = P, ncol = P)
+
+set.seed(1)
+X1 <- mvrnorm(n = N, mu = MU, Sigma = SIGMA1)
+```
+
+
+Visualize the covariance matrix: 
+
+```{r}
+plot_corr <- function(X){
+  # calculate empirical correlation
+  cor_matrix <- cor(X)
+  cor_matrix[lower.tri(cor_matrix)] <- NA
+  cor_matrix <- cor_matrix %>% 
+    melt() %>% 
+    na.omit() %>% 
+    rename(correlation = value)
+
+  # Visualize the correlation for each pair of variables
+  ggplot(cor_matrix, aes(x = Var1, y = Var2, fill = correlation)) +
+    geom_tile(color = "white") +
+    scale_fill_gradient2(
+      low = "blue", high = "red", mid = "white", 
+      midpoint = 0, limit = c(-1,1)) +
+    labs(x = "", y = "") +
+    theme_minimal() + 
+    theme(axis.text.x = element_text(angle = 60, hjust = 1)) + 
+    coord_fixed()
+}
+
+plot_corr(X1)
+```
+
+
+## Example 2: Short LD Block
+
+```{r}
+SIGMA2 <- diag(1, nrow = P, ncol = P)
+SIGMA2[4,5] <- SIGMA2[5,6] <- SIGMA2[6,7] <- 0.8
+SIGMA2[5,4] <- SIGMA2[6,5] <- SIGMA2[7,6] <- 0.8
+SIGMA2[4,6] <- SIGMA2[5,7] <- 0.6
+SIGMA2[6,4] <- SIGMA2[7,5] <- 0.6
+SIGMA2[4,7] <- 0.4
+SIGMA2[7,4] <- 0.4
+
+set.seed(1)
+X2 <- mvrnorm(n = N, mu = MU, Sigma = SIGMA2)
+```
+
+
+Visualize the covariance matrix: 
+
+```{r}
+plot_corr(X2)
+```
+
+## Example 3: More SNPs
+
+```{r}
+P <- 50
+MU3 <- rep(0, times = P)
+
+SIGMA3 <- diag(1, nrow = P, ncol = P)
+SIGMA3[24,25] <- SIGMA3[25,26] <- SIGMA3[26,27] <- SIGMA3[27,28] <- .8
+SIGMA3[25,24] <- SIGMA3[26,25] <- SIGMA3[27,26] <- SIGMA3[28,27] <- .8
+SIGMA3[24,26] <- SIGMA3[25,27] <- SIGMA3[26,28] <- 0.6
+SIGMA3[26,24] <- SIGMA3[27,25] <- SIGMA3[28,26] <- 0.6
+SIGMA3[24,27] <- SIGMA3[25,28] <- 0.4
+SIGMA3[27,24] <- SIGMA3[28,25] <- 0.4
+
+
+set.seed(1)
+X3 <- mvrnorm(n = N, mu = MU3, Sigma = SIGMA3)
+```
+
+
+Visualize the covariance matrix: 
+
+```{r}
+plot_corr(X3)
+```
+
+
+## Example 4: Slower Decay
+
+```{r}
+P <- 10
+SIGMA4 <- diag(1, nrow = P, ncol = P)
+SIGMA4[4,5] <- SIGMA4[5,6] <- SIGMA4[6,7] <- 0.9
+SIGMA4[5,4] <- SIGMA4[6,5] <- SIGMA4[7,6] <- 0.9
+SIGMA4[4,6] <- SIGMA4[5,7] <- 0.8
+SIGMA4[6,4] <- SIGMA4[7,5] <- 0.8
+SIGMA4[4,7] <- 0.8
+SIGMA4[7,4] <- 0.8
+
+SIGMA4[3,4] <- SIGMA4[4,3] <- 0.4
+SIGMA4[3,5] <- SIGMA4[5,3] <- 0.4
+SIGMA4[3,6] <- SIGMA4[6,3] <- 0.2
+SIGMA4[3,7] <- SIGMA4[7,3] <- 0.2
+
+SIGMA4[2,3] <- SIGMA4[3,2] <- 0.3
+#SIGMA4[2,4] <- SIGMA4[4,2] <- 0.3
+
+SIGMA4[1,2] <- SIGMA4[2,1] <- 0.3
+SIGMA4[9,10] <- SIGMA4[10,9] <- 0.3
+
+set.seed(1)
+X4 <- mvrnorm(n = N, mu = MU, Sigma = SIGMA4)
+```
+
+
+Visualize the covariance matrix: 
+
+```{r}
+plot_corr(X4)
+```
+
+
+## Next Steps
+
+- add (way) more SNPs
+- create two "chromosomes" / blocks that are unlinked but have decaying correlation within
+- set it up so one of those two chromosomes has a much more extreme high LD block
+
+
+
+# PCA
+
+```{r}
+run_pca <- function(X){
+  pca <- prcomp(X, center = TRUE, scale = TRUE)
+  loadings <- pca$rotation
+  scores <- pca$x
+  return(list(pca = pca, loadings = loadings, scores = scores))
+}
+
+plot_loadings <- function(X, npcs){
+  pca <- run_pca(X)
+  pca$loadings %>%
+    as.data.frame() %>%
+    mutate(index = seq_len(nrow(pca$loadings))) %>%
+    melt(id="index") %>%
+    filter(variable %in% paste0("PC",1:npcs)) %>%
+    ggplot(aes(x = index, y = abs(value))) + 
+    geom_point() + 
+    facet_wrap(.~variable) +
+    labs(xlab = 'SNP Number', ylab = 'Loadings') + 
+    theme_bw()
+}
+```
+
+```{r}
+#| code-fold: false
+plot_loadings(X1, 4)
+```
+
+```{r}
+#| code-fold: false
+plot_loadings(X2, 4)
+```
+
+
+```{r}
+#| code-fold: false
+plot_loadings(X3, 4)
+```
+
+```{r}
+#| code-fold: false
+plot_loadings(X4, 4)
+```
